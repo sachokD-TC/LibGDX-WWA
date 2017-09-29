@@ -3,9 +3,11 @@ package com.mygdx.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.*;
 
@@ -24,11 +26,14 @@ public class Wwa extends ApplicationAdapter {
     float cowboyX;
     float cowboyY;
     int indPic = 0;
+    WwaInputProcessor inputProcessor = new WwaInputProcessor();
+
 
 
     @Override
     public void create() {
         batch = new SpriteBatch();
+        Gdx.input.setInputProcessor(inputProcessor);
         pripareActor(UP, upPics);
         pripareActor(LEFT, leftPics);
         pripareActor(RIGHT, rightPics);
@@ -42,6 +47,7 @@ public class Wwa extends ApplicationAdapter {
         }
         cowboy.put(moveName, textures);
     }
+
 
     @Override
     public void render() {
@@ -61,6 +67,10 @@ public class Wwa extends ApplicationAdapter {
         if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN)) {
             cowboyY -= Gdx.graphics.getDeltaTime() * cowboySpeed;
             cowboyToDraw = cowboy.get(DOWN).get(indPic/10);
+        }
+        if(!Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)){
+            cowboyX = inputProcessor.getCowboyX();
+            cowboyY = inputProcessor.getCowboyY();
         }
         indPic += 1;
         if (indPic >= cowboy.get(DOWN).size()*10 - 1) {
