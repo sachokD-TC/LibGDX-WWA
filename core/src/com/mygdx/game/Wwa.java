@@ -73,7 +73,7 @@ public class Wwa extends ApplicationAdapter {
             cowboyX = 400f;
             cowboyY = 400f;
         }
-        Gdx.gl.glClearColor(0.131f, 0.120f, 0.118f, 1);
+        Gdx.gl.glClearColor(239f/255.0f, 224f/255f, 55f/255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         batch.draw(cowboyToDraw, (int) cowboyX, (int) cowboyY);
