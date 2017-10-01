@@ -3,7 +3,9 @@ package com.mygdx.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -14,20 +16,17 @@ public class Wwa extends ApplicationAdapter {
     public static final String LEFT = "left";
     public static final String RIGHT = "right";
     public static final String DOWN = "down";
-    private  SpriteBatch batch;
-    private  Map<String, List<Texture>> cowboy = new HashMap<>();
-    private  String[] downPics = {"actor/front.png","actor/front_1.png", "actor/front_2.png"};
-    private String[] leftPics = {"actor/left.png","actor/left_1.png",  "actor/left_2.png"};
-    private String[] rightPics = {"actor/right.png","actor/right_1.png", "actor/right_2.png"};
-    private String[] upPics = {"actor/back.png","actor/back_1.png", "actor/back_2.png"};
+    private SpriteBatch batch;
+    private Map<String, List<Texture>> cowboy = new HashMap<>();
+    private String[] downPics = {"actor/front.png", "actor/front_1.png", "actor/front_2.png"};
+    private String[] leftPics = {"actor/left.png", "actor/left_1.png", "actor/left_2.png"};
+    private String[] rightPics = {"actor/right.png", "actor/right_1.png", "actor/right_2.png"};
+    private String[] upPics = {"actor/back.png", "actor/back_1.png", "actor/back_2.png"};
     private float cowboySpeed = 90.0f;
-    private float cowboyX;
-    protected float cowboyY;
+    private float cowboyX = 400f;
+    protected float cowboyY = 400f;
     private int indPic = 0;
-    private float dX = 0;
-    private float dY = 0;
-    private float dZ = 0;
-
+    private Camera camera;
 
     @Override
     public void create() {
@@ -48,56 +47,55 @@ public class Wwa extends ApplicationAdapter {
 
     @Override
     public void render() {
-        Texture cowboyToDraw = cowboy.get(UP).get(0);
+        Texture cowboyToDraw = cowboy.get(DOWN).get(0);
         int accelTurn = getAccelTurn();
         if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT) || accelTurn == Input.Keys.DPAD_LEFT) {
             cowboyX -= Gdx.graphics.getDeltaTime() * cowboySpeed;
-            cowboyToDraw = cowboy.get(LEFT).get(indPic/10);
+            cowboyToDraw = cowboy.get(LEFT).get(indPic / 10);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT) || accelTurn == Input.Keys.DPAD_LEFT) {
+        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT) || accelTurn == Input.Keys.DPAD_RIGHT) {
             cowboyX += Gdx.graphics.getDeltaTime() * cowboySpeed;
-            cowboyToDraw = cowboy.get(RIGHT).get(indPic/10);
+            cowboyToDraw = cowboy.get(RIGHT).get(indPic / 10);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_UP) || accelTurn == Input.Keys.DPAD_LEFT) {
+        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_UP) || accelTurn == Input.Keys.DPAD_UP) {
             cowboyY += Gdx.graphics.getDeltaTime() * cowboySpeed;
-            cowboyToDraw = cowboy.get(UP).get(indPic/10);
+            cowboyToDraw = cowboy.get(UP).get(indPic / 10);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN) || accelTurn == Input.Keys.DPAD_LEFT) {
+        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN) || accelTurn == Input.Keys.DPAD_DOWN) {
             cowboyY -= Gdx.graphics.getDeltaTime() * cowboySpeed;
-            cowboyToDraw = cowboy.get(DOWN).get(indPic/10);
+            cowboyToDraw = cowboy.get(DOWN).get(indPic / 10);
         }
         indPic += 1;
-        if (indPic >= cowboy.get(DOWN).size()*10 - 1) {
+        if (indPic >= cowboy.get(DOWN).size() * 10 - 1) {
             indPic = 0;
         }
-        Gdx.gl.glClearColor(231, 231, 68, 1);
+        if (Gdx.input.isTouched()) {
+            cowboyX = 400f;
+            cowboyY = 400f;
+        }
+        Gdx.gl.glClearColor(0.131f, 0.120f, 0.118f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         batch.draw(cowboyToDraw, (int) cowboyX, (int) cowboyY);
         batch.end();
     }
 
-    private int getAccelTurn(){
-        float curdXdX = Gdx.input.getAccelerometerX() - dX;
-        float curdYdY = Gdx.input.getAccelerometerY() - dY;
-        float curdZdZ = Gdx.input.getAccelerometerZ() - dZ;
-        if (curdXdX > curdYdY && curdXdX > curdZdZ){
-            if (curdXdX > 0){
-                return Input.Keys.DPAD_RIGHT;
-            } else {
-                return Input.Keys.DPAD_LEFT;
-            }
+    private int getAccelTurn() {
+        float accelX = Gdx.input.getAccelerometerX();
+        float accelY = Gdx.input.getAccelerometerY();
+        // float curdZdZ = Gdx.input.getAccelerometerZ();
+        if (accelX < -1) {
+            return Input.Keys.UP;
         }
-        if (curdYdY > curdXdX && curdYdY > curdZdZ) {
-            if (curdYdY > 0){
-                return Input.Keys.DPAD_UP;
-            } else {
-                return Input.Keys.DPAD_DOWN;
-            }
+        if (accelY < -1) {
+            return Input.Keys.LEFT;
         }
-        dX = Gdx.input.getAccelerometerX();
-        dY =  Gdx.input.getAccelerometerY();
-        dZ =  Gdx.input.getAccelerometerZ();
+        if (accelX > +1) {
+            return Input.Keys.DOWN;
+        }
+        if (accelY > +1) {
+            return Input.Keys.RIGHT;
+        }
         return Input.Keys.DPAD_CENTER;
     }
 
