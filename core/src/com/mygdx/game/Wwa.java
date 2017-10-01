@@ -14,16 +14,19 @@ public class Wwa extends ApplicationAdapter {
     public static final String LEFT = "left";
     public static final String RIGHT = "right";
     public static final String DOWN = "down";
-    SpriteBatch batch;
-    Map<String, List<Texture>> cowboy = new HashMap<>();
-    String[] downPics = {"actor/front.png","actor/front_1.png", "actor/front_2.png"};
-    String[] leftPics = {"actor/left.png","actor/left_1.png",  "actor/left_2.png"};
-    String[] rightPics = {"actor/right.png","actor/right_1.png", "actor/right_2.png"};
-    String[] upPics = {"actor/back.png","actor/back_1.png", "actor/back_2.png"};
-    float cowboySpeed = 90.0f;
-    float cowboyX;
-    float cowboyY;
-    int indPic = 0;
+    private  SpriteBatch batch;
+    private  Map<String, List<Texture>> cowboy = new HashMap<>();
+    private  String[] downPics = {"actor/front.png","actor/front_1.png", "actor/front_2.png"};
+    private String[] leftPics = {"actor/left.png","actor/left_1.png",  "actor/left_2.png"};
+    private String[] rightPics = {"actor/right.png","actor/right_1.png", "actor/right_2.png"};
+    private String[] upPics = {"actor/back.png","actor/back_1.png", "actor/back_2.png"};
+    private float cowboySpeed = 90.0f;
+    private float cowboyX;
+    protected float cowboyY;
+    private int indPic = 0;
+    private float dX = 0;
+    private float dY = 0;
+    private float dZ = 0;
 
 
     @Override
@@ -46,19 +49,20 @@ public class Wwa extends ApplicationAdapter {
     @Override
     public void render() {
         Texture cowboyToDraw = cowboy.get(UP).get(0);
-        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT)) {
+        int accelTurn = getAccelTurn();
+        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT) || accelTurn == Input.Keys.DPAD_LEFT) {
             cowboyX -= Gdx.graphics.getDeltaTime() * cowboySpeed;
             cowboyToDraw = cowboy.get(LEFT).get(indPic/10);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT) || accelTurn == Input.Keys.DPAD_LEFT) {
             cowboyX += Gdx.graphics.getDeltaTime() * cowboySpeed;
             cowboyToDraw = cowboy.get(RIGHT).get(indPic/10);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_UP)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_UP) || accelTurn == Input.Keys.DPAD_LEFT) {
             cowboyY += Gdx.graphics.getDeltaTime() * cowboySpeed;
             cowboyToDraw = cowboy.get(UP).get(indPic/10);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN) || accelTurn == Input.Keys.DPAD_LEFT) {
             cowboyY -= Gdx.graphics.getDeltaTime() * cowboySpeed;
             cowboyToDraw = cowboy.get(DOWN).get(indPic/10);
         }
@@ -71,6 +75,30 @@ public class Wwa extends ApplicationAdapter {
         batch.begin();
         batch.draw(cowboyToDraw, (int) cowboyX, (int) cowboyY);
         batch.end();
+    }
+
+    private int getAccelTurn(){
+        float curdXdX = Gdx.input.getAccelerometerX() - dX;
+        float curdYdY = Gdx.input.getAccelerometerY() - dY;
+        float curdZdZ = Gdx.input.getAccelerometerZ() - dZ;
+        if (curdXdX > curdYdY && curdXdX > curdZdZ){
+            if (curdXdX > 0){
+                return Input.Keys.DPAD_RIGHT;
+            } else {
+                return Input.Keys.DPAD_LEFT;
+            }
+        }
+        if (curdYdY > curdXdX && curdYdY > curdZdZ) {
+            if (curdYdY > 0){
+                return Input.Keys.DPAD_UP;
+            } else {
+                return Input.Keys.DPAD_DOWN;
+            }
+        }
+        dX = Gdx.input.getAccelerometerX();
+        dY =  Gdx.input.getAccelerometerY();
+        dZ =  Gdx.input.getAccelerometerZ();
+        return Input.Keys.DPAD_CENTER;
     }
 
     @Override
