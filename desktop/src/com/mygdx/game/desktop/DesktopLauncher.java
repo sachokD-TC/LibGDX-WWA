@@ -8,8 +8,8 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.title = "Wild west advenrutre";
-        config.height = 280;
-        config.width = 200;
+        config.height = 1500;
+        config.width = 1500;
 		new LwjglApplication(new Wwa(), config);
 	}
 }
