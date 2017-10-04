@@ -1,8 +1,11 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
@@ -30,14 +33,16 @@ public class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRen
     private BitmapFont font = new BitmapFont();
     private int width;
     private int height;
+    private int energy = 220;
 
     public OrthogonalTiledMapRendererWithSprites(TiledMap map, int width, int height) {
         super(map);
         TiledMapTileSet tiledMapTileSet = map.getTileSets().getTileSet(0);
-        emptyCell = new TiledMapTileLayer.Cell();
-        emptyCell.setTile(tiledMapTileSet.getTile(30));
+        this.emptyCell = new TiledMapTileLayer.Cell();
+        this.emptyCell.setTile(tiledMapTileSet.getTile(30));
         this.width = width;
         this.height = height;
+        font.getData().scale(1.2f);
     }
 
     @Override
@@ -54,6 +59,7 @@ public class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRen
                         if (object instanceof RectangleMapObject) {
                             Rectangle rect = ((RectangleMapObject) object).getRectangle();
                             if (sprite != null && rect.overlaps(sprite.getBoundingRectangle())) {
+                                energy -= 1;
                                 this.isStepBack = true;
                             }
                         }
@@ -84,13 +90,25 @@ public class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRen
                 }
             }
         }
-        if (sprite != null && cactusesCells.size() > 0) {
-            font.draw(batch, "Cactuses - " + (cactusesCells.size()-1), sprite.getX() + width/4, sprite.getY() - height/4);
-        }
+        if (sprite != null) {
+            float diag = (float) (width * Math.sqrt(2) / 2);
+            Texture scores = new Texture("pic/scores_brown.png");
+            int cactusesCount = (cactusesCells.size() - 1);
+            if(cactusesCount < 0) cactusesCount = 0;
+            batch.draw(scores, sprite.getX() + diag - scores.getWidth() * 1.25f, sprite.getY() - diag + scores.getHeight());
+            font.draw(batch, "" +
+                    "" + cactusesCount, sprite.getX(),sprite.getY() - diag + diag * 0.42f);
+            font.draw(batch, "" +
+                    "" + energy, sprite.getX() + diag - diag * 0.49f, sprite.getY() - diag + diag * 0.42f);
+
+            }
         endRender();
+
     }
 
-
+    public int getEnergy() {
+        return energy;
+    }
     public boolean isStepBack() {
         return isStepBack;
     }

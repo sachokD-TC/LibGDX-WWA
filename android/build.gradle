@@ -1,6 +1,9 @@
 android {
-    buildToolsVersion "23.0.1"
+    buildToolsVersion '26.0.2'
     compileSdkVersion 26
+    lintOptions{
+        abortOnError false
+    }
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -58,6 +61,8 @@ task copyAndroidNatives() {
         if(jar.name.endsWith("natives-armeabi.jar")) outputDir = file("libs/armeabi")
         if(jar.name.endsWith("natives-x86_64.jar")) outputDir = file("libs/x86_64")
         if(jar.name.endsWith("natives-x86.jar")) outputDir = file("libs/x86")
+        if(jar.name.endsWith("gdx-freetype.jar")) outputDir = file("armeabi/libgdx-freetype")
+        if(jar.name.endsWith("dx-freetype-natives.jar")) outputDir = file("armeabi-v7a/libgdx-freetype")
         if(outputDir != null) {
             copy {
                 from zipTree(jar)

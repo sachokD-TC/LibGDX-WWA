@@ -39,8 +39,8 @@ public class Wwa extends ApplicationAdapter implements GestureDetector.GestureLi
     @Override
     public void create() {
         batch = new SpriteBatch();
-        int ANDROID_WIDTH = Gdx.graphics.getWidth()/3;
-        int ANDROID_HEIGHT = Gdx.graphics.getHeight()/3;
+        int ANDROID_WIDTH = Gdx.graphics.getWidth()/2;
+        int ANDROID_HEIGHT = Gdx.graphics.getHeight()/2;
         camera = new OrthographicCamera(ANDROID_WIDTH, ANDROID_HEIGHT);
         tiledMap = new TmxMapLoader().load("map/desert.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(tiledMap, ANDROID_WIDTH, ANDROID_HEIGHT);
