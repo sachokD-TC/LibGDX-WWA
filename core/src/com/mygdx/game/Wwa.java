@@ -10,10 +10,16 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.EllipseMapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Ellipse;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.*;
@@ -23,6 +29,7 @@ public class Wwa extends ApplicationAdapter implements GestureDetector.GestureLi
     public static final String LEFT = "left";
     public static final String RIGHT = "right";
     public static final String DOWN = "down";
+    private static final String BOXES_LAYER = "boxes";
     private SpriteBatch batch;
     private Map<String, List<Texture>> cowboy = new HashMap<>();
     private String[] downPics = {"actor/front.png", "actor/front_1.png", "actor/front_2.png"};
@@ -39,8 +46,8 @@ public class Wwa extends ApplicationAdapter implements GestureDetector.GestureLi
     @Override
     public void create() {
         batch = new SpriteBatch();
-        int ANDROID_WIDTH = Gdx.graphics.getWidth()/2;
-        int ANDROID_HEIGHT = Gdx.graphics.getHeight()/2;
+        int ANDROID_WIDTH = Gdx.graphics.getWidth() / 2;
+        int ANDROID_HEIGHT = Gdx.graphics.getHeight() / 2;
         camera = new OrthographicCamera(ANDROID_WIDTH, ANDROID_HEIGHT);
         tiledMap = new TmxMapLoader().load("map/desert.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(tiledMap, ANDROID_WIDTH, ANDROID_HEIGHT);
@@ -88,16 +95,16 @@ public class Wwa extends ApplicationAdapter implements GestureDetector.GestureLi
         Gdx.gl.glClearColor(239f / 255.0f, 224f / 255f, 55f / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.setProjectionMatrix(camera.combined);
-        if(isFirstRender){
+        if (isFirstRender) {
             cowboyX = 2;
             cowboyY = 2;
-            startCounter+=1;
-            if(startCounter > 20){
+            startCounter += 1;
+            if (startCounter > 20) {
                 isFirstRender = false;
             }
         }
-        if(tiledMapRenderer.isStepBack() && !isFirstRender) {
-            camera.translate(-cowboyX*5, -cowboyY*5);
+        if (tiledMapRenderer.isStepBack() && !isFirstRender) {
+            camera.translate(-cowboyX * 5, -cowboyY * 5);
         } else {
             camera.translate(cowboyX, cowboyY);
         }
@@ -105,7 +112,8 @@ public class Wwa extends ApplicationAdapter implements GestureDetector.GestureLi
         tiledMapRenderer.render();
         batch.begin();
         Sprite sprite = new Sprite(cowboyToDraw);
-        sprite.setPosition(camera.position.x, camera.position.y);sprite.draw(batch);
+        sprite.setPosition(camera.position.x, camera.position.y);
+        sprite.draw(batch);
 
         batch.end();
         tiledMapRenderer.setSprite(sprite);
@@ -181,5 +189,29 @@ public class Wwa extends ApplicationAdapter implements GestureDetector.GestureLi
     @Override
     public void pinchStop() {
 
+    }
+
+    private boolean checkCollision(TiledMap map, Sprite sprite) {
+        boolean isCollide = false;
+        for (MapLayer layer : map.getLayers()) {
+            if (layer.getName().equals(BOXES_LAYER)) {
+                for (MapObject object : layer.getObjects()) {
+                    if (object instanceof RectangleMapObject) {
+                        Rectangle rect = ((RectangleMapObject) object).getRectangle();
+                        if (sprite != null && rect.overlaps(sprite.getBoundingRectangle())) {
+                            isCollide = true;
+                        }
+                    }
+                    if (object instanceof EllipseMapObject) {
+                        Ellipse ellipseObject = ((EllipseMapObject) object).getEllipse();
+                        if (sprite != null && ellipseObject.contains(sprite.getX(), sprite.getY())) {
+                            isCollide = true;
+                        }
+                    }
+                }
+            }
+
+        }
+        return isCollide;
     }
 }
