@@ -13,6 +13,8 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,19 +71,7 @@ public class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRen
                 }
             }
         }
-        if (sprite != null) {
-            Texture scores = new Texture("pic/scores_brown.png");
-            int cactusesCount = (cactusesCells.size() - 1);
-            if(cactusesCount < 0) cactusesCount = 0;
-            batch.draw(scores, sprite.getX() + width/2 - scores.getWidth(), sprite.getY() - height/2);
-            font.draw(batch, "" +
-                    "" + cactusesCount, sprite.getX() + width/10f, sprite.getY() - height/2.7f);
-            font.draw(batch, "" +
-                    "" + energy, sprite.getX() + width/2.5f, sprite.getY() - height/2.7f);
-
-            }
         endRender();
-
     }
 
     public int getEnergy() {

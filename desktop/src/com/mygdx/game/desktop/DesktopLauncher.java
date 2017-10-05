@@ -9,7 +9,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.title = "Wild west advenrutre";
         config.height = 500;
-        config.width = 1000;
+        config.width = 1100;
 		new LwjglApplication(new Wwa(), config);
 	}
 }

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
@@ -21,6 +22,13 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.*;
 
@@ -38,10 +46,12 @@ public class Wwa extends ApplicationAdapter implements GestureDetector.GestureLi
     private String[] upPics = {"actor/back.png", "actor/back_1.png", "actor/back_2.png"};
     private int indPic = 0;
     private OrthographicCamera camera;
+    private SpriteBatch scoreBatch;
     private TiledMap tiledMap;
     private OrthogonalTiledMapRendererWithSprites tiledMapRenderer;
     private boolean isFirstRender = true;
     private int startCounter = 0;
+    private Stage stage;
 
     @Override
     public void create() {
@@ -49,8 +59,23 @@ public class Wwa extends ApplicationAdapter implements GestureDetector.GestureLi
         int ANDROID_WIDTH = Gdx.graphics.getWidth() / 2;
         int ANDROID_HEIGHT = Gdx.graphics.getHeight() / 2;
         camera = new OrthographicCamera(ANDROID_WIDTH, ANDROID_HEIGHT);
+        Camera scoreCamera = new OrthographicCamera(ANDROID_WIDTH, ANDROID_HEIGHT);
         tiledMap = new TmxMapLoader().load("map/desert.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(tiledMap, ANDROID_WIDTH, ANDROID_HEIGHT);
+        stage = new Stage();
+        scoreBatch = new SpriteBatch();
+        Viewport stretchViewport = new ScreenViewport(scoreCamera);
+        stage.setViewport(stretchViewport);
+        Label text;
+        Label.LabelStyle textStyle;
+        BitmapFont font = new BitmapFont();
+        textStyle = new Label.LabelStyle();
+        textStyle.font = font;
+        text = new Label("Same as you",textStyle);
+        text.setBounds(ANDROID_WIDTH / 2.5f, -ANDROID_HEIGHT / 2 + 10, 2, 2);
+        text.setFontScale(1f, 1f);
+        text.setAlignment(Align.left);
+        stage.addActor(text);
         camera.update();
         pripareActor(UP, upPics);
         pripareActor(LEFT, leftPics);
@@ -110,11 +135,13 @@ public class Wwa extends ApplicationAdapter implements GestureDetector.GestureLi
         }
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
+        scoreBatch.begin();
+        stage.draw();
+        scoreBatch.end();
         batch.begin();
         Sprite sprite = new Sprite(cowboyToDraw);
         sprite.setPosition(camera.position.x, camera.position.y);
         sprite.draw(batch);
-
         batch.end();
         tiledMapRenderer.setSprite(sprite);
         camera.update();
