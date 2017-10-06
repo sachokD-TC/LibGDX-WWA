@@ -1,8 +1,11 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
@@ -11,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -69,26 +73,23 @@ public class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRen
                 }
             }
         }
-        if (sprite != null) {
-            Texture scores = new Texture("pic/scores_brown.png");
-            int cactusesCount = (cactusesCells.size() - 1);
-            if(cactusesCount < 0) cactusesCount = 0;
-            batch.draw(scores, sprite.getX() + width/2 - scores.getWidth(), sprite.getY() - height/2);
-            font.draw(batch, "" +
-                    "" + cactusesCount, sprite.getX() + width/10f, sprite.getY() - height/2.7f);
-            font.draw(batch, "" +
-                    "" + energy, sprite.getX() + width/2.5f, sprite.getY() - height/2.7f);
-
-            }
+//        if (sprite != null){
+//            Texture scores = new Texture("pic/scores_brown.png");
+//            int cactusesCount = (cactusesCells.size() - 1);
+//            if(cactusesCount < 0) cactusesCount = 0;
+//            batch.draw(scores, sprite.getX() + width/2 - scores.getWidth(), sprite.getY() - height/2 + scores.getHeight()/7);
+//            font.draw(batch, "" +
+//                    "" + cactusesCount, sprite.getX(),sprite.getY() - height/3);
+//            font.draw(batch, "" +
+//                    "" + energy, sprite.getX() + width/3, sprite.getY() - height/3);
+//
+//            }
         endRender();
 
     }
 
-    public int getEnergy() {
-        return energy;
-    }
-    public boolean isStepBack() {
-        return isStepBack;
+    public void decEnergy() {
+        energy-=1;
     }
 
     public void setSprite(Sprite sprite) {
