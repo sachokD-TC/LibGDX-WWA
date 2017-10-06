@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" nextobjectid="191">
+<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" nextobjectid="192">
  <tileset firstgid="1" source="desert.tsx"/>
  <objectgroup name="exit">
   <object id="184" x="1218" y="1059" width="27" height="24"/>
@@ -97,8 +97,8 @@
   <object id="150" x="1127" y="1062" width="19" height="20"/>
  </objectgroup>
  <objectgroup name="boxes">
-  <object id="2" x="112" y="496" width="285" height="62"/>
-  <object id="3" x="434" y="498" width="410" height="60"/>
+  <object id="2" x="112" y="496" width="282" height="62"/>
+  <object id="3" x="436" y="498" width="408" height="60"/>
   <object id="4" x="784" y="144" width="61" height="415"/>
   <object id="5" x="198" y="235" width="20" height="16">
    <ellipse/>
@@ -155,12 +155,12 @@
   <object id="82" x="402" y="174" width="351" height="35"/>
   <object id="83" x="592" y="212" width="162" height="61"/>
   <object id="84" x="433" y="271" width="322" height="196"/>
-  <object id="87" x="51" y="688" width="125" height="98"/>
+  <object id="87" x="51" y="688" width="121" height="98"/>
   <object id="88" x="47" y="787" width="99" height="58"/>
-  <object id="89" x="48" y="852" width="130" height="28"/>
+  <object id="89" x="48" y="854" width="126" height="26"/>
   <object id="90" x="176" y="862" width="194" height="21"/>
   <object id="91" x="351" y="849" width="22" height="32"/>
-  <object id="92" x="210" y="687" width="161" height="131"/>
+  <object id="92" x="213" y="687" width="158" height="131"/>
   <object id="93" x="80" y="589" width="13" height="13">
    <ellipse/>
   </object>
@@ -184,7 +184,7 @@
   <object id="109" x="1254" y="10" width="20" height="1262"/>
   <object id="110" x="8" y="2" width="1266" height="14"/>
  </objectgroup>
- <layer name="Ground" width="40" height="40" opacity="0.98">
+ <layer name="Ground" width="40" height="40">
   <data encoding="base64" compression="zlib">
    eJztl9tOwzAMQA174FKJ+72wdQRGocD4/6/DkWo1s5w2LUnqBx6OpnVJc2anjnsFABdKuUYKZImsHJYROUFOkTNnndC5R45fKrjfGFL72VjdILfInUI/yx6yjyyYdwq/e+RhBGW7xvHEOIz1WyMvyIfAK/LMMAn9apaPVetn2DXK1Tqzn7TXyU/K89dMfhuWX+OJlUQqvx/mpcWvZr/XsFsL5vZzvTbQ7X+K5Vx+b+w6+fB4zh0/7sl5R5r2U6qBnCaS3wFyCN1Z1McicBzxFMGP+gv6r30UgeOkeVP9qL84h+Ge8TJwnDTvL/tvaO/lpgK5vmjyzNH/ESG9WemMpd6sEOaWnvuVPesPEVIzjTOWamchzPXVYNOzfiw/t0/K5beN6Gf74yaCH3/OYvmRg3SGNYnz+wldr+vzs2NK2O3fiSnPx3aEn9RbFJ5Y+c77lPHz+eWof9r9QnPEe7NcflPQ6Fcp99MUv4p9d98VvxX4DXlr9dOS33+/9H6PEP4umxv77vwLygOs7Q==
   </data>

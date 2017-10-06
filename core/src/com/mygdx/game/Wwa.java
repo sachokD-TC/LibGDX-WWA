@@ -10,25 +10,20 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import javafx.scene.Scene;
 
 import java.util.*;
 
@@ -50,11 +45,16 @@ public class Wwa extends ApplicationAdapter implements GestureDetector.GestureLi
     private OrthogonalTiledMapRendererWithSprites tiledMapRenderer;
     private boolean isFirstRender = true;
     private int startCounter = 0;
+    private int cactuses = 0;
+    private int energy = 400;
+    private Label cactusesText;
+    private Label energyText;
     private SpriteBatch scoreBarch;
     private Sprite scorePic;
     private Stage stage;
     private static int ANDROID_WIDTH;
     private static int ANDROID_HEIGHT;
+
 
     @Override
     public void create() {
@@ -63,7 +63,7 @@ public class Wwa extends ApplicationAdapter implements GestureDetector.GestureLi
         ANDROID_HEIGHT = Gdx.graphics.getHeight() / 2;
         camera = new OrthographicCamera(ANDROID_WIDTH, ANDROID_HEIGHT);
         tiledMap = new TmxMapLoader().load("map/desert.tmx");
-        tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(tiledMap, ANDROID_WIDTH, ANDROID_HEIGHT);
+        tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
         camera.update();
         setupStage();
         pripareActor(UP, upPics);
@@ -75,23 +75,27 @@ public class Wwa extends ApplicationAdapter implements GestureDetector.GestureLi
     private void setupStage() {
         scoreBarch = new SpriteBatch();
         scorePic = new Sprite(new Texture("pic/scores_brown.png"));
-        TextureRegion region = new TextureRegion(scorePic, 0, -ANDROID_HEIGHT/2, ANDROID_WIDTH*3, ANDROID_HEIGHT);
-        com.badlogic.gdx.scenes.scene2d.ui.Image actor = new com.badlogic.gdx.scenes.scene2d.ui.Image(region);
+        com.badlogic.gdx.scenes.scene2d.ui.Image actorScores = new com.badlogic.gdx.scenes.scene2d.ui.Image(scorePic);
+        actorScores.setPosition(ANDROID_WIDTH - scorePic.getWidth(), -ANDROID_HEIGHT + scorePic.getHeight()*0.2f);
         stage = new Stage();
-        Camera scoreCamera = new OrthographicCamera(ANDROID_WIDTH, ANDROID_HEIGHT);
+        Camera scoreCamera = new OrthographicCamera(ANDROID_WIDTH*2, ANDROID_HEIGHT*2);
         stage.setViewport(new ScreenViewport(scoreCamera));
-        Label text;
-        Label.LabelStyle textStyle;
-        BitmapFont font = new BitmapFont();
-        textStyle = new Label.LabelStyle();
-        textStyle.font = font;
-        text = new Label("0",textStyle);
-        text.setBounds(region.getRegionX(),-200, 2, 2);
-        text.setFontScale(1f, 1f);
-        text.setAlignment(Align.left);
-        stage.addActor(text);
-        stage.addActor(actor);
+        cactusesText = getTextActor(ANDROID_WIDTH - scorePic.getWidth() * 0.7f, -ANDROID_HEIGHT + scorePic.getHeight() * 0.6f, "" + cactuses);
+        energyText = getTextActor(ANDROID_WIDTH - scorePic.getWidth()*0.15f, -ANDROID_HEIGHT + scorePic.getHeight() * 0.6f, "" + energy);
+        stage.addActor(actorScores);
+        stage.addActor(energyText);
+        stage.addActor(cactusesText);
         scoreCamera.update();
+    }
+
+    private Label getTextActor(float xPos, float yPos, String text) {
+        Label.LabelStyle textStyle = new Label.LabelStyle();;
+        textStyle.font = new BitmapFont();
+        Label label = new Label(text,textStyle);
+        label.setFontScale(2f, 3f);
+        label.setAlignment(Align.center);
+        label.setPosition(xPos, yPos);
+        return label;
     }
 
     private void pripareActor(String moveName, String[] pics) {
@@ -145,19 +149,27 @@ public class Wwa extends ApplicationAdapter implements GestureDetector.GestureLi
             camera.translate(cowboyX, cowboyY);
             tiledMapRenderer.setView(camera);
             tiledMapRenderer.setSprite(sprite);
+            cactuses = tiledMapRenderer.getCactuses();
+
         } else {
             camera.translate(-cowboyX, -cowboyY);
             sprite.setPosition(camera.position.x, camera.position.y);
-            tiledMapRenderer.decEnergy();
+            energy-=1;
         }
-        tiledMapRenderer.render();
-        scoreBarch.begin();
-        stage.draw();
-        scoreBarch.end();
+        drawStage();
         batch.begin();
         sprite.draw(batch);
         batch.end();
         camera.update();
+    }
+
+    private void drawStage() {
+        tiledMapRenderer.render();
+        scoreBarch.begin();
+        cactusesText.setText("" + cactuses);
+        energyText.setText("" + energy);
+        stage.draw();
+        scoreBarch.end();
     }
 
     private int getAccelTurn() {
