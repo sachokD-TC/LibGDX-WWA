@@ -2,6 +2,8 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -14,7 +16,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 
-public class Menu extends ApplicationAdapter implements GestureDetector.GestureListener {
+public class Menu extends ApplicationAdapter {
 
     private Stage menuStage;
     private Sprite menuPic;
@@ -33,30 +35,22 @@ public class Menu extends ApplicationAdapter implements GestureDetector.GestureL
         com.badlogic.gdx.scenes.scene2d.ui.Image actorMenuPic = new com.badlogic.gdx.scenes.scene2d.ui.Image(menuPic);
         actorMenuPic.setPosition(-ANDROID_WIDTH / 5, -ANDROID_HEIGHT / 1.8f);
         menuStage.addActor(actorMenuPic);
-        final Actor startItem = getTextActor(-ANDROID_WIDTH /3, -ANDROID_HEIGHT/3, menuElements[0]);
+        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+        inputMultiplexer.addProcessor(menuStage);
+        final Label startItemText = getTextActor(-ANDROID_WIDTH /3, -ANDROID_HEIGHT/3, menuElements[0]);
+        InputProcessor menuInputProcessor = new MenuInputProcessor(Color.RED, startItemText);
+        inputMultiplexer.addProcessor(menuInputProcessor);
+        Gdx.input.setInputProcessor(inputMultiplexer);
         Actor aboutItem = getTextActor(-ANDROID_WIDTH /3, 0, menuElements[1]);
         Actor exitItem = getTextActor(-ANDROID_WIDTH / 3, 0, menuElements[2]);
-
-        startItem.addListener( new InputListener(){
-            @Override
-            public void touchUp(InputEvent event, float x, float y,
-                                int pointer, int button) {
-                new Wwa();
-            }
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y,
-                                     int pointer, int button) {
-                startItem.setColor(Color.RED);
-                menuStage.draw();
-                return true;
-            }
-
-        });
-        menuStage.addActor(startItem);
+        menuStage.addActor(startItemText);
         menuStage.addActor(aboutItem);
         menuStage.addActor(exitItem);
-    }
+        startItemText.setWidth(100);
+        startItemText.setHeight(100);
+        startItemText.setBounds(0,0, 100,100);
+
+        }
 
     private Label getTextActor(float xPos, float yPos, String text) {
         Label.LabelStyle textStyle = new Label.LabelStyle();;
@@ -78,48 +72,4 @@ public class Menu extends ApplicationAdapter implements GestureDetector.GestureL
         menuSpriteBatch.end();
     }
 
-    @Override
-    public boolean touchDown(float x, float y, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean tap(float x, float y, int count, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean longPress(float x, float y) {
-        return false;
-    }
-
-    @Override
-    public boolean fling(float velocityX, float velocityY, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean pan(float x, float y, float deltaX, float deltaY) {
-        return false;
-    }
-
-    @Override
-    public boolean panStop(float x, float y, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean zoom(float initialDistance, float distance) {
-        return false;
-    }
-
-    @Override
-    public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
-        return false;
-    }
-
-    @Override
-    public void pinchStop() {
-
-    }
 }
