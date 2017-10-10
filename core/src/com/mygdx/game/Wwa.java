@@ -1,16 +1,14 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
@@ -19,15 +17,19 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.mygdx.game.com.mygdx.Levels;
+import com.mygdx.game.com.mygdx.TouchPadListener;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class Wwa extends ApplicationAdapter implements GestureDetector.GestureListener {
+public class Wwa implements Screen {
     public static final String UP = "up";
     public static final String LEFT = "left";
     public static final String RIGHT = "right";
@@ -52,40 +54,63 @@ public class Wwa extends ApplicationAdapter implements GestureDetector.GestureLi
     private SpriteBatch scoreBarch;
     private Sprite scorePic;
     private Stage stage;
+    private TouchPadListener leftTouchListener;
+    private TouchPadListener rightTouchListener;
+    private TouchPadListener upTouchListener;
+    private TouchPadListener downTouchListener;
     private static int ANDROID_WIDTH;
     private static int ANDROID_HEIGHT;
+    private String level;
+    private int levelInd;
 
+    public Wwa(int levelInd){
+        this.levelInd = levelInd;
+        setLevel(levelInd);
+    }
 
-    @Override
-    public void create() {
-        batch = new SpriteBatch();
-        ANDROID_WIDTH = Gdx.graphics.getWidth() / 2;
-        ANDROID_HEIGHT = Gdx.graphics.getHeight() / 2;
-        camera = new OrthographicCamera(ANDROID_WIDTH, ANDROID_HEIGHT);
-        tiledMap = new TmxMapLoader().load("map/desert.tmx");
-        tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
-        camera.update();
-        setupStage();
-        pripareActor(UP, upPics);
-        pripareActor(LEFT, leftPics);
-        pripareActor(RIGHT, rightPics);
-        pripareActor(DOWN, downPics);
+    private void setLevel(int levelInd){
+        this.level = Levels.levels[levelInd];
+    }
+
+    private void prepareControls(){
+        Image leftImage = prepareImage(100, 100, "pic/arrow_left.png");
+        Image rightImage = prepareImage(280, 100, "pic/arrow_right.png");
+        Image upImage = prepareImage(190, 190, "pic/arrow_up.png");
+        Image downImage = prepareImage(190, 10, "pic/arrow_down.png");
+        leftTouchListener = new TouchPadListener();
+        leftImage.addListener(leftTouchListener);
+        rightTouchListener = new TouchPadListener();
+        rightImage.addListener(rightTouchListener);
+        upTouchListener = new TouchPadListener();
+        upImage.addListener(upTouchListener);
+        downTouchListener = new TouchPadListener();
+        downImage.addListener(downTouchListener);
+        stage.addActor(leftImage);
+        stage.addActor(rightImage);
+        stage.addActor(upImage);
+        stage.addActor(downImage);
+        Gdx.input.setInputProcessor(stage);
+    }
+
+    private Image prepareImage(float x, float y, String imageName) {
+        Image image = new Image(new Sprite(new Texture(Gdx.files.internal(imageName))));
+        image.setPosition(x, y);
+        image.setBounds(x, y, image.getWidth(), image.getHeight());
+        return image;
     }
 
     private void setupStage() {
         scoreBarch = new SpriteBatch();
         scorePic = new Sprite(new Texture("pic/scores_brown.png"));
         com.badlogic.gdx.scenes.scene2d.ui.Image actorScores = new com.badlogic.gdx.scenes.scene2d.ui.Image(scorePic);
-        actorScores.setPosition(ANDROID_WIDTH - scorePic.getWidth(), -ANDROID_HEIGHT + scorePic.getHeight()*0.2f);
+        actorScores.setPosition(ANDROID_WIDTH - scorePic.getWidth(), + scorePic.getHeight()*0.2f);
         stage = new Stage();
-        Camera scoreCamera = new OrthographicCamera(ANDROID_WIDTH*2, ANDROID_HEIGHT*2);
-        stage.setViewport(new ScreenViewport(scoreCamera));
-        cactusesText = getTextActor(ANDROID_WIDTH - scorePic.getWidth() * 0.7f, -ANDROID_HEIGHT + scorePic.getHeight() * 0.6f, "" + cactuses);
-        energyText = getTextActor(ANDROID_WIDTH - scorePic.getWidth()*0.15f, -ANDROID_HEIGHT + scorePic.getHeight() * 0.6f, "" + energy);
+        cactusesText = getTextActor(ANDROID_WIDTH - scorePic.getWidth()*0.7f, scorePic.getHeight() * 0.6f, "" + cactuses);
+        energyText = getTextActor(ANDROID_WIDTH - scorePic.getWidth()/9, scorePic.getHeight() * 0.6f, "" + energy);
         stage.addActor(actorScores);
         stage.addActor(energyText);
         stage.addActor(cactusesText);
-        scoreCamera.update();
+        prepareControls();
     }
 
     private Label getTextActor(float xPos, float yPos, String text) {
@@ -98,7 +123,7 @@ public class Wwa extends ApplicationAdapter implements GestureDetector.GestureLi
         return label;
     }
 
-    private void pripareActor(String moveName, String[] pics) {
+    private void pripareTextures(String moveName, String[] pics) {
         List<Texture> textures = new ArrayList<>();
         for (String pic : pics) {
             textures.add(new Texture(pic));
@@ -106,25 +131,75 @@ public class Wwa extends ApplicationAdapter implements GestureDetector.GestureLi
         cowboy.put(moveName, textures);
     }
 
+    private void drawStage() {
+        tiledMapRenderer.render();
+        stage.act();
+        scoreBarch.begin();
+        cactusesText.setText("" + cactuses);
+        energyText.setText("" + energy);
+        stage.draw();
+        scoreBarch.end();
+    }
+
+
+    private boolean isCollide(TiledMap map, Sprite sprite, float cowboyX, float cowboyY) {
+        boolean isCollide = false;
+        camera.translate(cowboyX, cowboyY, 0);
+        sprite.setPosition(camera.position.x, camera.position.y);
+        for (MapLayer layer : map.getLayers()) {
+            if (layer.getName().equals(BOXES_LAYER)) {
+                for (MapObject object : layer.getObjects()) {
+                    if (object instanceof RectangleMapObject) {
+                        Rectangle rect = ((RectangleMapObject) object).getRectangle();
+                        if (sprite != null && rect.overlaps(sprite.getBoundingRectangle())) {
+                            isCollide = true;
+                        }
+                    }
+                    if (object instanceof EllipseMapObject) {
+                        Ellipse ellipseObject = ((EllipseMapObject) object).getEllipse();
+                        if (sprite != null && ellipseObject.contains(sprite.getX(), sprite.getY())) {
+                            isCollide = true;
+                        }
+                    }
+                }
+            }
+        }
+        return isCollide;
+    }
+
     @Override
-    public void render() {
+    public void show() {
+        batch = new SpriteBatch();
+        ANDROID_WIDTH = Gdx.graphics.getWidth();
+        ANDROID_HEIGHT = Gdx.graphics.getHeight();
+        camera = new OrthographicCamera(ANDROID_WIDTH/2, ANDROID_HEIGHT/2);
+        setTileMap();
+        camera.update();
+        setupStage();
+        pripareTextures(UP, upPics);
+        pripareTextures(LEFT, leftPics);
+        pripareTextures(RIGHT, rightPics);
+        pripareTextures(DOWN, downPics);
+    }
+
+    @Override
+    public void render(float delta) {
         Texture cowboyToDraw = cowboy.get(DOWN).get(0);
-        int accelTurn = getAccelTurn();
         float cowboyX = 0f;
         float cowboyY = 0f;
-        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT) || accelTurn == Input.Keys.DPAD_LEFT) {
+        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT) || leftTouchListener.isTouchDown()) {
             cowboyX = -2;
             cowboyToDraw = cowboy.get(LEFT).get(indPic / 10);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT) || accelTurn == Input.Keys.DPAD_RIGHT) {
+        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT) || rightTouchListener.isTouchDown()) {
             cowboyX = 2;
             cowboyToDraw = cowboy.get(RIGHT).get(indPic / 10);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_UP) || accelTurn == Input.Keys.DPAD_UP) {
+        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_UP) || upTouchListener.isTouchDown()) {
             cowboyY = 2;
             cowboyToDraw = cowboy.get(UP).get(indPic / 10);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN) || accelTurn == Input.Keys.DPAD_DOWN) {
+        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN) || downTouchListener.isTouchDown()) {
             cowboyY = -2;
             cowboyToDraw = cowboy.get(DOWN).get(indPic / 10);
         }
@@ -161,109 +236,40 @@ public class Wwa extends ApplicationAdapter implements GestureDetector.GestureLi
         sprite.draw(batch);
         batch.end();
         camera.update();
+        if(tiledMapRenderer.isNewLevel()){
+            new Wwa(levelInd++);
+            this.dispose();
+        }
     }
 
-    private void drawStage() {
-        tiledMapRenderer.render();
-        scoreBarch.begin();
-        cactusesText.setText("" + cactuses);
-        energyText.setText("" + energy);
-        stage.draw();
-        scoreBarch.end();
+    private void setTileMap(){
+        tiledMap = new TmxMapLoader().load("map/" + level + ".tmx");
+        tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
     }
 
-    private int getAccelTurn() {
-        float accelX = Gdx.input.getAccelerometerX();
-        float accelY = Gdx.input.getAccelerometerY();
-        if (accelX < -1) {
-            return Input.Keys.UP;
-        }
-        if (accelY < -1) {
-            return Input.Keys.LEFT;
-        }
-        if (accelX > +1) {
-            return Input.Keys.DOWN;
-        }
-        if (accelY > +1) {
-            return Input.Keys.RIGHT;
-        }
-        return Input.Keys.DPAD_CENTER;
+    @Override
+    public void resize(int width, int height) {
+
     }
 
-    private boolean isCollide(TiledMap map, Sprite sprite, float cowboyX, float cowboyY) {
-        boolean isCollide = false;
-        camera.translate(cowboyX, cowboyY, 0);
-        sprite.setPosition(camera.position.x, camera.position.y);
-        for (MapLayer layer : map.getLayers()) {
-            if (layer.getName().equals(BOXES_LAYER)) {
-                for (MapObject object : layer.getObjects()) {
-                    if (object instanceof RectangleMapObject) {
-                        Rectangle rect = ((RectangleMapObject) object).getRectangle();
-                        if (sprite != null && rect.overlaps(sprite.getBoundingRectangle())) {
-                            isCollide = true;
-                        }
-                    }
-                    if (object instanceof EllipseMapObject) {
-                        Ellipse ellipseObject = ((EllipseMapObject) object).getEllipse();
-                        if (sprite != null && ellipseObject.contains(sprite.getX(), sprite.getY())) {
-                            isCollide = true;
-                        }
-                    }
-                }
-            }
-        }
-        return isCollide;
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
     }
 
     @Override
     public void dispose() {
-        batch.dispose();
-    }
-
-    @Override
-    public boolean touchDown(float x, float y, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean tap(float x, float y, int count, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean longPress(float x, float y) {
-        return false;
-    }
-
-    @Override
-    public boolean fling(float velocityX, float velocityY, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean pan(float x, float y, float deltaX, float deltaY) {
-        camera.translate(deltaX, 0, 0);
-        camera.update();
-        return false;
-    }
-
-    @Override
-    public boolean panStop(float x, float y, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean zoom(float initialDistance, float distance) {
-        return false;
-    }
-
-    @Override
-    public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
-        return false;
-    }
-
-    @Override
-    public void pinchStop() {
 
     }
+
 }

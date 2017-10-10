@@ -17,11 +17,14 @@ public class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRen
 
     private static final String PIC_OBJS_LAYER = "pic_objs";
     public static final int EMPTY_CELL_NUMBER = 30;
+    public static final String EXIT_LAYER = "exit";
     private TiledMapTileLayer tileLayer;
     private TiledMapTileLayer.Cell emptyCell;
     private Sprite sprite;
     private List<TiledMapTileLayer.Cell> cactusesCells = new ArrayList<>();
     private int cactuses = 0;
+
+    private boolean isNewLevel = false;
 
     public OrthogonalTiledMapRendererWithSprites(TiledMap map) {
         super(map);
@@ -56,6 +59,15 @@ public class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRen
                             }
                         }
                     }
+                } else if (layer.getName().equals(EXIT_LAYER)) {
+                    for (MapObject object : layer.getObjects()) {
+                        if (object instanceof RectangleMapObject) {
+                            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+                            if (sprite != null && sprite.getBoundingRectangle().overlaps(rect)) {
+                                isNewLevel = true;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -69,6 +81,14 @@ public class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRen
 
     public int getCactuses() {
         return cactuses;
+    }
+
+    public boolean isNewLevel() {
+        return isNewLevel;
+    }
+
+    public void setIsNewLevel(boolean isNewLevel) {
+        this.isNewLevel = isNewLevel;
     }
 
 }
