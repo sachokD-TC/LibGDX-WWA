@@ -62,10 +62,12 @@ public class Wwa implements Screen {
     private static int ANDROID_HEIGHT;
     private String level;
     private int levelInd;
+    private MainClass mainClass;
 
-    public Wwa(int levelInd){
+    public Wwa(int levelInd, MainClass mainClass){
         this.levelInd = levelInd;
         setLevel(levelInd);
+        this.mainClass = mainClass;
     }
 
     private void setLevel(int levelInd){
@@ -237,7 +239,8 @@ public class Wwa implements Screen {
         batch.end();
         camera.update();
         if(tiledMapRenderer.isNewLevel()){
-            new Wwa(levelInd++);
+            mainClass.setCurrentScreen(new Wwa(levelInd+1, mainClass));
+            mainClass.showCurrentScreen();
             this.dispose();
         }
     }

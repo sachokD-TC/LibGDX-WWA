@@ -71,7 +71,7 @@ public class Menu implements Screen {
         startItemText.addListener(new InputListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 startItemText.setColor(Color.RED);
-                mainClass.setCurrentScreen(new Wwa(0));
+                mainClass.setCurrentScreen(new Wwa(0, mainClass));
                 mainClass.showCurrentScreen();
                 return true;
             }
