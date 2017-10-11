@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" nextobjectid="518">
+<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" nextobjectid="526">
  <tileset firstgid="1" source="desert.tsx"/>
- <tileset firstgid="49" source="desert.tsx"/>
+ <tileset firstgid="49" source="../../../../../../Users/sadm/PycharmProjects/Panda/wwa/com/wwa/map/desert.tsx"/>
  <objectgroup name="boxes">
   <object id="292" x="172" y="35" width="263" height="78"/>
   <object id="293" x="412" y="31" width="87" height="49"/>
@@ -105,8 +105,6 @@
   <object id="399" x="817" y="975" width="193" height="97"/>
   <object id="401" x="847" y="1062" width="163" height="44"/>
   <object id="402" x="1000" y="1007" width="43" height="67"/>
-  <object id="403" x="1068" y="1031" width="2"/>
-  <object id="404" x="1135" y="1037" width="2" height="2"/>
   <object id="405" x="1068" y="944" width="6" height="4"/>
   <object id="406" x="939" y="935" width="7" height="14"/>
   <object id="407" x="1165" y="776" width="3" height="16"/>
@@ -148,10 +146,11 @@
   <object id="515" x="1257.58" y="0" width="18.1818" height="1269.7"/>
   <object id="516" x="6.06061" y="1248.48" width="1269.7" height="21.2121"/>
   <object id="517" x="0" y="3.0303" width="27.2727" height="1257.58"/>
+  <object id="518" x="1065" y="1034" width="13" height="10"/>
+  <object id="519" x="1128" y="1038" width="13" height="11"/>
  </objectgroup>
  <objectgroup name="pic_objs">
   <object id="441" x="291" y="177"/>
-  <object id="443" x="110" y="108" width="5" height="4"/>
   <object id="444" x="109" y="234" width="5" height="7"/>
   <object id="445" x="141" y="361" width="6" height="6"/>
   <object id="446" x="686" y="203" width="6" height="6"/>
@@ -207,17 +206,18 @@
   <object id="503" x="969" y="266" width="11" height="11"/>
   <object id="504" x="940" y="266" width="9" height="14"/>
   <object id="505" x="1097" y="107" width="10" height="5"/>
-  <object id="506" x="1130" y="105" width="6" height="11"/>
   <object id="507" x="1164" y="108" width="10" height="7"/>
   <object id="508" x="1131" y="142" width="11" height="9"/>
   <object id="509" x="1134" y="172" width="7" height="8"/>
   <object id="510" x="1131" y="201" width="8" height="9"/>
   <object id="511" x="780" y="843" width="9" height="9"/>
+  <object id="524" x="1132" y="108" width="9" height="8"/>
+  <object id="525" x="108" y="105" width="5" height="10"/>
  </objectgroup>
  <objectgroup name="exit">
   <object id="513" x="1132" y="1102"/>
  </objectgroup>
- <layer name="Ground" width="40" height="40">
+ <layer name="Ground" width="40" height="40" opacity="0.13">
   <data encoding="base64" compression="zlib">
    eJzNWMtOAkEQnHgz3oweBBUQgUV8/YYeTIyejP7/bzib0LEoqnsa8eChDrvbM13T79mTUsrxP8VpxVHFJWBScZXEdcUNYVZxWzGouCN5fH+dkD8U/JbrNRluq4rRGmo98p+JtWYPPqfJGr+e+xD0LIVdeP0UuCE/1Lkqm7xtPb9f0V7mQ+Nnth+SHg8T8MlArDOdmb0QPbcz8DPyu1rb5HItM2joR3/dOnK211Dsy+/Mfxj/yA/9wfqnQu+kbMeYrR+R3BT2ZdklPEf8pmLfDD+MQy8WcH1H8nOyM9rGi7+O5CJ+GIfst6Hg9+CcB+VUfigeaHuMowX5SsWC6UO9Kv5UzrXyI+MndY5ZiflhzHBO4R4q/jCWHki/5XzLDlhXjBe/495j3zrYQ8VfZL9J2fYd2qHnOA7OY3ng1WhPH/Pzaq7ip+oK88jUaM6TqD5zL+fYwJrFuqPYz8o8Fr/+KUT54vmEz4Z536pZvA/zw5mH9czLdt9DO/BcZrnGec+zA/LP5MeobOY6clSzocoZnL2YH8eGqlsqP3DPBckpDhE/7HlWd72YVN8VP9VHzdYZfibLvrsjOcUP14wb/FRv4FkDoWZN7iso9xjsH9nPy7m/BHPj2sNx7vUPPJPiijPlPnyxHmC/yc4vXvxyvVZ8la0W9Mzxwn06y691P1H3oZbdbJ5H9GfqduSH9VLNolYvd7kPqfuVmt1b/EZls16rWVT1d0+v8ivez7P5wTGl7qaKH9a7rL9VDcrw4/uF6nHqPsA1+jdgfu8VH2W7L3r9vhWvLW5d45n5vVW8lJ/7O9/zmB/P5rZm7PBRc08UnxE/r5+txPeoRnZCXzQDZ/mhnGePqEZG9wNvBjY987Ibv0yN5RqpYtP7Z6fySN0/kN8LgLmMaY+eg/Uxr1epOuLJ3JOtW/yeyk/vRt/Z+Vr/5DDf7JnB+YP/UJkf41X4RMU4xpzZGP/lcV9k8H/dv+TncY30ZmH8PiueBb723H9f9PzOKw7+KS4qvgHZxci+
   </data>

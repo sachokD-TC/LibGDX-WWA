@@ -21,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
+import com.mygdx.game.com.mygdx.EnemiesRenderer;
 import com.mygdx.game.com.mygdx.Levels;
 import com.mygdx.game.com.mygdx.TouchPadListener;
 
@@ -63,18 +64,19 @@ public class Wwa implements Screen {
     private String level;
     private int levelInd;
     private MainClass mainClass;
+    private EnemiesRenderer enemiesRenderer;
 
-    public Wwa(int levelInd, MainClass mainClass){
+    public Wwa(int levelInd, MainClass mainClass) {
         this.levelInd = levelInd;
         setLevel(levelInd);
         this.mainClass = mainClass;
     }
 
-    private void setLevel(int levelInd){
+    private void setLevel(int levelInd) {
         this.level = Levels.levels[levelInd];
     }
 
-    private void prepareControls(){
+    private void prepareControls() {
         Image leftImage = prepareImage(100, 100, "pic/arrow_left.png");
         Image rightImage = prepareImage(280, 100, "pic/arrow_right.png");
         Image upImage = prepareImage(190, 190, "pic/arrow_up.png");
@@ -105,10 +107,10 @@ public class Wwa implements Screen {
         scoreBarch = new SpriteBatch();
         scorePic = new Sprite(new Texture("pic/scores_brown.png"));
         com.badlogic.gdx.scenes.scene2d.ui.Image actorScores = new com.badlogic.gdx.scenes.scene2d.ui.Image(scorePic);
-        actorScores.setPosition(ANDROID_WIDTH - scorePic.getWidth(), + scorePic.getHeight()*0.2f);
+        actorScores.setPosition(ANDROID_WIDTH - scorePic.getWidth(), +scorePic.getHeight() * 0.2f);
         stage = new Stage();
-        cactusesText = getTextActor(ANDROID_WIDTH - scorePic.getWidth()*0.7f, scorePic.getHeight() * 0.6f, "" + cactuses);
-        energyText = getTextActor(ANDROID_WIDTH - scorePic.getWidth()/9, scorePic.getHeight() * 0.6f, "" + energy);
+        cactusesText = getTextActor(ANDROID_WIDTH - scorePic.getWidth() * 0.7f, scorePic.getHeight() * 0.6f, "" + cactuses);
+        energyText = getTextActor(ANDROID_WIDTH - scorePic.getWidth() / 9, scorePic.getHeight() * 0.6f, "" + energy);
         stage.addActor(actorScores);
         stage.addActor(energyText);
         stage.addActor(cactusesText);
@@ -116,9 +118,10 @@ public class Wwa implements Screen {
     }
 
     private Label getTextActor(float xPos, float yPos, String text) {
-        Label.LabelStyle textStyle = new Label.LabelStyle();;
+        Label.LabelStyle textStyle = new Label.LabelStyle();
+        ;
         textStyle.font = new BitmapFont();
-        Label label = new Label(text,textStyle);
+        Label label = new Label(text, textStyle);
         label.setFontScale(2f, 3f);
         label.setAlignment(Align.center);
         label.setPosition(xPos, yPos);
@@ -174,7 +177,7 @@ public class Wwa implements Screen {
         batch = new SpriteBatch();
         ANDROID_WIDTH = Gdx.graphics.getWidth();
         ANDROID_HEIGHT = Gdx.graphics.getHeight();
-        camera = new OrthographicCamera(ANDROID_WIDTH/2, ANDROID_HEIGHT/2);
+        camera = new OrthographicCamera(ANDROID_WIDTH / 2, ANDROID_HEIGHT / 2);
         setTileMap();
         camera.update();
         setupStage();
@@ -182,6 +185,7 @@ public class Wwa implements Screen {
         pripareTextures(LEFT, leftPics);
         pripareTextures(RIGHT, rightPics);
         pripareTextures(DOWN, downPics);
+        enemiesRenderer = new EnemiesRenderer(levelInd, batch);
     }
 
     @Override
@@ -231,21 +235,27 @@ public class Wwa implements Screen {
         } else {
             camera.translate(-cowboyX, -cowboyY);
             sprite.setPosition(camera.position.x, camera.position.y);
-            energy-=1;
+            energy -= 1;
         }
+
         drawStage();
         batch.begin();
         sprite.draw(batch);
         batch.end();
+        enemiesRenderer.setCowboySprit(sprite);
+        enemiesRenderer.render();
         camera.update();
-        if(tiledMapRenderer.isNewLevel()){
-            mainClass.setCurrentScreen(new Wwa(levelInd+1, mainClass));
+        if (enemiesRenderer.isCollide()) {
+            energy -= 1;
+        }
+        if (tiledMapRenderer.isNewLevel()) {
+            mainClass.setCurrentScreen(new Wwa(levelInd + 1, mainClass));
             mainClass.showCurrentScreen();
             this.dispose();
         }
     }
 
-    private void setTileMap(){
+    private void setTileMap() {
         tiledMap = new TmxMapLoader().load("map/" + level + ".tmx");
         tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
     }
