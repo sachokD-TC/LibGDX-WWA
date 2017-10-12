@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.waasche.games.wwa.main;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Screen;

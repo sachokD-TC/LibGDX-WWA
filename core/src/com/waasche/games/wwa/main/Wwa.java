@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.waasche.games.wwa.main;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -21,9 +21,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import com.mygdx.game.com.mygdx.EnemiesRenderer;
-import com.mygdx.game.com.mygdx.Levels;
-import com.mygdx.game.com.mygdx.TouchPadListener;
+import com.waasche.games.wwa.view.EnemiesRenderer;
+import com.waasche.games.wwa.entities.Levels;
+import com.waasche.games.wwa.view.OrthogonalTiledMapRendererWithSprites;
+import com.waasche.games.wwa.view.TouchPadListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.waasche.games.wwa.view;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapLayer;

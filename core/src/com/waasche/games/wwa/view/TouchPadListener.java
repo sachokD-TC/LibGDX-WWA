@@ -1,4 +1,4 @@
-package com.mygdx.game.com.mygdx;
+package com.waasche.games.wwa.view;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
