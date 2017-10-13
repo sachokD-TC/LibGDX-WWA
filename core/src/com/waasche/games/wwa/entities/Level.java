@@ -1,14 +1,14 @@
 package com.waasche.games.wwa.entities;
 
 
-import com.badlogic.gdx.math.Rectangle;
-
 import java.util.List;
 
 public class Level {
 
     private String name;
     private List<Enemy> enemies;
+
+    public Level(){}
 
     public Level(String name, List<Enemy> enemies) {
         this.name = name;

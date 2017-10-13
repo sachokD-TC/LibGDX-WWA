@@ -1,12 +1,18 @@
 package com.waasche.games.wwa.entities;
 
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+
+
+
 
 public class Levels {
 
@@ -16,17 +22,32 @@ public class Levels {
             {new Rectangle(1160, 470, 20, 200), new Rectangle(200, 200, 150, 150)}};
     private List<Level> levels = new ArrayList<>();
 
-    public Levels() {
+
+    private final String levelFileName;
+
+    public Levels(String levelFileName) {
+        this.levelFileName = levelFileName;
         generateLevels();
     }
 
     private void generateLevels() {
-        for (int i = 0; i != levelName.length; i++) {
-            List<Enemy> enemies = new ArrayList<>();
-            for (Rectangle rectangle : enemiesRect[i]) {
-                enemies.add(new Enemy(new Sprite(new Texture(pics[i])), 0, rectangle));
+        FileReader reader = null;
+        try {
+            reader = new FileReader(levelFileName);
+            JsonValue json = new JsonReader().parse(reader);
+            Array<Level> levels = new Array<>();
+            JsonValue levelJson = json.get("levels");
+            for (JsonValue jsonValue : levelJson) {
+                Level level = new Level();
+                level.setName(jsonValue.getString("levelName"));
             }
-            levels.add(new Level(levelName[i], enemies));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
+
+    }
+
+    public List<Level> getLevels() {
+        return levels;
     }
 }
