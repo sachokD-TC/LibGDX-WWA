@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" nextobjectid="532">
+<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" nextobjectid="535">
  <tileset firstgid="1" source="desert.tsx"/>
  <tileset firstgid="49" source="desert.tsx"/>
  <objectgroup name="boxes">
@@ -152,12 +152,11 @@
  <objectgroup name="pic_objs">
   <object id="441" x="291" y="177"/>
   <object id="444" x="109" y="234" width="5" height="7"/>
-  <object id="445" x="141" y="361" width="6" height="6"/>
+  <object id="445" x="136" y="359" width="14" height="11"/>
   <object id="446" x="686" y="203" width="6" height="6"/>
   <object id="447" x="526" y="813" width="6" height="8"/>
-  <object id="454" x="1039" y="780" width="2"/>
-  <object id="455" x="1068" y="777" width="7" height="10"/>
-  <object id="456" x="1103" y="780" width="4" height="4"/>
+  <object id="455" x="1068" y="780" width="7" height="10"/>
+  <object id="456" x="1100" y="780" width="7" height="8"/>
   <object id="457" x="1095" y="815" width="11" height="6"/>
   <object id="458" x="1038" y="971" width="4" height="3"/>
   <object id="459" x="1006" y="1129" width="10" height="9"/>
@@ -213,6 +212,7 @@
   <object id="524" x="1132" y="108" width="9" height="8"/>
   <object id="527" x="109" y="105" width="8" height="10"/>
   <object id="530" x="1034" y="425" width="10" height="11"/>
+  <object id="534" x="1037" y="781" width="7" height="9"/>
  </objectgroup>
  <objectgroup name="exit">
   <object id="513" x="1132" y="1102"/>

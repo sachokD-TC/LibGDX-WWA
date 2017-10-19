@@ -4,9 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
 import com.waasche.games.wwa.entities.Enemy;
-import com.waasche.games.wwa.entities.Levels;
+import com.waasche.games.wwa.entities.Level;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,24 +16,22 @@ import java.util.List;
 public class EnemiesRenderer  {
 
     public static final String ACTOR_SUN_PNG = "actor/sun.png";
-    private Rectangle[] enemiesRectangle;
     private SpriteBatch spriteBatch;
     private List<Enemy> enemies = new ArrayList<>();
     private Sprite cowboySprite;
     private boolean isCollide = false;
 
-    public EnemiesRenderer(int levelInd, SpriteBatch spriteBatch){
-        this.enemiesRectangle = Levels.enemies[levelInd];
+    public EnemiesRenderer(Level level, SpriteBatch spriteBatch){
+        this.enemies = level.getEnemies();
         this.spriteBatch = spriteBatch;
-        prepareEnemies();
+        prepareEnemiesSprites();
     }
 
-    private void prepareEnemies(){
-        for (Rectangle rectangle : enemiesRectangle) {
+    private void prepareEnemiesSprites(){
+        for (Enemy enemy : enemies) {
             Sprite sprite = new Sprite(new Texture(Gdx.files.internal(ACTOR_SUN_PNG)));
-            sprite.setPosition(rectangle.getX(), rectangle.getY());
-            Enemy enemy = new Enemy(sprite, 0, rectangle);
-            enemies.add(enemy);
+            sprite.setPosition(enemy.getRect().getX(), enemy.getRect().getY());
+            enemy.setSprite(sprite);
         }
     }
 

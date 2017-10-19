@@ -21,8 +21,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import com.waasche.games.wwa.view.EnemiesRenderer;
+import com.waasche.games.wwa.entities.Level;
 import com.waasche.games.wwa.entities.Levels;
+import com.waasche.games.wwa.view.EnemiesRenderer;
 import com.waasche.games.wwa.view.OrthogonalTiledMapRendererWithSprites;
 import com.waasche.games.wwa.view.TouchPadListener;
 
@@ -62,20 +63,18 @@ public class Wwa implements Screen {
     private TouchPadListener downTouchListener;
     private static int ANDROID_WIDTH;
     private static int ANDROID_HEIGHT;
-    private String level;
+    private Level level;
     private int levelInd;
     private MainClass mainClass;
     private EnemiesRenderer enemiesRenderer;
 
     public Wwa(int levelInd, MainClass mainClass) {
         this.levelInd = levelInd;
-        setLevel(levelInd);
+        Levels levels = new Levels("map/levels.json");
+        level = levels.getLevelsList().getLevels().get(levelInd);
         this.mainClass = mainClass;
     }
 
-    private void setLevel(int levelInd) {
-        this.level = Levels.levels[levelInd];
-    }
 
     private void prepareControls() {
         Image leftImage = prepareImage(100, 100, "pic/arrow_left.png");
@@ -186,7 +185,7 @@ public class Wwa implements Screen {
         pripareTextures(LEFT, leftPics);
         pripareTextures(RIGHT, rightPics);
         pripareTextures(DOWN, downPics);
-        enemiesRenderer = new EnemiesRenderer(levelInd, batch);
+        enemiesRenderer = new EnemiesRenderer(level, batch);
     }
 
     @Override
@@ -257,7 +256,7 @@ public class Wwa implements Screen {
     }
 
     private void setTileMap() {
-        tiledMap = new TmxMapLoader().load("map/" + level + ".tmx");
+        tiledMap = new TmxMapLoader().load(level.getFileName());
         tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
     }
 
