@@ -11,11 +11,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -37,6 +35,7 @@ public class Wwa implements Screen {
     public static final String LEFT = "left";
     public static final String RIGHT = "right";
     public static final String DOWN = "down";
+    public static final String INJURY_LAYER = "injury";
     private SpriteBatch batch;
     private static final String BOXES_LAYER = "boxes";
     private Map<String, List<Texture>> cowboy = new HashMap<>();
@@ -152,18 +151,15 @@ public class Wwa implements Screen {
         camera.translate(cowboyX, cowboyY, 0);
         sprite.setPosition(camera.position.x, camera.position.y);
         for (MapLayer layer : map.getLayers()) {
-            if (layer.getName().equals(BOXES_LAYER)) {
+            if (layer.getName().equals(BOXES_LAYER) || layer.getName().equals(INJURY_LAYER)) {
                 for (MapObject object : layer.getObjects()) {
                     if (object instanceof RectangleMapObject) {
                         Rectangle rect = ((RectangleMapObject) object).getRectangle();
                         if (sprite != null && rect.overlaps(sprite.getBoundingRectangle())) {
                             isCollide = true;
-                        }
-                    }
-                    if (object instanceof EllipseMapObject) {
-                        Ellipse ellipseObject = ((EllipseMapObject) object).getEllipse();
-                        if (sprite != null && ellipseObject.contains(sprite.getX(), sprite.getY())) {
-                            isCollide = true;
+                            if (layer.getName().equals(INJURY_LAYER)) {
+                                energy -= 1;
+                            }
                         }
                     }
                 }
@@ -193,6 +189,16 @@ public class Wwa implements Screen {
         Texture cowboyToDraw = cowboy.get(DOWN).get(0);
         float cowboyX = 0f;
         float cowboyY = 0f;
+        if(energy <=0){
+            try {
+                showGameOverPicture();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            mainClass.setCurrentScreen(new Menu(mainClass));
+            mainClass.showCurrentScreen();
+            this.dispose();
+        }
         if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT) || leftTouchListener.isTouchDown()) {
             cowboyX = -2;
             cowboyToDraw = cowboy.get(LEFT).get(indPic / 10);
@@ -235,7 +241,6 @@ public class Wwa implements Screen {
         } else {
             camera.translate(-cowboyX, -cowboyY);
             sprite.setPosition(camera.position.x, camera.position.y);
-            energy -= 1;
         }
 
         drawStage();
@@ -255,8 +260,18 @@ public class Wwa implements Screen {
         }
     }
 
+    private void showGameOverPicture() throws InterruptedException {
+        Texture texture = new Texture(Gdx.files.internal("pic/game_over.png"));
+        com.badlogic.gdx.scenes.scene2d.ui.Image gameOverPic = new com.badlogic.gdx.scenes.scene2d.ui.Image(texture);
+        gameOverPic.setScale((float) ANDROID_WIDTH / texture.getWidth(), (float) ANDROID_HEIGHT / texture.getHeight());
+        gameOverPic.setPosition(0, 0);
+        stage.addActor(gameOverPic);
+        drawStage();
+        Thread.sleep(10000l);
+    }
+
     private void setTileMap() {
-        tiledMap = new TmxMapLoader().load(level.getFileName());
+        tiledMap = new TmxMapLoader().load("map/" + level.getFileName());
         tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
     }
 

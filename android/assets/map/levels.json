@@ -4,7 +4,7 @@
   levels: [{
   class: com.waasche.games.wwa.entities.Level,
   name: "desert",
-  fileName: "map/desert.tmx",
+  fileName: "desert.tmx",
   enemies: [
   {
     class: com.waasche.games.wwa.entities.Enemy,
@@ -35,7 +35,7 @@
   {
     class: com.waasche.games.wwa.entities.Level,
     name: "stone",
-    fileName: "map/stones.tmx",
+    fileName: "stones.tmx",
     enemies: [
       {
         class: com.waasche.games.wwa.entities.Enemy,
@@ -78,7 +78,7 @@
     {
       class: com.waasche.games.wwa.entities.Level,
       name: "wood",
-      fileName: "map/wood.tmx",
+      fileName: "wood.tmx",
       enemies: [
         {
           class: com.waasche.games.wwa.entities.Enemy,
