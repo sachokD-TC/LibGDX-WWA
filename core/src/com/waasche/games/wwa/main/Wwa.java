@@ -37,6 +37,7 @@ public class Wwa implements Screen {
     public static final String DOWN = "down";
     public static final String INJURY_LAYER = "injury";
     private SpriteBatch batch;
+    com.badlogic.gdx.scenes.scene2d.ui.Image gameOverPic;
     private static final String BOXES_LAYER = "boxes";
     private Map<String, List<Texture>> cowboy = new HashMap<>();
     private String[] downPics = {"actor/front.png", "actor/front_1.png", "actor/front_2.png"};
@@ -50,7 +51,7 @@ public class Wwa implements Screen {
     private boolean isFirstRender = true;
     private int startCounter = 0;
     private int cactuses = 0;
-    private int energy = 400;
+    private int energy = 200;
     private Label cactusesText;
     private Label energyText;
     private SpriteBatch scoreBarch;
@@ -189,15 +190,8 @@ public class Wwa implements Screen {
         Texture cowboyToDraw = cowboy.get(DOWN).get(0);
         float cowboyX = 0f;
         float cowboyY = 0f;
-        if(energy <=0){
-            try {
-                showGameOverPicture();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            mainClass.setCurrentScreen(new Menu(mainClass));
-            mainClass.showCurrentScreen();
-            this.dispose();
+        if(energy <=0) {
+            setGameOverPicture();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT) || leftTouchListener.isTouchDown()) {
             cowboyX = -2;
@@ -258,16 +252,24 @@ public class Wwa implements Screen {
             mainClass.showCurrentScreen();
             this.dispose();
         }
+        if(energy <=0 && gameOverPic != null && gameOverPic.isVisible()){
+            try {
+                mainClass.setCurrentScreen(new Menu(mainClass));
+                mainClass.showCurrentScreen();
+                Thread.sleep(1000l);
+                this.dispose();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
-    private void showGameOverPicture() throws InterruptedException {
+    private void setGameOverPicture() {
         Texture texture = new Texture(Gdx.files.internal("pic/game_over.png"));
-        com.badlogic.gdx.scenes.scene2d.ui.Image gameOverPic = new com.badlogic.gdx.scenes.scene2d.ui.Image(texture);
+        gameOverPic = new com.badlogic.gdx.scenes.scene2d.ui.Image(texture);
         gameOverPic.setScale((float) ANDROID_WIDTH / texture.getWidth(), (float) ANDROID_HEIGHT / texture.getHeight());
         gameOverPic.setPosition(0, 0);
         stage.addActor(gameOverPic);
-        drawStage();
-        Thread.sleep(10000l);
     }
 
     private void setTileMap() {
