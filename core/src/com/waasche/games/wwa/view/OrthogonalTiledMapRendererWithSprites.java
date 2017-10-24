@@ -18,12 +18,14 @@ public class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRen
     private static final String PIC_OBJS_LAYER = "pic_objs";
     public static final int EMPTY_CELL_NUMBER = 30;
     public static final String EXIT_LAYER = "exit";
+    public static final String WEAPON_LAYER = "weapons";
     private TiledMapTileLayer tileLayer;
     private TiledMapTileLayer.Cell emptyCell;
     private Sprite sprite;
     private List<TiledMapTileLayer.Cell> cactusesCells = new ArrayList<>();
     private int cactuses = 0;
-
+    private int weapons = 0;
+    private List<TiledMapTileLayer.Cell> weaponCells = new ArrayList<>();
     private boolean isNewLevel = false;
 
     public OrthogonalTiledMapRendererWithSprites(TiledMap map) {
@@ -41,7 +43,7 @@ public class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRen
                 if (layer instanceof TiledMapTileLayer) {
                     tileLayer = (TiledMapTileLayer) layer;
                     renderTileLayer(tileLayer);
-                } else if (layer.getName().equals(PIC_OBJS_LAYER)) {
+                } else if (layer.getName().equals(PIC_OBJS_LAYER) || layer.getName().equals(WEAPON_LAYER)) {
                     for (MapObject object : layer.getObjects()) {
                         if (object instanceof RectangleMapObject) {
                             Rectangle rect = ((RectangleMapObject) object).getRectangle();
@@ -55,7 +57,10 @@ public class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRen
                                     renderTileLayer(tileLayer);
                                     cactuses += 1;
                                 }
-
+                                if(layer.getName().equals(WEAPON_LAYER) && !weaponCells.contains(overCell)){
+                                    weapons++;
+                                    weaponCells.add(overCell);
+                                }
                             }
                         }
                     }
@@ -91,4 +96,16 @@ public class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRen
         this.isNewLevel = isNewLevel;
     }
 
+    public int getWeapons() {
+        return weapons;
+    }
+
+    public void setWeapons(int weapons) {
+        this.weapons = weapons;
+    }
+
+    public void removeWeapon(){
+        weapons--;
+        weaponCells.remove(weaponCells.size()-1);
+    }
 }

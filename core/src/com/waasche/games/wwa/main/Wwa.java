@@ -36,9 +36,9 @@ public class Wwa implements Screen {
     public static final String RIGHT = "right";
     public static final String DOWN = "down";
     public static final String INJURY_LAYER = "injury";
+    private static final String BOXES_LAYER = "boxes";
     private SpriteBatch batch;
     com.badlogic.gdx.scenes.scene2d.ui.Image gameOverPic;
-    private static final String BOXES_LAYER = "boxes";
     private Map<String, List<Texture>> cowboy = new HashMap<>();
     private String[] downPics = {"actor/front.png", "actor/front_1.png", "actor/front_2.png"};
     private String[] leftPics = {"actor/left.png", "actor/left_1.png", "actor/left_2.png"};
@@ -61,12 +61,19 @@ public class Wwa implements Screen {
     private TouchPadListener rightTouchListener;
     private TouchPadListener upTouchListener;
     private TouchPadListener downTouchListener;
+    private TouchPadListener fireTouchListener;
     private static int ANDROID_WIDTH;
     private static int ANDROID_HEIGHT;
     private Level level;
     private int levelInd;
     private MainClass mainClass;
     private EnemiesRenderer enemiesRenderer;
+    private boolean bulletStart = false;
+    private Texture bullet;
+    private Sprite bulletSprite;
+    private int bulletIncX;
+    private int bulletIncY;
+    private int bulletRide = 0;
 
     public Wwa(int levelInd, MainClass mainClass) {
         this.levelInd = levelInd;
@@ -81,6 +88,7 @@ public class Wwa implements Screen {
         Image rightImage = prepareImage(280, 100, "pic/arrow_right.png");
         Image upImage = prepareImage(190, 190, "pic/arrow_up.png");
         Image downImage = prepareImage(190, 10, "pic/arrow_down.png");
+        Image fireImage = prepareImage(ANDROID_WIDTH - scorePic.getWidth(), 100, "pic/fire.png");
         leftTouchListener = new TouchPadListener();
         leftImage.addListener(leftTouchListener);
         rightTouchListener = new TouchPadListener();
@@ -89,10 +97,13 @@ public class Wwa implements Screen {
         upImage.addListener(upTouchListener);
         downTouchListener = new TouchPadListener();
         downImage.addListener(downTouchListener);
+        fireTouchListener = new TouchPadListener();
+        fireImage.addListener(fireTouchListener);
         stage.addActor(leftImage);
         stage.addActor(rightImage);
         stage.addActor(upImage);
         stage.addActor(downImage);
+        stage.addActor(fireImage);
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -119,7 +130,6 @@ public class Wwa implements Screen {
 
     private Label getTextActor(float xPos, float yPos, String text) {
         Label.LabelStyle textStyle = new Label.LabelStyle();
-        ;
         textStyle.font = new BitmapFont();
         Label label = new Label(text, textStyle);
         label.setFontScale(2f, 3f);
@@ -182,6 +192,7 @@ public class Wwa implements Screen {
         pripareTextures(LEFT, leftPics);
         pripareTextures(RIGHT, rightPics);
         pripareTextures(DOWN, downPics);
+        bullet = new Texture(Gdx.files.internal("actor/bullet.png"));
         enemiesRenderer = new EnemiesRenderer(level, batch);
     }
 
@@ -190,7 +201,7 @@ public class Wwa implements Screen {
         Texture cowboyToDraw = cowboy.get(DOWN).get(0);
         float cowboyX = 0f;
         float cowboyY = 0f;
-        if(energy <=0) {
+        if (energy <= 0) {
             setGameOverPicture();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT) || leftTouchListener.isTouchDown()) {
@@ -209,6 +220,28 @@ public class Wwa implements Screen {
             cowboyY = -2;
             cowboyToDraw = cowboy.get(DOWN).get(indPic / 10);
         }
+        if ((Gdx.input.isKeyPressed(Input.Keys.SPACE) || fireTouchListener.isTouchDown()) && tiledMapRenderer.getWeapons() !=0) {
+            bulletStart = true;
+            bulletSprite = new Sprite(bullet);
+            bulletSprite.setPosition(camera.position.x, camera.position.y);
+            tiledMapRenderer.removeWeapon();
+            if (Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT) || rightTouchListener.isTouchDown()) {
+                bulletIncX = 10;
+                bulletIncY = 0;
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT) || leftTouchListener.isTouchDown()) {
+                bulletIncX = -10;
+                bulletIncY = 0;
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.DPAD_UP) || upTouchListener.isTouchDown()) {
+                bulletIncX = 0;
+                bulletIncY = 10;
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN) || downTouchListener.isTouchDown()) {
+                bulletIncX = 0;
+                bulletIncY = -10;
+            }
+        }
         indPic += 1;
         if (indPic >= cowboy.get(DOWN).size() * 10 - 1) {
             indPic = 0;
@@ -224,24 +257,40 @@ public class Wwa implements Screen {
                 isFirstRender = false;
             }
         }
-        Sprite sprite = new Sprite(cowboyToDraw);
-        if (!isCollide(tiledMap, sprite, cowboyX, cowboyY) || isFirstRender) {
-            sprite.setPosition(camera.position.x, camera.position.y);
-            camera.translate(cowboyX, cowboyY);
+        Sprite cowboySprite = new Sprite(cowboyToDraw);
+        if (bulletStart) {
+            float bulletX = bulletSprite.getX();
+            float bulletY = bulletSprite.getY();
+            if (bulletRide > 100) {
+                bulletStart = false;
+                bulletRide = 0;
+            } else {
+                enemiesRenderer.setBulletX(bulletX + bulletIncX);
+                enemiesRenderer.setBulletY(bulletY + bulletIncY);
+                bulletSprite.setPosition(bulletX + bulletIncX, bulletY + bulletIncY);
+                bulletRide++;
+            }
+        }
+        if (!isCollide(tiledMap, cowboySprite, cowboyX, cowboyY) || isFirstRender) {
+            cowboySprite.setPosition(camera.position.x, camera.position.y);
+             camera.translate(cowboyX, cowboyY);
             tiledMapRenderer.setView(camera);
-            tiledMapRenderer.setSprite(sprite);
+            tiledMapRenderer.setSprite(cowboySprite);
             cactuses = tiledMapRenderer.getCactuses();
 
         } else {
             camera.translate(-cowboyX, -cowboyY);
-            sprite.setPosition(camera.position.x, camera.position.y);
+            cowboySprite.setPosition(camera.position.x, camera.position.y);
         }
 
         drawStage();
         batch.begin();
-        sprite.draw(batch);
+        if (bulletStart) {
+            bulletSprite.draw(batch);
+        }
+        cowboySprite.draw(batch);
         batch.end();
-        enemiesRenderer.setCowboySprit(sprite);
+        enemiesRenderer.setCowboySprit(cowboySprite);
         enemiesRenderer.render();
         camera.update();
         if (enemiesRenderer.isCollide()) {
@@ -252,8 +301,11 @@ public class Wwa implements Screen {
             mainClass.showCurrentScreen();
             this.dispose();
         }
-        if(energy <=0 && gameOverPic != null && gameOverPic.isVisible()){
+        if (energy <= 0 && gameOverPic != null && gameOverPic.isVisible()) {
             try {
+                stage.draw();
+                stage.act();
+                camera.update();
                 mainClass.setCurrentScreen(new Menu(mainClass));
                 mainClass.showCurrentScreen();
                 Thread.sleep(1000l);

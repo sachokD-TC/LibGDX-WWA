@@ -20,6 +20,9 @@ public class EnemiesRenderer  {
     private List<Enemy> enemies = new ArrayList<>();
     private Sprite cowboySprite;
     private boolean isCollide = false;
+    private float bulletX;
+    private float bulletY;
+
 
     public EnemiesRenderer(Level level, SpriteBatch spriteBatch){
         this.enemies = level.getEnemies();
@@ -38,12 +41,19 @@ public class EnemiesRenderer  {
     public void render(){
         spriteBatch.begin();
         isCollide = false;
+        Enemy enemyToRemove = null;
         for (Enemy enemy : enemies) {
             enemy.move();
             enemy.getSprite().draw(spriteBatch);
             if(!isCollide) {
               isCollide = enemy.isCollide(cowboySprite.getBoundingRectangle());
             }
+            if(enemy.getSprite().getBoundingRectangle().contains(bulletX,bulletY)){
+                enemyToRemove = enemy;
+            }
+        }
+        if(enemyToRemove != null){
+            enemies.remove(enemyToRemove);
         }
         spriteBatch.end();
     }
@@ -55,4 +65,13 @@ public class EnemiesRenderer  {
     public boolean isCollide(){
         return isCollide;
     }
+
+    public void setBulletX(float bulletX) {
+        this.bulletX = bulletX;
+    }
+
+    public void setBulletY(float bulletY) {
+        this.bulletY = bulletY;
+    }
+
 }

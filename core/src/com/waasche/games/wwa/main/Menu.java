@@ -34,6 +34,7 @@ public class Menu implements Screen {
         label.setFontScale(5f, 5f);
         label.setAlignment(Align.center);
         label.setPosition(xPos, yPos);
+        label.setBounds(xPos, yPos, text.length()*100f, 200f);
         label.setColor(Color.BLACK);
         return label;
     }
@@ -55,9 +56,9 @@ public class Menu implements Screen {
         actorMenuPic.setScale((float)ANDROID_WIDTH/texture.getWidth(), (float)ANDROID_HEIGHT/texture.getHeight());
         actorMenuPic.setPosition(0,0);
         menuStage.addActor(actorMenuPic);
-        final Label startItem = getTextActor(ANDROID_WIDTH /2.2f, ANDROID_HEIGHT/2, menuElements[0]);
-        Actor aboutItem = getTextActor(ANDROID_WIDTH /2.2f, ANDROID_HEIGHT/2 - 100, menuElements[1]);
-        Actor exitItem = getTextActor(ANDROID_WIDTH / 2.2f, ANDROID_HEIGHT/2 - 200, menuElements[2]);
+        final Label startItem = getTextActor(ANDROID_WIDTH /4f, ANDROID_HEIGHT/2.4f, menuElements[0]);
+        Actor aboutItem = getTextActor(ANDROID_WIDTH /3.8f, ANDROID_HEIGHT/2.4f - 100, menuElements[1]);
+        Actor exitItem = getTextActor(ANDROID_WIDTH / 3.6f, ANDROID_HEIGHT/2.4f - 200, menuElements[2]);
         addListeners(startItem, aboutItem, exitItem);
         menuStage.addActor(startItem);
         Gdx.input.setInputProcessor(menuStage);
