@@ -51,15 +51,13 @@ public class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRen
                                 int cellX = Math.round(rect.x / 32);
                                 int cellY = Math.round(rect.y / 32);
                                 TiledMapTileLayer.Cell overCell = tileLayer.getCell(cellX, cellY);
-                                if (!cactusesCells.contains(overCell)) {
-                                    tileLayer.setCell(cellX, cellY, emptyCell);
-                                    cactusesCells.add(overCell);
-                                    renderTileLayer(tileLayer);
+                                if (!cactusesCells.contains(overCell) && layer.getName().equals(PIC_OBJS_LAYER)) {
+                                    removeCellFromMap(cellX, cellY, overCell,cactusesCells);
                                     cactuses--;
                                 }
                                 if (layer.getName().equals(WEAPON_LAYER) && !weaponCells.contains(overCell)) {
+                                    removeCellFromMap(cellX,cellY, overCell, weaponCells);
                                     weapons++;
-                                    weaponCells.add(overCell);
                                 }
                             }
                         }
@@ -80,6 +78,12 @@ public class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRen
 
     }
 
+    private void removeCellFromMap(int cellX, int cellY, TiledMapTileLayer.Cell overCell, List<TiledMapTileLayer.Cell> cells) {
+        tileLayer.setCell(cellX, cellY, emptyCell);
+        cells.add(overCell);
+        renderTileLayer(tileLayer);
+    }
+
     public void setSprite(Sprite sprite) {
         this.sprite = sprite;
     }
@@ -87,7 +91,7 @@ public class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRen
     public void setCactusesCount() {
         MapLayer cactusesLayer = map.getLayers().get(OrthogonalTiledMapRendererWithSprites.PIC_OBJS_LAYER);
         if (cactusesLayer != null) {
-            cactuses = cactusesLayer.getObjects().getCount();
+            cactuses = cactusesLayer.getObjects().getCount() + 1;
         }
     }
 
