@@ -15,7 +15,7 @@ import java.util.List;
 
 public class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRenderer {
 
-    private static final String PIC_OBJS_LAYER = "pic_objs";
+    public static final String PIC_OBJS_LAYER = "pic_objs";
     public static final int EMPTY_CELL_NUMBER = 30;
     public static final String EXIT_LAYER = "exit";
     public static final String WEAPON_LAYER = "weapons";
@@ -55,16 +55,16 @@ public class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRen
                                     tileLayer.setCell(cellX, cellY, emptyCell);
                                     cactusesCells.add(overCell);
                                     renderTileLayer(tileLayer);
-                                    cactuses += 1;
+                                    cactuses--;
                                 }
-                                if(layer.getName().equals(WEAPON_LAYER) && !weaponCells.contains(overCell)){
+                                if (layer.getName().equals(WEAPON_LAYER) && !weaponCells.contains(overCell)) {
                                     weapons++;
                                     weaponCells.add(overCell);
                                 }
                             }
                         }
                     }
-                } else if (layer.getName().equals(EXIT_LAYER)) {
+                } else if (layer.getName().equals(EXIT_LAYER) && cactuses == 0) {
                     for (MapObject object : layer.getObjects()) {
                         if (object instanceof RectangleMapObject) {
                             Rectangle rect = ((RectangleMapObject) object).getRectangle();
@@ -82,6 +82,13 @@ public class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRen
 
     public void setSprite(Sprite sprite) {
         this.sprite = sprite;
+    }
+
+    public void setCactusesCount() {
+        MapLayer cactusesLayer = map.getLayers().get(OrthogonalTiledMapRendererWithSprites.PIC_OBJS_LAYER);
+        if (cactusesLayer != null) {
+            cactuses = cactusesLayer.getObjects().getCount();
+        }
     }
 
     public int getCactuses() {
@@ -104,8 +111,8 @@ public class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRen
         this.weapons = weapons;
     }
 
-    public void removeWeapon(){
+    public void removeWeapon() {
         weapons--;
-        weaponCells.remove(weaponCells.size()-1);
+        weaponCells.remove(weaponCells.size() - 1);
     }
 }

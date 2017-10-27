@@ -156,7 +156,6 @@ public class Wwa implements Screen {
         scoreBarch.end();
     }
 
-
     private boolean isCollide(TiledMap map, Sprite sprite, float cowboyX, float cowboyY) {
         boolean isCollide = false;
         camera.translate(cowboyX, cowboyY, 0);
@@ -254,6 +253,7 @@ public class Wwa implements Screen {
             cowboyY = 2;
             startCounter += 1;
             if (startCounter > 20) {
+                tiledMapRenderer.setCactusesCount();
                 isFirstRender = false;
             }
         }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" nextobjectid="242">
+<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" nextobjectid="248">
  <tileset firstgid="1" source="desert.tsx"/>
  <objectgroup name="weapons">
   <object id="147" x="1061" y="36" width="22" height="22"/>
@@ -15,7 +15,6 @@
   <object id="153" x="261" y="354" width="23" height="21"/>
   <object id="154" x="259" y="387" width="26" height="21"/>
   <object id="155" x="228" y="387" width="22" height="19"/>
-  <object id="182" x="1126" y="1064" width="20" height="18"/>
   <object id="184" x="807" y="747" width="18" height="14"/>
   <object id="185" x="711" y="776" width="19" height="14"/>
   <object id="186" x="900" y="42" width="22" height="15"/>
@@ -35,6 +34,7 @@
   <object id="220" x="1160" y="711" width="15" height="14"/>
   <object id="221" x="1159" y="743" width="19" height="15"/>
   <object id="222" x="1161" y="775" width="16" height="14"/>
+  <object id="247" x="1134.67" y="1072.67"/>
  </objectgroup>
  <objectgroup name="boxes">
   <object id="2" x="112" y="496" width="285" height="62"/>
