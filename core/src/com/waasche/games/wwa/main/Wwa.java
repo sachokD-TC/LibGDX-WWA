@@ -13,6 +13,8 @@ import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -50,7 +52,6 @@ public class Wwa implements Screen {
     private OrthogonalTiledMapRendererWithSprites tiledMapRenderer;
     private boolean isFirstRender = true;
     private int startCounter = 0;
-    private int cactuses = 0;
     private int energy = 200;
     private Label cactusesText;
     private Label energyText;
@@ -74,6 +75,16 @@ public class Wwa implements Screen {
     private int bulletIncX;
     private int bulletIncY;
     private int bulletRide = 0;
+    public static final String PIC_OBJS_LAYER = "pic_objs";
+    public static final String WEAPON_LAYER = "weapons";
+    private List<TiledMapTileLayer.Cell> cactusesCells = new ArrayList<>();
+    private List<TiledMapTileLayer.Cell> weaponCells = new ArrayList<>();
+    private int cactuses = 0;
+    private int weapons = 0;
+    public static final int EMPTY_CELL_NUMBER = 30;
+    private TiledMapTileLayer.Cell emptyCell;
+    private boolean isNewLevel = false;
+
 
     public Wwa(int levelInd, MainClass mainClass) {
         this.levelInd = levelInd;
@@ -161,6 +172,28 @@ public class Wwa implements Screen {
         camera.translate(cowboyX, cowboyY, 0);
         sprite.setPosition(camera.position.x, camera.position.y);
         for (MapLayer layer : map.getLayers()) {
+            if (layer.getName().equals(PIC_OBJS_LAYER) || layer.getName().equals(WEAPON_LAYER)) {
+                for (MapObject object : layer.getObjects()) {
+                    if (object instanceof RectangleMapObject) {
+                        Rectangle rect = ((RectangleMapObject) object).getRectangle();
+                        if (sprite != null && sprite.getBoundingRectangle().overlaps(rect)) {
+                            int cellX = Math.round(rect.x / 32);
+                            int cellY = Math.round(rect.y / 32);
+                            TiledMapTileLayer groundLayer = (TiledMapTileLayer) map.getLayers().get("Ground");
+                            groundLayer.setCell(cellX, cellY, emptyCell);
+                            TiledMapTileLayer.Cell overCell = groundLayer.getCell(cellX, cellY);
+                            if (layer.getName().equals(PIC_OBJS_LAYER) && !cactusesCells.contains(overCell)) {
+                                cactusesCells.add(overCell);
+                                cactuses--;
+                            }
+                            if (layer.getName().equals(WEAPON_LAYER) && !weaponCells.contains(overCell)) {
+                                weaponCells.add(overCell);
+                                weapons++;
+                            }
+                        }
+                    }
+                }
+            }
             if (layer.getName().equals(BOXES_LAYER) || layer.getName().equals(INJURY_LAYER)) {
                 for (MapObject object : layer.getObjects()) {
                     if (object instanceof RectangleMapObject) {
@@ -176,6 +209,14 @@ public class Wwa implements Screen {
             }
         }
         return isCollide;
+    }
+
+
+    public void setCactusesCount(TiledMap map) {
+        MapLayer cactusesLayer = map.getLayers().get(Wwa.PIC_OBJS_LAYER);
+        if (cactusesLayer != null) {
+            cactuses = cactusesLayer.getObjects().getCount();
+        }
     }
 
     @Override
@@ -219,11 +260,11 @@ public class Wwa implements Screen {
             cowboyY = -2;
             cowboyToDraw = cowboy.get(DOWN).get(indPic / 10);
         }
-        if ((Gdx.input.isKeyPressed(Input.Keys.SPACE) || fireTouchListener.isTouchDown()) && tiledMapRenderer.getWeapons() !=0) {
+        if ((Gdx.input.isKeyPressed(Input.Keys.SPACE) || fireTouchListener.isTouchDown()) && weapons != 0) {
             bulletStart = true;
             bulletSprite = new Sprite(bullet);
             bulletSprite.setPosition(camera.position.x, camera.position.y);
-            tiledMapRenderer.removeWeapon();
+            weapons--;
             if (Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT) || rightTouchListener.isTouchDown()) {
                 bulletIncX = 10;
                 bulletIncY = 0;
@@ -253,7 +294,7 @@ public class Wwa implements Screen {
             cowboyY = 2;
             startCounter += 1;
             if (startCounter > 20) {
-                tiledMapRenderer.setCactusesCount();
+                setCactusesCount(tiledMap);
                 isFirstRender = false;
             }
         }
@@ -273,10 +314,8 @@ public class Wwa implements Screen {
         }
         if (!isCollide(tiledMap, cowboySprite, cowboyX, cowboyY) || isFirstRender) {
             cowboySprite.setPosition(camera.position.x, camera.position.y);
-             camera.translate(cowboyX, cowboyY);
+            camera.translate(cowboyX, cowboyY);
             tiledMapRenderer.setView(camera);
-            tiledMapRenderer.setSprite(cowboySprite);
-            cactuses = tiledMapRenderer.getCactuses();
 
         } else {
             camera.translate(-cowboyX, -cowboyY);
@@ -296,7 +335,7 @@ public class Wwa implements Screen {
         if (enemiesRenderer.isCollide()) {
             energy -= 1;
         }
-        if (tiledMapRenderer.isNewLevel()) {
+        if (isNewLevel) {
             mainClass.setCurrentScreen(new Wwa(levelInd + 1, mainClass));
             mainClass.showCurrentScreen();
             this.dispose();
@@ -327,6 +366,9 @@ public class Wwa implements Screen {
     private void setTileMap() {
         tiledMap = new TmxMapLoader().load("map/" + level.getFileName());
         tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
+        TiledMapTileSet tiledMapTileSet = tiledMap.getTileSets().getTileSet(0);
+        this.emptyCell = new TiledMapTileLayer.Cell();
+        this.emptyCell.setTile(tiledMapTileSet.getTile(EMPTY_CELL_NUMBER));
     }
 
     @Override
