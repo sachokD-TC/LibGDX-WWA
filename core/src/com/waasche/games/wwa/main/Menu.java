@@ -36,6 +36,7 @@ public class Menu implements Screen {
         label.setPosition(xPos, yPos);
         label.setBounds(xPos, yPos, text.length()*100f, 200f);
         label.setColor(Color.BLACK);
+        label.setBounds(xPos,yPos, 100,100);
         return label;
     }
 

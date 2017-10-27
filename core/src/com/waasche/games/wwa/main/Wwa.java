@@ -84,6 +84,7 @@ public class Wwa implements Screen {
     public static final int EMPTY_CELL_NUMBER = 30;
     private TiledMapTileLayer.Cell emptyCell;
     private boolean isNewLevel = false;
+    private String EXIT_LAYER = "exit";
 
 
     public Wwa(int levelInd, MainClass mainClass) {
@@ -180,9 +181,8 @@ public class Wwa implements Screen {
                             int cellX = Math.round(rect.x / 32);
                             int cellY = Math.round(rect.y / 32);
                             TiledMapTileLayer groundLayer = (TiledMapTileLayer) map.getLayers().get("Ground");
-                            groundLayer.setCell(cellX, cellY, emptyCell);
                             TiledMapTileLayer.Cell overCell = groundLayer.getCell(cellX, cellY);
-                            if (layer.getName().equals(PIC_OBJS_LAYER) && !cactusesCells.contains(overCell)) {
+                            if (layer.getName().equals(PIC_OBJS_LAYER) && !cactusesCells.contains(overCell) && !overCell.equals(emptyCell)) {
                                 cactusesCells.add(overCell);
                                 cactuses--;
                             }
@@ -190,6 +190,7 @@ public class Wwa implements Screen {
                                 weaponCells.add(overCell);
                                 weapons++;
                             }
+                            groundLayer.setCell(cellX, cellY, emptyCell);
                         }
                     }
                 }
@@ -203,6 +204,16 @@ public class Wwa implements Screen {
                             if (layer.getName().equals(INJURY_LAYER)) {
                                 energy -= 1;
                             }
+                        }
+                    }
+                }
+            }
+            if (layer.getName().equals(EXIT_LAYER)) {
+                for (MapObject object : layer.getObjects()) {
+                    if (object instanceof RectangleMapObject) {
+                        Rectangle rect = ((RectangleMapObject) object).getRectangle();
+                        if (sprite != null && sprite.getBoundingRectangle().overlaps(rect)) {
+                            isNewLevel = true;
                         }
                     }
                 }
