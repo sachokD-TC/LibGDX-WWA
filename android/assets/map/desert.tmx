@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" nextobjectid="248">
+<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" nextobjectid="258">
  <tileset firstgid="1" source="desert.tsx"/>
  <objectgroup name="weapons">
   <object id="147" x="1061" y="36" width="22" height="22"/>
   <object id="180" x="197" y="1094" width="20" height="21"/>
+  <object id="248" x="356" y="609.333" width="24" height="25.3333"/>
  </objectgroup>
  <objectgroup name="exit">
   <object id="223" x="1221" y="1063" width="19" height="18"/>
@@ -37,7 +38,7 @@
   <object id="247" x="1134.67" y="1072.67"/>
  </objectgroup>
  <objectgroup name="boxes">
-  <object id="2" x="112" y="496" width="285" height="62"/>
+  <object id="2" x="112" y="496" width="277" height="62"/>
   <object id="3" x="438" y="498" width="406" height="60"/>
   <object id="4" x="784" y="144" width="61" height="415"/>
   <object id="68" x="848" y="657" width="289" height="291"/>
@@ -52,7 +53,7 @@
   <object id="89" x="48" y="852" width="130" height="28"/>
   <object id="90" x="176" y="862" width="194" height="21"/>
   <object id="91" x="351" y="849" width="22" height="32"/>
-  <object id="92" x="213" y="687" width="158" height="131"/>
+  <object id="92" x="218.333" y="687" width="152.667" height="121.667"/>
   <object id="95" x="706" y="772" width="1">
    <ellipse/>
   </object>
@@ -60,7 +61,6 @@
   <object id="108" x="10" y="1254" width="1264" height="20"/>
   <object id="109" x="1254" y="10" width="20" height="1262"/>
   <object id="110" x="8" y="2" width="1266" height="14"/>
-  <object id="183" x="768" y="838" width="27" height="16"/>
   <object id="205" x="65" y="580" width="29" height="20"/>
   <object id="206" x="135" y="617" width="22" height="13"/>
  </objectgroup>
@@ -84,10 +84,18 @@
   <object id="239" x="198" y="234" width="18" height="18"/>
   <object id="240" x="168" y="331" width="18" height="14"/>
   <object id="241" x="104" y="360" width="17" height="22"/>
+  <object id="250" x="773.333" y="844" width="18.6667" height="14.6667"/>
+  <object id="251" x="1062.67" y="578.667" width="18.6667" height="20"/>
+  <object id="252" x="1093.33" y="613.333" width="24" height="17.3333"/>
+  <object id="253" x="1192" y="550.667" width="20" height="17.3333"/>
+  <object id="254" x="1225.33" y="514.667" width="16" height="22.6667"/>
+  <object id="255" x="993.333" y="613.333" width="29.3333" height="18.6667"/>
+  <object id="256" x="929.333" y="612" width="25.3333" height="18.6667"/>
+  <object id="257" x="870.667" y="614.667" width="22.6667" height="13.3333"/>
  </objectgroup>
  <layer name="Ground" width="40" height="40">
   <data encoding="base64" compression="zlib">
-   eJztmNtOwzAMQA17ABaJcb8Fto6O0VFg/P/X4Uq1mllOm5bcHng4mtY5y5mTOu5uAOAqU24RhSyRlcHSI+fIArkw5uExC8vYM8MvFNxvDKH9mlzdIffIQ4Z+DUfIMTJj3iH8HpGnEeh2jvnEPIz1WyMb5EPgDXlllAH9KrYeq9avZNdordaR/aS9Tn7SOn8l8tuy9S0tuZII5ffDvHLxq9jnFRzWgtR+ptcWuv1PuUzl986ukw/PZ+r8cU/ODqnbV6kGcmpPfifIKXRnUR8zxzjixYMf9Rf0W/tQjnHSuKl+1F9cwnDPeO0YJ437y/4b2nuxKUCuLzl5xuj/CJfeTBux1JspYay2fJ/umX8Il5pZGrFUO5Uw1laDy575ffmZfVIsv71Hv6Y/rj348fvMlx85SGdYHXh9P6HrdW1+TYyGw/6dmHJ/7Ef4Sb2FsuTKdt6HzJ/NL0b9y93PdY14bxbLbwo5+hWZ++WUv4K9N58Vvwf8bP8ZxvROnb/c1/ffL7zfM7g/y8ameXb+BS04rM8=
+   eJztl9tOwzAMQAN7AFaJcb8Vto6O0VFg/P/X4Uq1mll2mpTcHng4qpY5y5mTuu6NUuoqU26BAlgCK42lR86BBXChrUNjFsLcM80vFNTPhdB+Xa7ugHvgIUO/jiPgGJgR7xB+j8CTA2W/xnxiHlz91sAG+GB4A14JdUC/huzHqveryRju1TqyH3fW0Y/b569Efluyv7WQK45Qfj/EKxe/hnzfqMNakNpP99qq4fxjLlP5vZNx9KH5TJ0/6knZAW1/5WogpfXkdwKcquFZZGJmGYe8ePDD/gL/q4nCMo6b5+JWaX7YX1yq8Z7x2jKOm+fiRs/f2NkLSSWMcfXF5Cn1ua4e9Co5xuj/EJverNRisTcrmLml8HulYf0xbGpmrcVi7SyYuVINrg3r+/LT+6RYfnuPfl1/3Hrwo/eZLz904J5hbeD9/VRDryv5dTGlOuzfkSn3x97Bj+stCiFX0vM+ZP4kvxj1L3c/2z2ivVksvynk6Fdl7pdT/iryWX9X/B7x+2sv5cM7df5y399/v/B+z8r+XTY23bvzLyMErM4=
   </data>
  </layer>
 </map>

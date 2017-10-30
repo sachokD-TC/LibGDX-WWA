@@ -52,7 +52,7 @@ public class Wwa implements Screen {
     private OrthogonalTiledMapRendererWithSprites tiledMapRenderer;
     private boolean isFirstRender = true;
     private int startCounter = 0;
-    private int energy = 200;
+    private int energy = 100;
     private Label cactusesText;
     private Label energyText;
     private SpriteBatch scoreBarch;
@@ -173,7 +173,7 @@ public class Wwa implements Screen {
         camera.translate(cowboyX, cowboyY, 0);
         sprite.setPosition(camera.position.x, camera.position.y);
         for (MapLayer layer : map.getLayers()) {
-            if (layer.getName().equals(PIC_OBJS_LAYER) || layer.getName().equals(WEAPON_LAYER)) {
+            if (layer.getName().equals(PIC_OBJS_LAYER) || (layer.getName().equals(WEAPON_LAYER) && weapons == 0)) {
                 for (MapObject object : layer.getObjects()) {
                     if (object instanceof RectangleMapObject) {
                         Rectangle rect = ((RectangleMapObject) object).getRectangle();
@@ -186,7 +186,7 @@ public class Wwa implements Screen {
                                 cactusesCells.add(overCell);
                                 cactuses--;
                             }
-                            if (layer.getName().equals(WEAPON_LAYER) && !weaponCells.contains(overCell)) {
+                            if (layer.getName().equals(WEAPON_LAYER) && !weaponCells.contains(overCell) && !overCell.equals(emptyCell)) {
                                 weaponCells.add(overCell);
                                 weapons++;
                             }

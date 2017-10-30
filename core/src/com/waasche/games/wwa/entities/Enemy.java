@@ -31,6 +31,8 @@ public class Enemy {
         sprite.setX(sprite.getX() + movement[move].getX());
         sprite.setY(sprite.getY() + movement[move].getY());
         if(!rect.contains(sprite.getX(), sprite.getY())){
+            sprite.setX(sprite.getX() - movement[move].getX());
+            sprite.setY(sprite.getY() - movement[move].getY());
             move+=1;
             if(move == movement.length){
                 move = 0;

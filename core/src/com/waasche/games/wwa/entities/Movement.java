@@ -5,8 +5,8 @@ public enum Movement {
 
     UP(0, 2),
     DOWN(0, -2),
-    RIGHT(0, 2),
-    LEFT(0, -2),
+    RIGHT(2, 0),
+    LEFT(-2, 0),
     RIGHT_UP(2,2),
     LEFT_DOWN(-2,-2);
 
