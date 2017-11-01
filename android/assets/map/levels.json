@@ -110,10 +110,46 @@
           fileName: "sun.png",
           rect: {
             class: com.badlogic.gdx.math.Rectangle
-            x: 751,
+            x: 600,
             y: 619,
             width: 400,
             height: 5
+          }
+        },
+        {
+          class: com.waasche.games.wwa.entities.Enemy,
+          name: "sun",
+          fileName: "sun.png",
+          rect: {
+            class: com.badlogic.gdx.math.Rectangle
+            x: 500,
+            y: 200,
+            width: 300,
+            height: 5
+          }
+        },
+        {
+          class: com.waasche.games.wwa.entities.Enemy,
+          name: "sun",
+          fileName: "sun.png",
+          rect: {
+            class: com.badlogic.gdx.math.Rectangle
+            x: 590,
+            y: 100,
+            width: 5,
+            height: 270
+          }
+        },
+        {
+          class: com.waasche.games.wwa.entities.Enemy,
+          name: "sun",
+          fileName: "sun.png",
+          rect: {
+            class: com.badlogic.gdx.math.Rectangle
+            x: 590,
+            y: 800,
+            width: 5,
+            height: 400
           }
         }
         {
@@ -122,10 +158,10 @@
           fileName: "sun.png",
           rect: {
             class: com.badlogic.gdx.math.Rectangle
-            x: 100,
-            y: 100,
-            width: 200,
-            height: 200
+            x: 520,
+            y: 561,
+            width: 160,
+            height: 160
           }
         }
       ]

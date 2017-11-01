@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" nextobjectid="326">
+<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" nextobjectid="328">
  <tileset firstgid="1" source="desert.tsx"/>
  <layer name="Ground" width="40" height="40">
   <data encoding="base64" compression="zlib">
-   eJztmEkLAjEMhQdv4mFA9ODOuAy4/v+fZwoTDKFL0kWLzOGBwtT3JdTmTRdN08wr1RI0Ax0r1TQj3xl0A10K88X6nEAHUJexLhuf8dlH+MTy+fwoH9ZxH56/Kvuo5ZP4UT6sw6gnn6V+2r5L/CjfA7QGbYbnVsP3ZyE+iV/u/Zd7nY0P65L2LZXP55fz/Ivl82nkG/n+ia+tkC91LpbmM33D+fRqPvMqRx85H/ZCI+zbgYj2UStXPsBecJ+QWsLXk3WtcD2vzZUPjHDWaLSxeNB5r1UoH6TsP5qXSuy/GKXmstJ8tI81nn+Ur/b5MfLVz6edIXjef4uPvvfxGWHTdWD8Np/k/Mczr/sBn8SHPpvC57qDSeEzv0kzH89/tjyi/W+l3L/QrOPLJL46Q578/kUz53nW4fPXlkdcfXPdweS+f9Her4U8XfsvJh/F3v9J9x+vSZuPYtf51uacbyVk+LagSaXagd7p2MVW
+   eJztmFsLwjAMhYdv4sNA9ME78zKYt///80xhwRDaLullFtnDAYXV8zXW5phVVVXLQrUGLUDnQjVPyHcF3UG3zHyhPhfQCdQk3JeNz/gcA3xC+Xx+lA/38eif75R11PJJ/Cgf7sOoJa+lftq6S/wo3xO0Be365zb9+1cmPolf6vOXep2ND/clrVssn88v5f0XyufTxDfx/RNfXSBfbF/MzWfqhv3pXX37VYo6cj6shUZYtxMRraNWrnyAteA+Q6oJX0vW1cL1fG+ufGCEvUajncWD9nuthvJBzPmjeSnH+QtRbC7LzUfrWOL9R/lK7x8TX/l82h6C9/1YfPR/H+8RNnU949h8kvsf77zmB3wSH/psDJ9rBhPDZz6TZj6e/2x5RPvbipm/0KzjyyS+fQ558vmLps/zrMP7ry2PuOrmmsG45kOh8xftfG0oW/jmV2PN/6Tnj39f2nwUOrfxrU3Z33LI8O1Bs0J1AH0AsyjFPA==
   </data>
  </layer>
  <objectgroup name="exit">
@@ -16,26 +16,25 @@
   <object id="289" x="617.333" y="741.333" width="13.3333" height="22.6667"/>
   <object id="290" x="294.667" y="936" width="17.3333" height="18.6667"/>
  </objectgroup>
- <objectgroup name="blocks">
+ <objectgroup name="boxes">
   <object id="291" x="45.3333" y="861.333" width="97.3333" height="209.333"/>
   <object id="292" x="114.667" y="773.333" width="425.333" height="136"/>
-  <object id="293" x="45.3333" y="1066.67" width="32" height="70.6667"/>
-  <object id="294" x="72" y="1140" width="66.6667" height="66.6667"/>
-  <object id="296" x="146.667" y="1204" width="64" height="48"/>
-  <object id="297" x="216" y="1144" width="65.3333" height="104"/>
-  <object id="298" x="273.333" y="1078.67" width="190.667" height="86.6667"/>
+  <object id="293" x="45.3333" y="1066.67" width="32" height="145.333"/>
+  <object id="296" x="56" y="1204" width="154.667" height="48"/>
+  <object id="297" x="209.333" y="1144" width="72" height="104"/>
+  <object id="298" x="273.333" y="993.333" width="190.667" height="172"/>
   <object id="299" x="214.667" y="978.667" width="253.333" height="89.3333"/>
-  <object id="300" x="466.667" y="984" width="26.6667" height="52"/>
-  <object id="301" x="526.667" y="910.667" width="37.3333" height="32"/>
+  <object id="300" x="382.667" y="984" width="110.667" height="52"/>
+  <object id="301" x="533.333" y="904" width="37.3333" height="32"/>
   <object id="302" x="564" y="898.667" width="22.6667" height="136"/>
-  <object id="303" x="530.667" y="721.333" width="56" height="170.667"/>
+  <object id="303" x="434.667" y="721.333" width="152" height="170.667"/>
   <object id="304" x="109.333" y="660" width="414.667" height="72"/>
-  <object id="305" x="466.667" y="1109.33" width="120" height="92"/>
-  <object id="306" x="590.667" y="1205.33" width="69.3333" height="42.6667"/>
+  <object id="305" x="274.667" y="1109.33" width="312" height="134.667"/>
+  <object id="306" x="564" y="1205.33" width="96" height="42.6667"/>
   <object id="307" x="662.667" y="1108" width="125.333" height="116"/>
   <object id="309" x="786.667" y="1038.67" width="36" height="74.6667"/>
   <object id="310" x="660" y="725.333" width="157.333" height="308"/>
-  <object id="312" x="724" y="662.667" width="452" height="72"/>
+  <object id="312" x="722.667" y="662.667" width="453.333" height="81.3333"/>
   <object id="313" x="725.333" y="514.667" width="449.333" height="72"/>
   <object id="314" x="1174.67" y="526.667" width="69.3333" height="232"/>
   <object id="315" x="661.333" y="76" width="113.333" height="448"/>

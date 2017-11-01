@@ -39,6 +39,7 @@ public class Wwa implements Screen {
     public static final String DOWN = "down";
     public static final String INJURY_LAYER = "injury";
     private static final String BOXES_LAYER = "boxes";
+    public static final String GROUND_LAYER = "Ground";
     private SpriteBatch batch;
     com.badlogic.gdx.scenes.scene2d.ui.Image gameOverPic;
     private Map<String, List<Texture>> cowboy = new HashMap<>();
@@ -180,7 +181,7 @@ public class Wwa implements Screen {
                         if (sprite != null && sprite.getBoundingRectangle().overlaps(rect)) {
                             int cellX = Math.round(rect.x / 32);
                             int cellY = Math.round(rect.y / 32);
-                            TiledMapTileLayer groundLayer = (TiledMapTileLayer) map.getLayers().get("Ground");
+                            TiledMapTileLayer groundLayer = (TiledMapTileLayer) map.getLayers().get(GROUND_LAYER);
                             TiledMapTileLayer.Cell overCell = groundLayer.getCell(cellX, cellY);
                             if (layer.getName().equals(PIC_OBJS_LAYER) && !cactusesCells.contains(overCell) && !overCell.equals(emptyCell)) {
                                 cactusesCells.add(overCell);
@@ -212,7 +213,7 @@ public class Wwa implements Screen {
                 for (MapObject object : layer.getObjects()) {
                     if (object instanceof RectangleMapObject) {
                         Rectangle rect = ((RectangleMapObject) object).getRectangle();
-                        if (sprite != null && sprite.getBoundingRectangle().overlaps(rect)) {
+                        if (sprite != null && sprite.getBoundingRectangle().overlaps(rect) && cactuses == 0) {
                             isNewLevel = true;
                         }
                     }
