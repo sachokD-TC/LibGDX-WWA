@@ -89,8 +89,8 @@
   },
     {
       class: com.waasche.games.wwa.entities.Level,
-      name: "wood",
-      fileName: "wood.tmx",
+      name: "chross",
+      fileName: "chross.tmx",
       enemies: [
         {
           class: com.waasche.games.wwa.entities.Enemy,
@@ -98,10 +98,10 @@
           fileName: "sun.png",
           rect: {
             class: com.badlogic.gdx.math.Rectangle
-            x: 0,
-            y: 0,
-            width: 100,
-            height: 100
+            x: 145,
+            y: 619,
+            width: 400,
+            height: 5
           }
         },
         {
@@ -110,10 +110,10 @@
           fileName: "sun.png",
           rect: {
             class: com.badlogic.gdx.math.Rectangle
-            x: 0,
-            y: 0,
-            width: 100,
-            height: 100
+            x: 751,
+            y: 619,
+            width: 400,
+            height: 5
           }
         }
         {
