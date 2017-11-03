@@ -77,7 +77,7 @@ public class Menu implements Screen {
             }
 
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                mainClass.setCurrentScreen(new Wwa(2, mainClass));
+                mainClass.setCurrentScreen(new Wwa(0, mainClass));
                 mainClass.showCurrentScreen();
             }
         });

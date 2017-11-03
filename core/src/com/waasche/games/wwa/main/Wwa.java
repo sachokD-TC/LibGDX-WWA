@@ -17,9 +17,11 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.waasche.games.wwa.entities.Level;
 import com.waasche.games.wwa.entities.Levels;
@@ -200,7 +202,7 @@ public class Wwa implements Screen {
                 for (MapObject object : layer.getObjects()) {
                     if (object instanceof RectangleMapObject) {
                         Rectangle rect = ((RectangleMapObject) object).getRectangle();
-                        if (sprite != null && rect.overlaps(sprite.getBoundingRectangle())) {
+                        if (sprite != null && sprite.getBoundingRectangle().overlaps(rect)) {
                             isCollide = true;
                             if (layer.getName().equals(INJURY_LAYER)) {
                                 energy -= 1;
@@ -328,7 +330,6 @@ public class Wwa implements Screen {
             cowboySprite.setPosition(camera.position.x, camera.position.y);
             camera.translate(cowboyX, cowboyY);
             tiledMapRenderer.setView(camera);
-
         } else {
             camera.translate(-cowboyX, -cowboyY);
             cowboySprite.setPosition(camera.position.x, camera.position.y);
@@ -353,17 +354,9 @@ public class Wwa implements Screen {
             this.dispose();
         }
         if (energy <= 0 && gameOverPic != null && gameOverPic.isVisible()) {
-            try {
-                stage.draw();
-                stage.act();
-                camera.update();
-                mainClass.setCurrentScreen(new Menu(mainClass));
-                mainClass.showCurrentScreen();
-                Thread.sleep(1000l);
-                this.dispose();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            stage.draw();
+            stage.act();
+            camera.update();
         }
     }
 
@@ -372,6 +365,14 @@ public class Wwa implements Screen {
         gameOverPic = new com.badlogic.gdx.scenes.scene2d.ui.Image(texture);
         gameOverPic.setScale((float) ANDROID_WIDTH / texture.getWidth(), (float) ANDROID_HEIGHT / texture.getHeight());
         gameOverPic.setPosition(0, 0);
+        gameOverPic.addListener(new ClickListener() {
+                                    @Override
+                                    public void clicked(InputEvent event, float x, float y) {
+                                        mainClass.setCurrentScreen(new Menu(mainClass));
+                                        mainClass.showCurrentScreen();
+                                    }
+                                }
+        );
         stage.addActor(gameOverPic);
     }
 
