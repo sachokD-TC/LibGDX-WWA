@@ -6,22 +6,22 @@ import java.util.List;
 public class Level {
 
     private String name;
-    private List<Enemy> enemies;
+    private List<AbstractEnemy> enemies;
     private String fileName;
 
     public Level(){}
 
-    public Level(String name, List<Enemy> enemies, String fileName) {
+    public Level(String name, List<AbstractEnemy> enemies, String fileName) {
         this.name = name;
         this.enemies = enemies;
         this.fileName = fileName;
     }
 
-    public List<Enemy> getEnemies() {
+    public List<AbstractEnemy> getEnemies() {
         return enemies;
     }
 
-    public void setEnemies(List<Enemy> enemies) {
+    public void setEnemies(List<AbstractEnemy> enemies) {
         this.enemies = enemies;
     }
 

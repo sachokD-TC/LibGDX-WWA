@@ -16,7 +16,9 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.math.Plane;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -25,6 +27,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.waasche.games.wwa.entities.Level;
 import com.waasche.games.wwa.entities.Levels;
+import com.waasche.games.wwa.sound.AbstractPlayer;
+import com.waasche.games.wwa.sound.Vibration;
+import com.waasche.games.wwa.util.GameProgress;
+import com.waasche.games.wwa.util.Moves;
 import com.waasche.games.wwa.view.EnemiesRenderer;
 import com.waasche.games.wwa.view.OrthogonalTiledMapRendererWithSprites;
 import com.waasche.games.wwa.view.TouchPadListener;
@@ -49,6 +55,8 @@ public class Wwa implements Screen {
     private String[] leftPics = {"actor/left.png", "actor/left_1.png", "actor/left_2.png"};
     private String[] rightPics = {"actor/right.png", "actor/right_1.png", "actor/right_2.png"};
     private String[] upPics = {"actor/back.png", "actor/back_1.png", "actor/back_2.png"};
+    final Plane xzPlane = new Plane(new Vector3(0, 0, 0), 0);
+    final Vector3 intersection = new Vector3();
     private int indPic = 0;
     private OrthographicCamera camera;
     private TiledMap tiledMap;
@@ -61,13 +69,12 @@ public class Wwa implements Screen {
     private SpriteBatch scoreBarch;
     private Sprite scorePic;
     private Stage stage;
-    private TouchPadListener leftTouchListener;
-    private TouchPadListener rightTouchListener;
-    private TouchPadListener upTouchListener;
-    private TouchPadListener downTouchListener;
+    private TouchPadListener controleTouchListener;
     private TouchPadListener fireTouchListener;
     private static int ANDROID_WIDTH;
     private static int ANDROID_HEIGHT;
+    private static float CONTROL_WIDTH;
+    private static float CONTROL_HEIGHT;
     private Level level;
     private int levelInd;
     private MainClass mainClass;
@@ -78,8 +85,6 @@ public class Wwa implements Screen {
     private int bulletIncX;
     private int bulletIncY;
     private int bulletRide = 0;
-    public static final String PIC_OBJS_LAYER = "pic_objs";
-    public static final String WEAPON_LAYER = "weapons";
     private List<TiledMapTileLayer.Cell> cactusesCells = new ArrayList<>();
     private List<TiledMapTileLayer.Cell> weaponCells = new ArrayList<>();
     private int cactuses = 0;
@@ -87,37 +92,31 @@ public class Wwa implements Screen {
     public static final int EMPTY_CELL_NUMBER = 30;
     private TiledMapTileLayer.Cell emptyCell;
     private boolean isNewLevel = false;
-    private String EXIT_LAYER = "exit";
+    private static final String EXIT_LAYER = "exit";
+    private static final String PIC_OBJS_LAYER = "pic_objs";
+    private static final String WEAPON_LAYER = "weapons";
+    private AbstractPlayer player;
+    private Image controleImage;
 
 
-    public Wwa(int levelInd, MainClass mainClass) {
+    public Wwa(int levelInd, boolean soundOn, MainClass mainClass) {
         this.levelInd = levelInd;
         Levels levels = new Levels("map/levels.json");
         level = levels.getLevelsList().getLevels().get(levelInd);
         this.mainClass = mainClass;
+        player = new Vibration(soundOn);
     }
 
 
     private void prepareControls() {
-        Image leftImage = prepareImage(100, 100, "pic/arrow_left.png");
-        Image rightImage = prepareImage(280, 100, "pic/arrow_right.png");
-        Image upImage = prepareImage(190, 190, "pic/arrow_up.png");
-        Image downImage = prepareImage(190, 10, "pic/arrow_down.png");
-        Image fireImage = prepareImage(ANDROID_WIDTH - scorePic.getWidth(), 100, "pic/fire.png");
-        leftTouchListener = new TouchPadListener();
-        leftImage.addListener(leftTouchListener);
-        rightTouchListener = new TouchPadListener();
-        rightImage.addListener(rightTouchListener);
-        upTouchListener = new TouchPadListener();
-        upImage.addListener(upTouchListener);
-        downTouchListener = new TouchPadListener();
-        downImage.addListener(downTouchListener);
+        controleImage = prepareImage(CONTROL_WIDTH, CONTROL_HEIGHT, "pic/circle.jpg");
+        controleImage.setSize(CONTROL_WIDTH, CONTROL_HEIGHT);
+        Image fireImage = prepareImage(ANDROID_WIDTH - scorePic.getWidth(), CONTROL_HEIGHT, "pic/fire.png");
+        controleTouchListener = new TouchPadListener();
+        controleImage.addListener(controleTouchListener);
         fireTouchListener = new TouchPadListener();
         fireImage.addListener(fireTouchListener);
-        stage.addActor(leftImage);
-        stage.addActor(rightImage);
-        stage.addActor(upImage);
-        stage.addActor(downImage);
+        stage.addActor(controleImage);
         stage.addActor(fireImage);
         Gdx.input.setInputProcessor(stage);
     }
@@ -206,6 +205,7 @@ public class Wwa implements Screen {
                             isCollide = true;
                             if (layer.getName().equals(INJURY_LAYER)) {
                                 energy -= 1;
+                                player.playEnergyLoss();
                             }
                         }
                     }
@@ -238,6 +238,8 @@ public class Wwa implements Screen {
         batch = new SpriteBatch();
         ANDROID_WIDTH = Gdx.graphics.getWidth();
         ANDROID_HEIGHT = Gdx.graphics.getHeight();
+        CONTROL_HEIGHT = ANDROID_HEIGHT / 5.4f;
+        CONTROL_WIDTH = ANDROID_WIDTH / 5.4f;
         camera = new OrthographicCamera(ANDROID_WIDTH / 2, ANDROID_HEIGHT / 2);
         setTileMap();
         camera.update();
@@ -258,19 +260,23 @@ public class Wwa implements Screen {
         if (energy <= 0) {
             setGameOverPicture();
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT) || leftTouchListener.isTouchDown()) {
+        Moves move = Moves.NONE;
+        if (controleTouchListener.isTouchDown()) {
+            move = getMoveByTouchedCircle();
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT) || move.equals(move.LEFT)) {
             cowboyX = -2;
             cowboyToDraw = cowboy.get(LEFT).get(indPic / 10);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT) || rightTouchListener.isTouchDown()) {
+        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT) || move.equals(move.RIGHT)) {
             cowboyX = 2;
             cowboyToDraw = cowboy.get(RIGHT).get(indPic / 10);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_UP) || upTouchListener.isTouchDown()) {
+        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_UP) || move.equals(move.UP)) {
             cowboyY = 2;
             cowboyToDraw = cowboy.get(UP).get(indPic / 10);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN) || downTouchListener.isTouchDown()) {
+        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN) || move.equals(move.DOWN)) {
             cowboyY = -2;
             cowboyToDraw = cowboy.get(DOWN).get(indPic / 10);
         }
@@ -279,21 +285,24 @@ public class Wwa implements Screen {
             bulletSprite = new Sprite(bullet);
             bulletSprite.setPosition(camera.position.x, camera.position.y);
             weapons--;
-            if (Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT) || rightTouchListener.isTouchDown()) {
+            if (Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT) || move.equals(move.RIGHT)) {
                 bulletIncX = 10;
                 bulletIncY = 0;
             }
-            if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT) || leftTouchListener.isTouchDown()) {
+            if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT) || move.equals(move.LEFT)) {
+                bulletSprite.setRotation(180);
                 bulletIncX = -10;
                 bulletIncY = 0;
             }
-            if (Gdx.input.isKeyPressed(Input.Keys.DPAD_UP) || upTouchListener.isTouchDown()) {
+            if (Gdx.input.isKeyPressed(Input.Keys.DPAD_UP) || move.equals(move.UP)) {
                 bulletIncX = 0;
                 bulletIncY = 10;
+                bulletSprite.setRotation(90);
             }
-            if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN) || downTouchListener.isTouchDown()) {
+            if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN) || move.equals(move.DOWN)) {
                 bulletIncX = 0;
                 bulletIncY = -10;
+                bulletSprite.setRotation(-90);
             }
         }
         indPic += 1;
@@ -342,14 +351,18 @@ public class Wwa implements Screen {
         }
         cowboySprite.draw(batch);
         batch.end();
-        enemiesRenderer.setCowboySprit(cowboySprite);
+        enemiesRenderer.setCowboySprite(cowboySprite);
         enemiesRenderer.render();
+        stage.draw();
+        stage.act();
         camera.update();
         if (enemiesRenderer.isCollide()) {
             energy -= 1;
+            player.playEnergyLoss();
         }
         if (isNewLevel) {
-            mainClass.setCurrentScreen(new Wwa(levelInd + 1, mainClass));
+            GameProgress.setCompleted("" + (levelInd+1));
+            mainClass.setCurrentScreen(new Wwa(levelInd + 1, player.isSoundOn(), mainClass));
             mainClass.showCurrentScreen();
             this.dispose();
         }
@@ -357,6 +370,25 @@ public class Wwa implements Screen {
             stage.draw();
             stage.act();
             camera.update();
+        }
+    }
+
+
+    private Moves getMoveByTouchedCircle() {
+        float x = Gdx.input.getX() - (CONTROL_WIDTH + 25);
+        int z = Gdx.graphics.getHeight() - Gdx.input.getY() - (int)(CONTROL_HEIGHT +28);
+        if (java.lang.Math.abs(x) > java.lang.Math.abs(z)) {
+            if (x < 0) {
+                return Moves.LEFT;
+            } else {
+                return Moves.RIGHT;
+            }
+        } else {
+            if (z < 0) {
+                return Moves.DOWN;
+            } else {
+                return Moves.UP;
+            }
         }
     }
 

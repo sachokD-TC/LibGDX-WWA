@@ -8,21 +8,21 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
  */
 public class TouchPadListener extends InputListener {
 
-    private boolean isTouchDown = false;
+    private boolean isTouchDown;
 
     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-        System.out.println("down");
         isTouchDown = true;
         return true;
     }
 
     public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-        System.out.println("up");
         isTouchDown = false;
     }
 
     public boolean isTouchDown() {
         return isTouchDown;
     }
+
+
 
 }

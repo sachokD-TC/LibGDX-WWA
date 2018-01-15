@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.waasche.games.wwa.entities.Enemy;
+import com.waasche.games.wwa.entities.AbstractEnemy;
 import com.waasche.games.wwa.entities.Level;
 
 import java.util.ArrayList;
@@ -15,9 +15,9 @@ import java.util.List;
  */
 public class EnemiesRenderer  {
 
-    public static final String ACTOR_SUN_PNG = "actor/sun.png";
+    public static final String ACTOR_FOLDER = "actor/";
     private SpriteBatch spriteBatch;
-    private List<Enemy> enemies = new ArrayList<>();
+    private List<AbstractEnemy> enemies = new ArrayList<>();
     private Sprite cowboySprite;
     private boolean isCollide = false;
     private float bulletX;
@@ -31,8 +31,8 @@ public class EnemiesRenderer  {
     }
 
     private void prepareEnemiesSprites(){
-        for (Enemy enemy : enemies) {
-            Sprite sprite = new Sprite(new Texture(Gdx.files.internal(ACTOR_SUN_PNG)));
+        for (AbstractEnemy enemy : enemies) {
+            Sprite sprite = new Sprite(new Texture(Gdx.files.internal(ACTOR_FOLDER + enemy.getFileName())));
             sprite.setPosition(enemy.getRect().getX(), enemy.getRect().getY());
             enemy.setSprite(sprite);
         }
@@ -41,8 +41,8 @@ public class EnemiesRenderer  {
     public void render(){
         spriteBatch.begin();
         isCollide = false;
-        Enemy enemyToRemove = null;
-        for (Enemy enemy : enemies) {
+        AbstractEnemy enemyToRemove = null;
+        for (AbstractEnemy enemy : enemies) {
             enemy.move();
             enemy.getSprite().draw(spriteBatch);
             if(!isCollide) {
@@ -58,7 +58,7 @@ public class EnemiesRenderer  {
         spriteBatch.end();
     }
 
-    public void setCowboySprit(Sprite cowboySprite) {
+    public void setCowboySprite(Sprite cowboySprite) {
         this.cowboySprite = cowboySprite;
     }
 

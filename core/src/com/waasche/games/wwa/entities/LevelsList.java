@@ -6,12 +6,12 @@ public class LevelsList {
 
     private List<Level> levels;
 
-    public LevelsList(){
-
-    }
-
     public List<Level> getLevels() {
         return levels;
+    }
+
+    public LevelsList(){
+
     }
 
     public void setLevels(List<Level> levels) {

@@ -11,15 +11,17 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
+import com.waasche.games.wwa.util.GameProgress;
 
 
 public class Menu implements Screen {
 
+    private int START_LEVEL = 0;
     private Stage menuStage;
     private SpriteBatch menuSpriteBatch;
     private Camera camera;
     private MainClass mainClass;
-    private String[] menuElements = {"Start", "About", "Exit"};
+    private String[] menuElements = {"Start", "About", "Exit", "Rating - "};
     private int ANDROID_WIDTH;
     private int ANDROID_HEIGHT;
 
@@ -57,14 +59,17 @@ public class Menu implements Screen {
         actorMenuPic.setScale((float)ANDROID_WIDTH/texture.getWidth(), (float)ANDROID_HEIGHT/texture.getHeight());
         actorMenuPic.setPosition(0,0);
         menuStage.addActor(actorMenuPic);
-        final Label startItem = getTextActor(ANDROID_WIDTH /4f, ANDROID_HEIGHT/2.4f, menuElements[0]);
-        Actor aboutItem = getTextActor(ANDROID_WIDTH /3.8f, ANDROID_HEIGHT/2.4f - 100, menuElements[1]);
-        Actor exitItem = getTextActor(ANDROID_WIDTH / 3.6f, ANDROID_HEIGHT/2.4f - 200, menuElements[2]);
+        START_LEVEL = Integer.valueOf(GameProgress.getLastCopleted()).intValue();
+        final Label startItem = getTextActor(ANDROID_WIDTH /2.5f, ANDROID_HEIGHT/2.2f + ANDROID_HEIGHT/12.5f, menuElements[0]);
+        Actor aboutItem = getTextActor(ANDROID_WIDTH /2.5f, ANDROID_HEIGHT/2.2f - ANDROID_HEIGHT/12.5f, menuElements[1]);
+        Actor ratingItem = getTextActor(ANDROID_WIDTH / 2.5f, ANDROID_HEIGHT/2.2f - ANDROID_HEIGHT/12.5f*3, menuElements[3] + START_LEVEL);
+        Actor exitItem = getTextActor(ANDROID_WIDTH / 2.5f, ANDROID_HEIGHT/2.2f - ANDROID_HEIGHT/12.5f*5, menuElements[2]);
         addListeners(startItem, aboutItem, exitItem);
         menuStage.addActor(startItem);
         Gdx.input.setInputProcessor(menuStage);
         menuStage.addActor(startItem);
         menuStage.addActor(aboutItem);
+        menuStage.addActor(ratingItem);
         menuStage.addActor(exitItem);
     }
 
@@ -77,7 +82,7 @@ public class Menu implements Screen {
             }
 
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                mainClass.setCurrentScreen(new Wwa(0, mainClass));
+                mainClass.setCurrentScreen(new Wwa(START_LEVEL, true, mainClass));
                 mainClass.showCurrentScreen();
             }
         });

@@ -237,5 +237,156 @@
           }
         }
       ]
+    },
+    {
+      class: com.waasche.games.wwa.entities.Level,
+      name: "bossLevel",
+      fileName: "bossLevel.tmx",
+      enemies: [
+        {
+          class: com.waasche.games.wwa.entities.Zomby,
+          name: "zomby",
+          fileName: "zomby.png",
+          rect: {
+            class: com.badlogic.gdx.math.Rectangle
+            x: 900,
+            y: 100,
+            width: 300,
+            height: 200
+          }
+        },
+        {
+          class: com.waasche.games.wwa.entities.Zomby,
+          name: "zomby",
+          fileName: "zomby.png",
+          rect: {
+            class: com.badlogic.gdx.math.Rectangle
+            x: 900,
+            y: 200,
+            width: 300,
+            height: 200
+          }
+        },
+        {
+          class: com.waasche.games.wwa.entities.Zomby,
+          name: "zomby",
+          fileName: "zomby.png",
+          rect: {
+            class: com.badlogic.gdx.math.Rectangle
+            x: 900,
+            y: 300,
+            width: 300,
+            height: 200
+          }
+        },
+        {
+          class: com.waasche.games.wwa.entities.Zomby,
+          name: "zomby",
+          fileName: "zomby.png",
+          rect: {
+            class: com.badlogic.gdx.math.Rectangle
+            x: 900,
+            y: 400,
+            width: 300,
+            height: 200
+          }
+        },
+        {
+          class: com.waasche.games.wwa.entities.Zomby,
+          name: "zomby",
+          fileName: "zomby.png",
+          rect: {
+            class: com.badlogic.gdx.math.Rectangle
+            x: 900,
+            y: 500,
+            width: 300,
+            height: 200
+          }
+        },
+        {
+          class: com.waasche.games.wwa.entities.Zomby,
+          name: "zomby",
+          fileName: "zomby.png",
+          rect: {
+            class: com.badlogic.gdx.math.Rectangle
+            x: 900,
+            y: 600,
+            width: 300,
+            height: 200
+          }
+        },
+        {
+          class: com.waasche.games.wwa.entities.Zomby,
+          name: "zomby",
+          fileName: "zomby.png",
+          rect: {
+            class: com.badlogic.gdx.math.Rectangle
+            x: 900,
+            y: 700,
+            width: 300,
+            height: 200
+          }
+        },
+        {
+          class: com.waasche.games.wwa.entities.Zomby,
+          name: "zomby",
+          fileName: "zomby.png",
+          rect: {
+            class: com.badlogic.gdx.math.Rectangle
+            x: 900,
+            y: 800,
+            width: 300,
+            height: 200
+          }
+        },
+        {
+          class: com.waasche.games.wwa.entities.Zomby,
+          name: "zomby",
+          fileName: "zomby.png",
+          rect: {
+            class: com.badlogic.gdx.math.Rectangle
+            x: 900,
+            y: 900,
+            width: 300,
+            height: 200
+          }
+        },
+        {
+          class: com.waasche.games.wwa.entities.Zomby,
+          name: "zomby",
+          fileName: "zomby.png",
+          rect: {
+            class: com.badlogic.gdx.math.Rectangle
+            x: 1038,
+            y: 1000,
+            width: 300,
+            height: 200
+          }
+        },
+        {
+          class: com.waasche.games.wwa.entities.Zomby,
+          name: "zomby",
+          fileName: "zomby.png",
+          rect: {
+            class: com.badlogic.gdx.math.Rectangle
+            x: 1038,
+            y: 1100,
+            width: 200,
+            height: 300
+          }
+        },
+        {
+          class: com.waasche.games.wwa.entities.Zomby,
+          name: "zomby",
+          fileName: "zomby.png",
+          rect: {
+            class: com.badlogic.gdx.math.Rectangle
+            x: 900,
+            y: 1200,
+            width: 200,
+            height: 300
+          }
+        }
+      ]
     }
 ]}
