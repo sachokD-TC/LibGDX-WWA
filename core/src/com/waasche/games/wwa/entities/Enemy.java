@@ -2,6 +2,8 @@ package com.waasche.games.wwa.entities;
 
 import com.badlogic.gdx.math.Rectangle;
 
+import java.util.List;
+
 
 public class Enemy extends AbstractEnemy {
 
@@ -11,8 +13,8 @@ public class Enemy extends AbstractEnemy {
 
     public Enemy(){}
 
-    public Enemy(String name, String fileName, Rectangle rect){
-        setFileName(fileName);
+    public Enemy(String name, List<String> fileNames, Rectangle rect){
+        setFileNames(fileNames);
         setRect(rect);
     }
 

@@ -32,9 +32,14 @@ public class EnemiesRenderer  {
 
     private void prepareEnemiesSprites(){
         for (AbstractEnemy enemy : enemies) {
-            Sprite sprite = new Sprite(new Texture(Gdx.files.internal(ACTOR_FOLDER + enemy.getFileName())));
-            sprite.setPosition(enemy.getRect().getX(), enemy.getRect().getY());
-            enemy.setSprite(sprite);
+            List<String> fileNames = enemy.getFileNames();
+            Sprite[] sprites = new Sprite[fileNames.size()];
+            for(int i=0; i!=fileNames.size();i++) {
+                Sprite sprite = new Sprite(new Texture(Gdx.files.internal(ACTOR_FOLDER + fileNames.get(i))));
+                sprite.setPosition(enemy.getRect().getX(), enemy.getRect().getY());
+                sprites[i] = sprite;
+            }
+            enemy.setSprites(sprites);
         }
     }
 

@@ -10,7 +10,6 @@ public class GameProgress {
 
     public static void load() {
         progress = Gdx.app.getPreferences("GameProgress");
-        progress.clear();
     }
 
     public static void setCompleted(String levelId) {
@@ -23,6 +22,10 @@ public class GameProgress {
             return "0";
         }
         return progress.getString(COMPLETED);
+    }
+
+    public static void clear(){
+        progress.clear();
     }
 
 }

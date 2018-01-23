@@ -16,9 +16,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.math.Plane;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -55,8 +53,8 @@ public class Wwa implements Screen {
     private String[] leftPics = {"actor/left.png", "actor/left_1.png", "actor/left_2.png"};
     private String[] rightPics = {"actor/right.png", "actor/right_1.png", "actor/right_2.png"};
     private String[] upPics = {"actor/back.png", "actor/back_1.png", "actor/back_2.png"};
-    final Plane xzPlane = new Plane(new Vector3(0, 0, 0), 0);
-    final Vector3 intersection = new Vector3();
+    private final Sprite scorePic = new Sprite(new Texture("pic/scores_brown.png"));
+    private final Texture bullet = new Texture(Gdx.files.internal("actor/bullet.png"));
     private int indPic = 0;
     private OrthographicCamera camera;
     private TiledMap tiledMap;
@@ -67,7 +65,6 @@ public class Wwa implements Screen {
     private Label cactusesText;
     private Label energyText;
     private SpriteBatch scoreBarch;
-    private Sprite scorePic;
     private Stage stage;
     private TouchPadListener controleTouchListener;
     private TouchPadListener fireTouchListener;
@@ -80,7 +77,6 @@ public class Wwa implements Screen {
     private MainClass mainClass;
     private EnemiesRenderer enemiesRenderer;
     private boolean bulletStart = false;
-    private Texture bullet;
     private Sprite bulletSprite;
     private int bulletIncX;
     private int bulletIncY;
@@ -97,6 +93,7 @@ public class Wwa implements Screen {
     private static final String WEAPON_LAYER = "weapons";
     private AbstractPlayer player;
     private Image controleImage;
+    private Image bulletScore;
 
 
     public Wwa(int levelInd, boolean soundOn, MainClass mainClass) {
@@ -109,7 +106,7 @@ public class Wwa implements Screen {
 
 
     private void prepareControls() {
-        controleImage = prepareImage(CONTROL_WIDTH, CONTROL_HEIGHT, "pic/circle.jpg");
+        controleImage = prepareImage(CONTROL_WIDTH - CONTROL_WIDTH / 2f, CONTROL_HEIGHT - CONTROL_HEIGHT / 2f, "pic/circle.png");
         controleImage.setSize(CONTROL_WIDTH, CONTROL_HEIGHT);
         Image fireImage = prepareImage(ANDROID_WIDTH - scorePic.getWidth(), CONTROL_HEIGHT, "pic/fire.png");
         controleTouchListener = new TouchPadListener();
@@ -130,15 +127,20 @@ public class Wwa implements Screen {
 
     private void setupStage() {
         scoreBarch = new SpriteBatch();
-        scorePic = new Sprite(new Texture("pic/scores_brown.png"));
         com.badlogic.gdx.scenes.scene2d.ui.Image actorScores = new com.badlogic.gdx.scenes.scene2d.ui.Image(scorePic);
         actorScores.setPosition(ANDROID_WIDTH - scorePic.getWidth(), +scorePic.getHeight() * 0.2f);
         stage = new Stage();
         cactusesText = getTextActor(ANDROID_WIDTH - scorePic.getWidth() * 0.7f, scorePic.getHeight() * 0.6f, "" + cactuses);
         energyText = getTextActor(ANDROID_WIDTH - scorePic.getWidth() / 9, scorePic.getHeight() * 0.6f, "" + energy);
+        bulletScore = new Image(bullet);
+        bulletScore.setPosition(ANDROID_WIDTH - scorePic.getWidth() * 0.55f, scorePic.getHeight() * 0.8f);
+        bulletScore.setRotation(-90f);
+        bulletScore.setScale(2f);
+        bulletScore.setVisible(false);
         stage.addActor(actorScores);
         stage.addActor(energyText);
         stage.addActor(cactusesText);
+        stage.addActor(bulletScore);
         prepareControls();
     }
 
@@ -166,6 +168,9 @@ public class Wwa implements Screen {
         scoreBarch.begin();
         cactusesText.setText("" + cactuses);
         energyText.setText("" + energy);
+        if (weapons != 0 ) {
+            bulletScore.setVisible(true);
+        }
         stage.draw();
         scoreBarch.end();
     }
@@ -248,7 +253,6 @@ public class Wwa implements Screen {
         pripareTextures(LEFT, leftPics);
         pripareTextures(RIGHT, rightPics);
         pripareTextures(DOWN, downPics);
-        bullet = new Texture(Gdx.files.internal("actor/bullet.png"));
         enemiesRenderer = new EnemiesRenderer(level, batch);
     }
 
@@ -285,6 +289,7 @@ public class Wwa implements Screen {
             bulletSprite = new Sprite(bullet);
             bulletSprite.setPosition(camera.position.x, camera.position.y);
             weapons--;
+            bulletScore.setVisible(false);
             if (Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT) || move.equals(move.RIGHT)) {
                 bulletIncX = 10;
                 bulletIncY = 0;
@@ -361,7 +366,7 @@ public class Wwa implements Screen {
             player.playEnergyLoss();
         }
         if (isNewLevel) {
-            GameProgress.setCompleted("" + (levelInd+1));
+            GameProgress.setCompleted("" + (levelInd + 1));
             mainClass.setCurrentScreen(new Wwa(levelInd + 1, player.isSoundOn(), mainClass));
             mainClass.showCurrentScreen();
             this.dispose();
@@ -375,8 +380,8 @@ public class Wwa implements Screen {
 
 
     private Moves getMoveByTouchedCircle() {
-        float x = Gdx.input.getX() - (CONTROL_WIDTH + 25);
-        int z = Gdx.graphics.getHeight() - Gdx.input.getY() - (int)(CONTROL_HEIGHT +28);
+        float x = Gdx.input.getX() - controleImage.getX() * 2;
+        float z = Gdx.input.getY() - ANDROID_HEIGHT + CONTROL_HEIGHT + 25;
         if (java.lang.Math.abs(x) > java.lang.Math.abs(z)) {
             if (x < 0) {
                 return Moves.LEFT;
@@ -385,9 +390,9 @@ public class Wwa implements Screen {
             }
         } else {
             if (z < 0) {
-                return Moves.DOWN;
-            } else {
                 return Moves.UP;
+            } else {
+                return Moves.DOWN;
             }
         }
     }

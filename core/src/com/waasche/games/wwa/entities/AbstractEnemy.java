@@ -3,14 +3,21 @@ package com.waasche.games.wwa.entities;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 
+import java.util.List;
+
 
 public abstract class AbstractEnemy {
 
-    public Sprite sprite;
+    public static final int TIME_TO_WAIT = 15;
+    public Sprite[] sprites;
 
     public Rectangle rect;
 
-    private String fileName;
+    private List<String> fileNames;
+
+    private int activeSpriteInd = 0;
+
+    private int wait = 0;
 
     public String name;
 
@@ -18,25 +25,26 @@ public abstract class AbstractEnemy {
 
     public int move;
 
-    public void setSprite(Sprite sprite){
-        this.sprite = sprite;
+    public void setSprites(Sprite[] sprite){
+        this.sprites = sprite;
     }
 
-    public String getFileName(){
-        return fileName;
+    public List<String> getFileNames(){
+        return fileNames;
     }
 
-    public void setFileName(String fileName){
-        this.fileName = fileName;
+    public void setFileNames(List<String> fileNames){
+        this.fileNames = fileNames;
     }
 
     public Sprite getSprite(){
-        return sprite;
+        return sprites[activeSpriteInd];
     }
 
     public abstract int getNextMove();
 
     public boolean isCollide(Rectangle cowboyRect){
+        Sprite sprite = sprites[activeSpriteInd];
         if(sprite.getBoundingRectangle().overlaps(cowboyRect)){
             return true;
         }
@@ -44,6 +52,7 @@ public abstract class AbstractEnemy {
     }
 
     public void move(){
+        Sprite sprite = sprites[activeSpriteInd];
         sprite.setX(sprite.getX() + movement[move].getX());
         sprite.setY(sprite.getY() + movement[move].getY());
         if(!rect.contains(sprite.getX(), sprite.getY())){
@@ -53,6 +62,14 @@ public abstract class AbstractEnemy {
             if(move == movement.length){
                 move = 0;
             }
+        }
+        wait++;
+        if(wait > TIME_TO_WAIT) {
+            activeSpriteInd++;
+            wait = 0;
+        }
+        if(activeSpriteInd == sprites.length){
+            activeSpriteInd = 0;
         }
     }
 

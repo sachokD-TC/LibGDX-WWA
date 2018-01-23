@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" nextobjectid="647">
+ <tileset firstgid="1" source="desert.tsx"/>
+ <layer name="Ground" width="40" height="40">
+  <data encoding="base64" compression="zlib">
+   eJztlrEOwjAMRKNuiK2CAShUwARISP3/n+NGiOrWtUzjVje8xbKjU+yLs0sp1UHZgy24BGWT6TuAIzhleVLcWjPGW9B3BTdwz/KluLXGen8P8ASvLE+KW2us+qIRdf4kfXPPXzsS+8f8dYoaj/mz9Mejp1p9lvfB403R6rP0x6OnQ/pK+bdN/V4p7d+p97ek/bE0/3aK8+hf7t9vSuxfz16vyb8a6F/6tw/t/4D+9dNH/07XR//+sub9GwHqoz7qG9bXgCooZ/AB/My0Sw==
+  </data>
+ </layer>
+ <objectgroup name="weapons">
+  <object id="630" x="324" y="514" width="24" height="30"/>
+  <object id="646" x="645" y="260" width="25" height="27"/>
+ </objectgroup>
+ <objectgroup name="boxes">
+  <object id="575" x="15.1515" y="-9.09091" width="1260.61" height="24.2424"/>
+  <object id="576" x="12.1212" y="1269.7" width="1260.61" height="24.2424"/>
+  <object id="579" x="1260.61" y="-9.09091" width="21.2121" height="1278.79"/>
+  <object id="580" x="-9.09091" y="-9.09091" width="21.2121" height="1278.79"/>
+ </objectgroup>
+ <objectgroup name="exit">
+  <object id="645" x="1187" y="67" width="22" height="21"/>
+ </objectgroup>
+ <objectgroup name="pic_objs">
+  <object id="581" x="1162" y="228" width="20" height="22"/>
+  <object id="582" x="1156" y="608" width="20" height="24"/>
+  <object id="583" x="1156" y="996" width="28" height="22"/>
+  <object id="632" x="998" y="226" width="22" height="22"/>
+  <object id="633" x="996" y="612" width="22" height="18"/>
+  <object id="634" x="996" y="996" width="20" height="18"/>
+  <object id="641" x="1064" y="806" width="15" height="14"/>
+  <object id="642" x="1093" y="806" width="21" height="18"/>
+  <object id="643" x="1062" y="391" width="23" height="14"/>
+  <object id="644" x="1093" y="390" width="22" height="14"/>
+ </objectgroup>
+ <objectgroup name="injury">
+  <object id="588" x="114" y="78" width="62" height="68"/>
+  <object id="589" x="304" y="78" width="62" height="68"/>
+  <object id="590" x="304" y="206" width="62" height="68"/>
+  <object id="591" x="112" y="208" width="62" height="68"/>
+  <object id="592" x="210" y="300" width="62" height="68"/>
+  <object id="593" x="302" y="398" width="62" height="68"/>
+  <object id="594" x="112" y="400" width="62" height="68"/>
+  <object id="595" x="206" y="496" width="62" height="68"/>
+  <object id="596" x="306" y="594" width="62" height="68"/>
+  <object id="597" x="110" y="590" width="62" height="68"/>
+  <object id="598" x="208" y="686" width="62" height="68"/>
+  <object id="599" x="306" y="784" width="62" height="68"/>
+  <object id="600" x="114" y="784" width="62" height="68"/>
+  <object id="601" x="210" y="876" width="62" height="68"/>
+  <object id="602" x="114" y="976" width="62" height="68"/>
+  <object id="603" x="306" y="976" width="62" height="68"/>
+  <object id="604" x="528" y="78" width="62" height="68"/>
+  <object id="605" x="720" y="78" width="62" height="68"/>
+  <object id="606" x="528" y="210" width="62" height="68"/>
+  <object id="607" x="718" y="206" width="62" height="68"/>
+  <object id="608" x="624" y="302" width="62" height="68"/>
+  <object id="609" x="530" y="398" width="62" height="68"/>
+  <object id="610" x="718" y="400" width="62" height="68"/>
+  <object id="611" x="626" y="496" width="62" height="68"/>
+  <object id="612" x="532" y="588" width="62" height="68"/>
+  <object id="613" x="722" y="590" width="62" height="68"/>
+  <object id="614" x="626" y="686" width="62" height="68"/>
+  <object id="615" x="528" y="782" width="62" height="68"/>
+  <object id="616" x="720" y="782" width="62" height="68"/>
+  <object id="617" x="622" y="878" width="62" height="68"/>
+  <object id="618" x="718" y="974" width="62" height="68"/>
+  <object id="619" x="530" y="974" width="62" height="68"/>
+ </objectgroup>
+</map>

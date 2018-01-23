@@ -21,7 +21,8 @@ public class Menu implements Screen {
     private SpriteBatch menuSpriteBatch;
     private Camera camera;
     private MainClass mainClass;
-    private String[] menuElements = {"Start", "About", "Exit", "Rating - "};
+    private String[] menuElements = {"Start", "About", "Clear Rating", "Rating - "};
+    private Label ratingLabel;
     private int ANDROID_WIDTH;
     private int ANDROID_HEIGHT;
 
@@ -62,18 +63,19 @@ public class Menu implements Screen {
         START_LEVEL = Integer.valueOf(GameProgress.getLastCopleted()).intValue();
         final Label startItem = getTextActor(ANDROID_WIDTH /2.5f, ANDROID_HEIGHT/2.2f + ANDROID_HEIGHT/12.5f, menuElements[0]);
         Actor aboutItem = getTextActor(ANDROID_WIDTH /2.5f, ANDROID_HEIGHT/2.2f - ANDROID_HEIGHT/12.5f, menuElements[1]);
-        Actor ratingItem = getTextActor(ANDROID_WIDTH / 2.5f, ANDROID_HEIGHT/2.2f - ANDROID_HEIGHT/12.5f*3, menuElements[3] + START_LEVEL);
-        Actor exitItem = getTextActor(ANDROID_WIDTH / 2.5f, ANDROID_HEIGHT/2.2f - ANDROID_HEIGHT/12.5f*5, menuElements[2]);
-        addListeners(startItem, aboutItem, exitItem);
+        ratingLabel = getTextActor(ANDROID_WIDTH / 2.5f, ANDROID_HEIGHT/2.2f - ANDROID_HEIGHT/12.5f*3, menuElements[3] + START_LEVEL);
+        Actor ratingItem = ratingLabel;
+        Actor clearRating = getTextActor(ANDROID_WIDTH / 2.5f, ANDROID_HEIGHT/2.2f - ANDROID_HEIGHT/12.5f*5, menuElements[2]);
+        addListeners(startItem, aboutItem, clearRating, ratingItem);
         menuStage.addActor(startItem);
         Gdx.input.setInputProcessor(menuStage);
         menuStage.addActor(startItem);
         menuStage.addActor(aboutItem);
         menuStage.addActor(ratingItem);
-        menuStage.addActor(exitItem);
+        menuStage.addActor(clearRating);
     }
 
-    private void addListeners(final Actor startItemText, final Actor aboutItem, final Actor exitItem){
+    private void addListeners(final Actor startItemText, final Actor aboutItem, final Actor clearRating, final Actor rateItem){
         startItemText.addListener(new InputListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 startItemText.setColor(Color.RED);
@@ -86,15 +88,18 @@ public class Menu implements Screen {
                 mainClass.showCurrentScreen();
             }
         });
-        exitItem.addListener(new InputListener(){
+        clearRating.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                exitItem.setColor(Color.RED);
-                dispose();
+                clearRating.setColor(Color.RED);
+                GameProgress.clear();
+                START_LEVEL = 0;
+                ratingLabel.setText(menuElements[3] + START_LEVEL);
+                ratingLabel.invalidate();
                 return true;
             }
 
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                exitItem.setColor(Color.BLACK);
+                clearRating.setColor(Color.BLACK);
             }
         });
     }

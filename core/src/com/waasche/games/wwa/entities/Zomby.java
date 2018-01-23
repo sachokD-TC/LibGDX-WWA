@@ -14,9 +14,9 @@ public class Zomby extends AbstractEnemy {
 
     public Zomby(){}
 
-    public Zomby(Sprite sprite, int move, Rectangle rectangle){
+    public Zomby(Sprite[] sprite, int move, Rectangle rectangle){
         setRect(rect);
-        setSprite(sprite);
+        setSprites(sprite);
         setMovement(movements);
     }
 
