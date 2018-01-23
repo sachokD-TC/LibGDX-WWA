@@ -23,8 +23,6 @@ public class Menu implements Screen {
     private MainClass mainClass;
     private String[] menuElements = {"Start", "About", "Clear Rating", "Rating - "};
     private Label ratingLabel;
-    private int ANDROID_WIDTH;
-    private int ANDROID_HEIGHT;
 
     public Menu(MainClass mainClass){
         this.mainClass = mainClass;
@@ -45,11 +43,11 @@ public class Menu implements Screen {
 
     @Override
     public void show() {
-        ANDROID_WIDTH = Gdx.graphics.getWidth();
-        ANDROID_HEIGHT = Gdx.graphics.getHeight();
+        MainClass.ANDROID_WIDTH = Gdx.graphics.getWidth();
+        MainClass.ANDROID_HEIGHT = Gdx.graphics.getHeight();
         menuSpriteBatch = new SpriteBatch();
         menuStage = new com.badlogic.gdx.scenes.scene2d.Stage();
-        camera = new OrthographicCamera(ANDROID_WIDTH, ANDROID_HEIGHT);
+        camera = new OrthographicCamera(MainClass.ANDROID_WIDTH, MainClass.ANDROID_HEIGHT);
         prepareStage();
 
     }
@@ -57,15 +55,15 @@ public class Menu implements Screen {
     private void prepareStage(){
         Texture texture = new Texture(Gdx.files.internal("pic/menu.png"));
         com.badlogic.gdx.scenes.scene2d.ui.Image actorMenuPic = new com.badlogic.gdx.scenes.scene2d.ui.Image(texture);
-        actorMenuPic.setScale((float)ANDROID_WIDTH/texture.getWidth(), (float)ANDROID_HEIGHT/texture.getHeight());
+        actorMenuPic.setScale((float)MainClass.ANDROID_WIDTH/texture.getWidth(), (float)MainClass.ANDROID_HEIGHT/texture.getHeight());
         actorMenuPic.setPosition(0,0);
         menuStage.addActor(actorMenuPic);
         START_LEVEL = Integer.valueOf(GameProgress.getLastCopleted()).intValue();
-        final Label startItem = getTextActor(ANDROID_WIDTH /2.5f, ANDROID_HEIGHT/2.2f + ANDROID_HEIGHT/12.5f, menuElements[0]);
-        Actor aboutItem = getTextActor(ANDROID_WIDTH /2.5f, ANDROID_HEIGHT/2.2f - ANDROID_HEIGHT/12.5f, menuElements[1]);
-        ratingLabel = getTextActor(ANDROID_WIDTH / 2.5f, ANDROID_HEIGHT/2.2f - ANDROID_HEIGHT/12.5f*3, menuElements[3] + START_LEVEL);
+        final Label startItem = getTextActor(MainClass.ANDROID_WIDTH /2.5f, MainClass.ANDROID_HEIGHT/2.2f + MainClass.ANDROID_HEIGHT/12.5f, menuElements[0]);
+        Actor aboutItem = getTextActor(MainClass.ANDROID_WIDTH /2.5f, MainClass.ANDROID_HEIGHT/2.2f - MainClass.ANDROID_HEIGHT/12.5f, menuElements[1]);
+        ratingLabel = getTextActor(MainClass.ANDROID_WIDTH / 2.5f, MainClass.ANDROID_HEIGHT/2.2f - MainClass.ANDROID_HEIGHT/12.5f*3, menuElements[3] + START_LEVEL);
         Actor ratingItem = ratingLabel;
-        Actor clearRating = getTextActor(ANDROID_WIDTH / 2.5f, ANDROID_HEIGHT/2.2f - ANDROID_HEIGHT/12.5f*5, menuElements[2]);
+        Actor clearRating = getTextActor(MainClass.ANDROID_WIDTH / 2.5f, MainClass.ANDROID_HEIGHT/2.2f - MainClass.ANDROID_HEIGHT/12.5f*5, menuElements[2]);
         addListeners(startItem, aboutItem, clearRating, ratingItem);
         menuStage.addActor(startItem);
         Gdx.input.setInputProcessor(menuStage);
@@ -95,6 +93,19 @@ public class Menu implements Screen {
                 START_LEVEL = 0;
                 ratingLabel.setText(menuElements[3] + START_LEVEL);
                 ratingLabel.invalidate();
+                return true;
+            }
+
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                clearRating.setColor(Color.BLACK);
+            }
+        });
+
+        aboutItem.addListener(new InputListener() {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                clearRating.setColor(Color.RED);
+                mainClass.setCurrentScreen(new AboutScreen(mainClass));
+                mainClass.showCurrentScreen();
                 return true;
             }
 

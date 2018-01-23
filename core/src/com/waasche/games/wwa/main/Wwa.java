@@ -68,8 +68,6 @@ public class Wwa implements Screen {
     private Stage stage;
     private TouchPadListener controleTouchListener;
     private TouchPadListener fireTouchListener;
-    private static int ANDROID_WIDTH;
-    private static int ANDROID_HEIGHT;
     private static float CONTROL_WIDTH;
     private static float CONTROL_HEIGHT;
     private Level level;
@@ -94,6 +92,8 @@ public class Wwa implements Screen {
     private AbstractPlayer player;
     private Image controleImage;
     private Image bulletScore;
+    private Image fireImage;
+    private Image fireImageOff;
 
 
     public Wwa(int levelInd, boolean soundOn, MainClass mainClass) {
@@ -108,13 +108,16 @@ public class Wwa implements Screen {
     private void prepareControls() {
         controleImage = prepareImage(CONTROL_WIDTH - CONTROL_WIDTH / 2f, CONTROL_HEIGHT - CONTROL_HEIGHT / 2f, "pic/circle.png");
         controleImage.setSize(CONTROL_WIDTH, CONTROL_HEIGHT);
-        Image fireImage = prepareImage(ANDROID_WIDTH - scorePic.getWidth(), CONTROL_HEIGHT, "pic/fire.png");
+        fireImage = prepareImage(MainClass.ANDROID_WIDTH - scorePic.getWidth(), CONTROL_HEIGHT, "pic/fire.png");
+        fireImageOff = prepareImage(MainClass.ANDROID_WIDTH - scorePic.getWidth(), CONTROL_HEIGHT, "pic/fire1.png");
+        fireImageOff.setVisible(false);
         controleTouchListener = new TouchPadListener();
         controleImage.addListener(controleTouchListener);
         fireTouchListener = new TouchPadListener();
         fireImage.addListener(fireTouchListener);
         stage.addActor(controleImage);
         stage.addActor(fireImage);
+        stage.addActor(fireImageOff);
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -128,12 +131,12 @@ public class Wwa implements Screen {
     private void setupStage() {
         scoreBarch = new SpriteBatch();
         com.badlogic.gdx.scenes.scene2d.ui.Image actorScores = new com.badlogic.gdx.scenes.scene2d.ui.Image(scorePic);
-        actorScores.setPosition(ANDROID_WIDTH - scorePic.getWidth(), +scorePic.getHeight() * 0.2f);
+        actorScores.setPosition(MainClass.ANDROID_WIDTH - scorePic.getWidth(), +scorePic.getHeight() * 0.2f);
         stage = new Stage();
-        cactusesText = getTextActor(ANDROID_WIDTH - scorePic.getWidth() * 0.7f, scorePic.getHeight() * 0.6f, "" + cactuses);
-        energyText = getTextActor(ANDROID_WIDTH - scorePic.getWidth() / 9, scorePic.getHeight() * 0.6f, "" + energy);
+        cactusesText = getTextActor(MainClass.ANDROID_WIDTH - scorePic.getWidth() * 0.7f, scorePic.getHeight() * 0.6f, "" + cactuses);
+        energyText = getTextActor(MainClass.ANDROID_WIDTH - scorePic.getWidth() / 9, scorePic.getHeight() * 0.6f, "" + energy);
         bulletScore = new Image(bullet);
-        bulletScore.setPosition(ANDROID_WIDTH - scorePic.getWidth() * 0.55f, scorePic.getHeight() * 0.8f);
+        bulletScore.setPosition(MainClass.ANDROID_WIDTH - scorePic.getWidth() * 0.55f, scorePic.getHeight() * 0.8f);
         bulletScore.setRotation(-90f);
         bulletScore.setScale(2f);
         bulletScore.setVisible(false);
@@ -241,11 +244,11 @@ public class Wwa implements Screen {
     @Override
     public void show() {
         batch = new SpriteBatch();
-        ANDROID_WIDTH = Gdx.graphics.getWidth();
-        ANDROID_HEIGHT = Gdx.graphics.getHeight();
-        CONTROL_HEIGHT = ANDROID_HEIGHT / 5.4f;
-        CONTROL_WIDTH = ANDROID_WIDTH / 5.4f;
-        camera = new OrthographicCamera(ANDROID_WIDTH / 2, ANDROID_HEIGHT / 2);
+        MainClass.ANDROID_WIDTH = Gdx.graphics.getWidth();
+        MainClass.ANDROID_HEIGHT = Gdx.graphics.getHeight();
+        CONTROL_HEIGHT = MainClass.ANDROID_HEIGHT / 5.4f;
+        CONTROL_WIDTH = MainClass.ANDROID_WIDTH / 5.4f;
+        camera = new OrthographicCamera(MainClass.ANDROID_WIDTH / 2, MainClass.ANDROID_HEIGHT / 2);
         setTileMap();
         camera.update();
         setupStage();
@@ -286,6 +289,8 @@ public class Wwa implements Screen {
         }
         if ((Gdx.input.isKeyPressed(Input.Keys.SPACE) || fireTouchListener.isTouchDown()) && weapons != 0) {
             bulletStart = true;
+            fireImageOff.setVisible(true);
+            fireImage.setVisible(false);
             bulletSprite = new Sprite(bullet);
             bulletSprite.setPosition(camera.position.x, camera.position.y);
             weapons--;
@@ -331,6 +336,8 @@ public class Wwa implements Screen {
             float bulletX = bulletSprite.getX();
             float bulletY = bulletSprite.getY();
             if (bulletRide > 100) {
+                fireImageOff.setVisible(false);
+                fireImage.setVisible(true);
                 bulletStart = false;
                 bulletRide = 0;
             } else {
@@ -381,7 +388,7 @@ public class Wwa implements Screen {
 
     private Moves getMoveByTouchedCircle() {
         float x = Gdx.input.getX() - controleImage.getX() * 2;
-        float z = Gdx.input.getY() - ANDROID_HEIGHT + CONTROL_HEIGHT + 25;
+        float z = Gdx.input.getY() - MainClass.ANDROID_HEIGHT + CONTROL_HEIGHT + 25;
         if (java.lang.Math.abs(x) > java.lang.Math.abs(z)) {
             if (x < 0) {
                 return Moves.LEFT;
@@ -400,7 +407,7 @@ public class Wwa implements Screen {
     private void setGameOverPicture() {
         Texture texture = new Texture(Gdx.files.internal("pic/game_over.png"));
         gameOverPic = new com.badlogic.gdx.scenes.scene2d.ui.Image(texture);
-        gameOverPic.setScale((float) ANDROID_WIDTH / texture.getWidth(), (float) ANDROID_HEIGHT / texture.getHeight());
+        gameOverPic.setScale((float) MainClass.ANDROID_WIDTH / texture.getWidth(), (float) MainClass.ANDROID_HEIGHT / texture.getHeight());
         gameOverPic.setPosition(0, 0);
         gameOverPic.addListener(new ClickListener() {
                                     @Override

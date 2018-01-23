@@ -7,6 +7,8 @@ import com.waasche.games.wwa.util.GameProgress;
 
 public class MainClass extends ApplicationAdapter {
 
+    public static int ANDROID_HEIGHT;
+    static int ANDROID_WIDTH;
     private Screen currentScreen;
 
     @Override
