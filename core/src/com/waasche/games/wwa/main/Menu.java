@@ -3,15 +3,14 @@ package com.waasche.games.wwa.main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.utils.Align;
 import com.waasche.games.wwa.util.GameProgress;
+import com.waasche.games.wwa.util.MenuElementsUtil;
 
 
 public class Menu implements Screen {
@@ -28,18 +27,6 @@ public class Menu implements Screen {
         this.mainClass = mainClass;
     }
 
-    private Label getTextActor(float xPos, float yPos, String text) {
-        Label.LabelStyle textStyle = new Label.LabelStyle();;
-        textStyle.font = new BitmapFont();
-        Label label = new Label(text,textStyle);
-        label.setFontScale(5f, 5f);
-        label.setAlignment(Align.center);
-        label.setPosition(xPos, yPos);
-        label.setBounds(xPos, yPos, text.length()*100f, 200f);
-        label.setColor(Color.BLACK);
-        label.setBounds(xPos,yPos, 100,100);
-        return label;
-    }
 
     @Override
     public void show() {
@@ -59,11 +46,11 @@ public class Menu implements Screen {
         actorMenuPic.setPosition(0,0);
         menuStage.addActor(actorMenuPic);
         START_LEVEL = Integer.valueOf(GameProgress.getLastCopleted()).intValue();
-        final Label startItem = getTextActor(MainClass.ANDROID_WIDTH /2.5f, MainClass.ANDROID_HEIGHT/2.2f + MainClass.ANDROID_HEIGHT/12.5f, menuElements[0]);
-        Actor aboutItem = getTextActor(MainClass.ANDROID_WIDTH /2.5f, MainClass.ANDROID_HEIGHT/2.2f - MainClass.ANDROID_HEIGHT/12.5f, menuElements[1]);
-        ratingLabel = getTextActor(MainClass.ANDROID_WIDTH / 2.5f, MainClass.ANDROID_HEIGHT/2.2f - MainClass.ANDROID_HEIGHT/12.5f*3, menuElements[3] + START_LEVEL);
+        final Label startItem = MenuElementsUtil.getTextActor(MainClass.ANDROID_WIDTH / 2.5f, MainClass.ANDROID_HEIGHT / 2.2f + MainClass.ANDROID_HEIGHT / 15.5f, menuElements[0]);
+        Actor aboutItem = MenuElementsUtil.getTextActor(MainClass.ANDROID_WIDTH / 2.5f, MainClass.ANDROID_HEIGHT / 2.2f - MainClass.ANDROID_HEIGHT / 15.5f, menuElements[1]);
+        ratingLabel = MenuElementsUtil.getTextActor(MainClass.ANDROID_WIDTH / 2.5f, MainClass.ANDROID_HEIGHT / 2.2f - MainClass.ANDROID_HEIGHT / 15.5f * 3, menuElements[3] + START_LEVEL);
         Actor ratingItem = ratingLabel;
-        Actor clearRating = getTextActor(MainClass.ANDROID_WIDTH / 2.5f, MainClass.ANDROID_HEIGHT/2.2f - MainClass.ANDROID_HEIGHT/12.5f*5, menuElements[2]);
+        Actor clearRating = MenuElementsUtil.getTextActor(MainClass.ANDROID_WIDTH / 2.5f, MainClass.ANDROID_HEIGHT / 2.2f - MainClass.ANDROID_HEIGHT / 15.5f * 5, menuElements[2]);
         addListeners(startItem, aboutItem, clearRating, ratingItem);
         menuStage.addActor(startItem);
         Gdx.input.setInputProcessor(menuStage);
