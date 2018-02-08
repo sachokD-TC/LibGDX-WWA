@@ -25,55 +25,75 @@ public abstract class AbstractEnemy {
 
     public int move;
 
-    public void setSprites(Sprite[] sprite){
+    public Boolean isFlipped = false;
+
+    public void setSprites(Sprite[] sprite) {
         this.sprites = sprite;
     }
 
-    public List<String> getFileNames(){
+    public List<String> getFileNames() {
         return fileNames;
     }
 
-    public void setFileNames(List<String> fileNames){
+    public void setFileNames(List<String> fileNames) {
         this.fileNames = fileNames;
     }
 
-    public Sprite getSprite(){
+    public Sprite getSprite() {
         return sprites[activeSpriteInd];
     }
 
     public abstract int getNextMove();
 
-    public boolean isCollide(Rectangle cowboyRect){
+    public abstract String getName();
+
+    public boolean isCollide(Rectangle cowboyRect) {
         Sprite sprite = sprites[activeSpriteInd];
-        if(sprite.getBoundingRectangle().overlaps(cowboyRect)){
+        if (sprite.getBoundingRectangle().overlaps(cowboyRect)) {
             return true;
         }
         return false;
     }
 
-    public void move(){
+
+    public void flip() {
+        if (getMove() == Movement.LEFT && !this.isFlipped) {
+            getSprite().flip(true, false);
+            this.isFlipped = true;
+        } else if (getMove() == Movement.RIGHT && this.isFlipped) {
+            getSprite().flip(true, false);
+            this.isFlipped = false;
+        }
+    }
+
+
+    public void move() {
         Sprite sprite = sprites[activeSpriteInd];
-        sprite.setX(sprite.getX() + movement[move].getX());
-        sprite.setY(sprite.getY() + movement[move].getY());
-        if(!rect.contains(sprite.getX(), sprite.getY())){
-            sprite.setX(sprite.getX() - movement[move].getX());
-            sprite.setY(sprite.getY() - movement[move].getY());
+        sprite.setX(sprite.getX() + getMove().getX());
+        sprite.setY(sprite.getY() + getMove().getY());
+        if (!rect.contains(sprite.getX(), sprite.getY())) {
+            sprite.setX(sprite.getX() - getMove().getX());
+            sprite.setY(sprite.getY() - getMove().getY());
             move = getNextMove();
-            if(move == movement.length){
+            if (move == movement.length) {
                 move = 0;
             }
         }
         wait++;
-        if(wait > TIME_TO_WAIT) {
+        if (wait > TIME_TO_WAIT) {
             activeSpriteInd++;
             wait = 0;
         }
-        if(activeSpriteInd == sprites.length){
+        if (activeSpriteInd == sprites.length) {
             activeSpriteInd = 0;
         }
     }
 
-    public Rectangle getRect(){
+    public Movement getMove() {
+        return movement[move];
+    }
+
+    public Rectangle getRect() {
         return rect;
     }
 
@@ -81,7 +101,7 @@ public abstract class AbstractEnemy {
         this.rect = rect;
     }
 
-    public void setMovement(Movement[] movement){
+    public void setMovement(Movement[] movement) {
         this.movement = movement;
     }
 }

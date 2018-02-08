@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" nextobjectid="575">
+<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" nextobjectid="576">
  <tileset firstgid="1" source="desert.tsx"/>
  <objectgroup name="boxes">
   <object id="292" x="177" y="35" width="258" height="78"/>
@@ -225,7 +225,10 @@
  </objectgroup>
  <layer name="Ground" width="40" height="40">
   <data encoding="base64" compression="zlib">
-   eJzNWMtuwkAMXPVW9Va1h0ILpLxCAwX+/+e6kWJpGMbeDfTAwRIkXnvWO35s3lJKrw8q71lesnzfKKssPyTrLPsskywH0sfnqwr9Z8C3Ih812Los80Fmg+xgvWfT1vb6jdin6SK+JfjZibjwetNnfOizS5e4bT0/78hWI/D1MZ6SH08aOJOJWGc++9/nSpuzAdsHnDPisxjOBp1JwT+e197RM1tTYZefTSl2in+d438p/DbpmmO2fk56S7DLujv4H+FbCruM7yzeIw89LuD+WtLfUJwxNh7/WtKL4oc85HObCnxHZz+op/JD4cDYI4+2dFaKC+YP/Sr+qZwr5UfNOal9rFOMDznDOYU2FP+QS0fybzlfigPWFcPFz7j32LsWbCj+RfFr0vXZYRx6jItgP5YHXo32/DE+r+YqfKquMI6aGs15EtVn7uXMDaxZvP+I+7U6p+TXPyVRvnhnwnvDvC/VLLbD+HDmYT+bdN33MA5oF3ON855nB8Rfkx/zdJnriJExeDmDsxfjY26ouqXyA21uSU9hiPBhz7O663FSvVf4VB+1WNfgM10+uwPpKXy4ZlHAp3oDzxooatbkvoJ6p8B+FD8v5zwZM3di/fDeoc/SfIB7UlhxphyL0auH2G9q5xePv1yvFV4Vqy39Z75wn67FV7qfqPtQKW42z6P0e2pH4sN6qWZRq5c12Iyz6n6lZvcSvnm6rNdqFlX93fOrzhXv57X5wZxSd1OFD+td7XmrGlSDj+8Xqsep+wDX6FuE8fEsyzi435f4WsLWFv4zPvNj93e+5zE+3o+tWTh41NwT8TPC5/WzTryPamQr/EUzcC0+1PPi4dkr3Q+8Gdj8bNI4fJF4c7Hipnrv5bi6f5TwMb/wfmZ9zOtVqo54Or8U6xI+4/WBzs72V/omh/lm/1k4f/AbKuPzeBUJc85ijN/yuC+y8Hfd/8TnYY381orh8/Z3r/17pcf3meXpQeUryx8GtsFx
+   eJzNWMtuwkAMXPVW9Va1h5I2kPIKDZTS//+4biQsDcPYu0APHCxB4rVnvePH5iWl9Hyn8prlKcvnlbLI8kWyzLLNMsmyI318vqjQfwR8C/JRg23IMj1Ke5QNrPds2trfLJ3Yp+kivjn42Yi48HrTZ3wt+BwIt63n5wPZ6gS+McYN+fGkgzOZiHXmc/x9qLTZHrG9wTkjPothe9SZFPzjeW0dPbPVCLv8rKHYKf4Njv+58Nulc47Z+inpzcEu627gf4RvLuwyvoN4jzz0uID760l/RXHG2Hj860kvih/ykM+tEfj2zn5QT+WHwoGxRx6t6awUF8wf+lX8UzlXyo+ac1L7WKYYH3KGcwptKP4hl/bk33K+FAesK4aLn3HvsXc92FD8i+LXpfOzwziMGGfBfiwPvBrt+WN8Xs1V+FRdYRw1NZrzJKrP3MuZG1izeP8R92t1fpJf/5RE+eKdCe8N875Us9gO48OZh/2s0nnfwzigXcw1znueHRB/TX5M02muI0bG4OUMzl6Mj7mh6pbKD7S5Jj2FIcKHPc/qrsdJ9V7hU33UYl2Dz3T57Hakp/DhmlkBn+oNPGugqFmT+wrq/QT2o/h5OefJJXMn1g/vHfoszQe4J4UVZ8pLMXr1EPtN7fzi8ZfrtcKrYrWm/8wX7tO1+Er3E3UfKsXN5nmUcU/9hfiwXqpZ1OplDTbjrLpfqdm9hG+aTuu1mkVVf/f8qnPF+3ltfjCn1N1U4cN6V3veqgbV4OP7hepx6j7ANfoaYXw8yzIO7vclvpaw9YX/jM/82P2d73mMj/dja2YOHjX3RPyM8Hn9bBDvoxrZC3/RDFyLD/W8eHj2SvcDbwY2P6t0Gb5IvLlYcVO993Jc3T9K+JhfeD+zPub1KlVHPJ1vinUJn/F6R2dn+yt9k8N8s/8snD/4DZXxebyKhDlnMcZvedwXWfi77n/i87BGfmvF8Hn7u9X+rTLie8/ycKfykeUP2BXBhQ==
   </data>
  </layer>
+ <objectgroup name="Lives">
+  <object id="575" x="1001" y="73" width="17" height="14"/>
+ </objectgroup>
 </map>

@@ -19,7 +19,6 @@ public class AboutScreen implements Screen {
     private Stage stage;
 
     public AboutScreen(MainClass mainClass) {
-        Gdx.input.setCatchBackKey(true);
         this.mainClass = mainClass;
         Texture texture = new Texture(Gdx.files.internal("pic/menu.png"));
         com.badlogic.gdx.scenes.scene2d.ui.Image actorMenuPic = new com.badlogic.gdx.scenes.scene2d.ui.Image(texture);

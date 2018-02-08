@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.waasche.games.wwa.util.GameProgress;
+import com.waasche.games.wwa.util.LevelService;
 import com.waasche.games.wwa.util.MenuElementsUtil;
 
 
@@ -36,7 +37,6 @@ public class Menu implements Screen {
         menuStage = new com.badlogic.gdx.scenes.scene2d.Stage();
         camera = new OrthographicCamera(MainClass.ANDROID_WIDTH, MainClass.ANDROID_HEIGHT);
         prepareStage();
-
     }
 
     private void prepareStage(){
@@ -45,7 +45,7 @@ public class Menu implements Screen {
         actorMenuPic.setScale((float)MainClass.ANDROID_WIDTH/texture.getWidth(), (float)MainClass.ANDROID_HEIGHT/texture.getHeight());
         actorMenuPic.setPosition(0,0);
         menuStage.addActor(actorMenuPic);
-        START_LEVEL = Integer.valueOf(GameProgress.getLastCopleted()).intValue();
+        START_LEVEL = Integer.valueOf(GameProgress.getLastCompleted());
         final Label startItem = MenuElementsUtil.getTextActor(MainClass.ANDROID_WIDTH / 2.5f, MainClass.ANDROID_HEIGHT / 2.2f + MainClass.ANDROID_HEIGHT / 15.5f, menuElements[0]);
         Actor aboutItem = MenuElementsUtil.getTextActor(MainClass.ANDROID_WIDTH / 2.5f, MainClass.ANDROID_HEIGHT / 2.2f - MainClass.ANDROID_HEIGHT / 15.5f, menuElements[1]);
         ratingLabel = MenuElementsUtil.getTextActor(MainClass.ANDROID_WIDTH / 2.5f, MainClass.ANDROID_HEIGHT / 2.2f - MainClass.ANDROID_HEIGHT / 15.5f * 3, menuElements[3] + START_LEVEL);
@@ -69,7 +69,11 @@ public class Menu implements Screen {
             }
 
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                mainClass.setCurrentScreen(new Wwa(START_LEVEL, true, mainClass));
+                if(!new LevelService().isMaxLevelIndex(START_LEVEL)) {
+                    mainClass.setCurrentScreen(new Wwa(START_LEVEL, true, mainClass));
+                } else {
+                    mainClass.setCurrentScreen(new FinalScreen(mainClass));
+                }
                 mainClass.showCurrentScreen();
             }
         });
@@ -90,7 +94,6 @@ public class Menu implements Screen {
 
         aboutItem.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                clearRating.setColor(Color.RED);
                 mainClass.setCurrentScreen(new AboutScreen(mainClass));
                 mainClass.showCurrentScreen();
                 return true;

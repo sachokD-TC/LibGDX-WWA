@@ -17,7 +17,7 @@ public class GameProgress {
         progress.flush();
     }
 
-    public static String getLastCopleted(){
+    public static String getLastCompleted(){
         if(progress.getString(COMPLETED).equals("")){
             return "0";
         }

@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.waasche.games.wwa;
 
 import android.os.Bundle;
 

@@ -10,6 +10,8 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class Zomby extends AbstractEnemy {
 
+    public static final String ZOMBY = "Zomby";
+
     private Movement[] movements = new Movement[]{Movement.UP, Movement.RIGHT, Movement.RIGHT_UP, Movement.DOWN, Movement.LEFT_DOWN, Movement.LEFT};
 
     public Zomby(){}
@@ -25,4 +27,10 @@ public class Zomby extends AbstractEnemy {
     public int getNextMove() {
         return ThreadLocalRandom.current().nextInt(0, movements.length-1);
     }
+
+    @Override
+    public String getName() {
+        return ZOMBY;
+    }
+
 }

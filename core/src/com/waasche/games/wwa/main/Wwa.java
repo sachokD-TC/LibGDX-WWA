@@ -21,13 +21,15 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.waasche.games.wwa.entities.Level;
-import com.waasche.games.wwa.entities.Levels;
 import com.waasche.games.wwa.sound.AbstractPlayer;
 import com.waasche.games.wwa.sound.Vibration;
 import com.waasche.games.wwa.util.GameProgress;
+import com.waasche.games.wwa.util.LevelService;
 import com.waasche.games.wwa.util.Moves;
 import com.waasche.games.wwa.view.EnemiesRenderer;
 import com.waasche.games.wwa.view.OrthogonalTiledMapRendererWithSprites;
@@ -46,6 +48,7 @@ public class Wwa implements Screen {
     public static final String INJURY_LAYER = "injury";
     private static final String BOXES_LAYER = "boxes";
     public static final String GROUND_LAYER = "Ground";
+    public static final String LIVES_LAYER_NAME = "Lives";
     private SpriteBatch batch;
     com.badlogic.gdx.scenes.scene2d.ui.Image gameOverPic;
     private Map<String, List<Texture>> cowboy = new HashMap<>();
@@ -66,7 +69,6 @@ public class Wwa implements Screen {
     private Label energyText;
     private SpriteBatch scoreBarch;
     private Stage stage;
-    private TouchPadListener controleTouchListener;
     private TouchPadListener fireTouchListener;
     private static float CONTROL_WIDTH;
     private static float CONTROL_HEIGHT;
@@ -81,6 +83,7 @@ public class Wwa implements Screen {
     private int bulletRide = 0;
     private List<TiledMapTileLayer.Cell> cactusesCells = new ArrayList<>();
     private List<TiledMapTileLayer.Cell> weaponCells = new ArrayList<>();
+    private List<TiledMapTileLayer.Cell> energyCells = new ArrayList<>();
     private int cactuses = 0;
     private int weapons = 0;
     public static final int EMPTY_CELL_NUMBER = 30;
@@ -94,30 +97,32 @@ public class Wwa implements Screen {
     private Image bulletScore;
     private Image fireImage;
     private Image fireImageOff;
-
+    private LevelService levelService = new LevelService();
+    private Touchpad touchpad;
 
     public Wwa(int levelInd, boolean soundOn, MainClass mainClass) {
         this.levelInd = levelInd;
-        Levels levels = new Levels("map/levels.json");
-        level = levels.getLevelsList().getLevels().get(levelInd);
+        level = levelService.getLevel(levelInd);
         this.mainClass = mainClass;
         player = new Vibration(soundOn);
     }
 
 
     private void prepareControls() {
-        controleImage = prepareImage(CONTROL_WIDTH - CONTROL_WIDTH / 2f, CONTROL_HEIGHT - CONTROL_HEIGHT / 2f, "pic/circle.png");
-        controleImage.setSize(CONTROL_WIDTH, CONTROL_HEIGHT);
+        Skin touchpadSkin = new Skin();
+        touchpadSkin.add("touchBackground", new Texture("pic/circle.png"));
+        Touchpad.TouchpadStyle ts = new Touchpad.TouchpadStyle();
+        ts.background = touchpadSkin.getDrawable("touchBackground");
+        touchpad = new Touchpad(10, ts);
+        touchpad.setBounds(CONTROL_WIDTH - CONTROL_WIDTH / 2f, CONTROL_HEIGHT - CONTROL_HEIGHT / 2f, CONTROL_WIDTH, CONTROL_HEIGHT);
         fireImage = prepareImage(MainClass.ANDROID_WIDTH - scorePic.getWidth(), CONTROL_HEIGHT, "pic/fire.png");
         fireImageOff = prepareImage(MainClass.ANDROID_WIDTH - scorePic.getWidth(), CONTROL_HEIGHT, "pic/fire1.png");
         fireImageOff.setVisible(false);
-        controleTouchListener = new TouchPadListener();
-        controleImage.addListener(controleTouchListener);
         fireTouchListener = new TouchPadListener();
         fireImage.addListener(fireTouchListener);
-        stage.addActor(controleImage);
         stage.addActor(fireImage);
         stage.addActor(fireImageOff);
+        stage.addActor(touchpad);
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -171,7 +176,7 @@ public class Wwa implements Screen {
         scoreBarch.begin();
         cactusesText.setText("" + cactuses);
         energyText.setText("" + energy);
-        if (weapons != 0 ) {
+        if (weapons != 0) {
             bulletScore.setVisible(true);
         }
         stage.draw();
@@ -183,7 +188,7 @@ public class Wwa implements Screen {
         camera.translate(cowboyX, cowboyY, 0);
         sprite.setPosition(camera.position.x, camera.position.y);
         for (MapLayer layer : map.getLayers()) {
-            if (layer.getName().equals(PIC_OBJS_LAYER) || (layer.getName().equals(WEAPON_LAYER) && weapons == 0)) {
+            if (layer.getName().equals(PIC_OBJS_LAYER) || (layer.getName().equals(WEAPON_LAYER) && weapons == 0) || layer.getName().equals(LIVES_LAYER_NAME)) {
                 for (MapObject object : layer.getObjects()) {
                     if (object instanceof RectangleMapObject) {
                         Rectangle rect = ((RectangleMapObject) object).getRectangle();
@@ -199,6 +204,10 @@ public class Wwa implements Screen {
                             if (layer.getName().equals(WEAPON_LAYER) && !weaponCells.contains(overCell) && !overCell.equals(emptyCell)) {
                                 weaponCells.add(overCell);
                                 weapons++;
+                            }
+                            if (layer.getName().equals(LIVES_LAYER_NAME) && !energyCells.contains(overCell) && !overCell.equals(emptyCell)) {
+                                energyCells.add(overCell);
+                                energy = 100;
                             }
                             groundLayer.setCell(cellX, cellY, emptyCell);
                         }
@@ -246,8 +255,8 @@ public class Wwa implements Screen {
         batch = new SpriteBatch();
         MainClass.ANDROID_WIDTH = Gdx.graphics.getWidth();
         MainClass.ANDROID_HEIGHT = Gdx.graphics.getHeight();
-        CONTROL_HEIGHT = MainClass.ANDROID_HEIGHT / 5.4f;
-        CONTROL_WIDTH = MainClass.ANDROID_WIDTH / 5.4f;
+        CONTROL_HEIGHT = MainClass.ANDROID_HEIGHT / 4f;
+        CONTROL_WIDTH = MainClass.ANDROID_WIDTH / 4f;
         camera = new OrthographicCamera(MainClass.ANDROID_WIDTH / 2, MainClass.ANDROID_HEIGHT / 2);
         setTileMap();
         camera.update();
@@ -268,7 +277,7 @@ public class Wwa implements Screen {
             setGameOverPicture();
         }
         Moves move = Moves.NONE;
-        if (controleTouchListener.isTouchDown()) {
+        if (touchpad.isTouched()) {
             move = getMoveByTouchedCircle();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT) || move.equals(move.LEFT)) {
@@ -373,8 +382,12 @@ public class Wwa implements Screen {
             player.playEnergyLoss();
         }
         if (isNewLevel) {
-            GameProgress.setCompleted("" + (levelInd + 1));
-            mainClass.setCurrentScreen(new Wwa(levelInd + 1, player.isSoundOn(), mainClass));
+            if (!levelService.isMaxLevelIndex(levelInd + 1)) {
+                GameProgress.setCompleted("" + (levelInd + 1));
+                mainClass.setCurrentScreen(new Wwa(levelInd + 1, player.isSoundOn(), mainClass));
+            } else {
+                mainClass.setCurrentScreen(new FinalScreen(mainClass));
+            }
             mainClass.showCurrentScreen();
             this.dispose();
         }
@@ -387,16 +400,16 @@ public class Wwa implements Screen {
 
 
     private Moves getMoveByTouchedCircle() {
-        float x = Gdx.input.getX() - controleImage.getX() * 2;
-        float z = Gdx.input.getY() - MainClass.ANDROID_HEIGHT + CONTROL_HEIGHT + 25;
-        if (java.lang.Math.abs(x) > java.lang.Math.abs(z)) {
-            if (x < 0) {
-                return Moves.LEFT;
-            } else {
+        float x = touchpad.getKnobPercentX();
+        float y = touchpad.getKnobPercentY();
+        if (java.lang.Math.abs(x) > java.lang.Math.abs(y)) {
+            if (x > 0) {
                 return Moves.RIGHT;
+            } else {
+                return Moves.LEFT;
             }
         } else {
-            if (z < 0) {
+            if (y > 0) {
                 return Moves.UP;
             } else {
                 return Moves.DOWN;

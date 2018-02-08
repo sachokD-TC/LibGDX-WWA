@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by sadm on 10/11/2017.
  */
-public class EnemiesRenderer  {
+public class EnemiesRenderer {
 
     public static final String ACTOR_FOLDER = "actor/";
     private SpriteBatch spriteBatch;
@@ -24,17 +24,17 @@ public class EnemiesRenderer  {
     private float bulletY;
 
 
-    public EnemiesRenderer(Level level, SpriteBatch spriteBatch){
+    public EnemiesRenderer(Level level, SpriteBatch spriteBatch) {
         this.enemies = level.getEnemies();
         this.spriteBatch = spriteBatch;
         prepareEnemiesSprites();
     }
 
-    private void prepareEnemiesSprites(){
+    private void prepareEnemiesSprites() {
         for (AbstractEnemy enemy : enemies) {
             List<String> fileNames = enemy.getFileNames();
             Sprite[] sprites = new Sprite[fileNames.size()];
-            for(int i=0; i!=fileNames.size();i++) {
+            for (int i = 0; i != fileNames.size(); i++) {
                 Sprite sprite = new Sprite(new Texture(Gdx.files.internal(ACTOR_FOLDER + fileNames.get(i))));
                 sprite.setPosition(enemy.getRect().getX(), enemy.getRect().getY());
                 sprites[i] = sprite;
@@ -43,21 +43,22 @@ public class EnemiesRenderer  {
         }
     }
 
-    public void render(){
+    public void render() {
         spriteBatch.begin();
         isCollide = false;
         AbstractEnemy enemyToRemove = null;
         for (AbstractEnemy enemy : enemies) {
             enemy.move();
+            enemy.flip();
             enemy.getSprite().draw(spriteBatch);
-            if(!isCollide) {
-              isCollide = enemy.isCollide(cowboySprite.getBoundingRectangle());
+            if (!isCollide) {
+                isCollide = enemy.isCollide(cowboySprite.getBoundingRectangle());
             }
-            if(enemy.getSprite().getBoundingRectangle().contains(bulletX,bulletY)){
+            if (enemy.getSprite().getBoundingRectangle().contains(bulletX, bulletY)) {
                 enemyToRemove = enemy;
             }
         }
-        if(enemyToRemove != null){
+        if (enemyToRemove != null) {
             enemies.remove(enemyToRemove);
         }
         spriteBatch.end();
@@ -67,7 +68,7 @@ public class EnemiesRenderer  {
         this.cowboySprite = cowboySprite;
     }
 
-    public boolean isCollide(){
+    public boolean isCollide() {
         return isCollide;
     }
 
