@@ -19,6 +19,8 @@ public abstract class AbstractEnemy {
 
     private int wait = 0;
 
+    private int energyLoss;
+
     public String name;
 
     private Movement[] movement = {Movement.UP, Movement.RIGHT, Movement.DOWN, Movement.LEFT};
@@ -45,7 +47,13 @@ public abstract class AbstractEnemy {
 
     public abstract int getNextMove();
 
-    public abstract String getName();
+    public void setEnergyLoss(int energyLoss){
+        this.energyLoss = energyLoss;
+    }
+
+    public int getEnergyLoss(){
+        return energyLoss;
+    }
 
     public boolean isCollide(Rectangle cowboyRect) {
         Sprite sprite = sprites[activeSpriteInd];

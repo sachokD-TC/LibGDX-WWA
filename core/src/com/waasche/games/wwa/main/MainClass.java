@@ -2,7 +2,8 @@ package com.waasche.games.wwa.main;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Screen;
-import com.waasche.games.wwa.util.GameProgress;
+import com.waasche.games.wwa.resources.Assets;
+import com.waasche.games.wwa.util.GameSettings;
 
 
 public class MainClass extends ApplicationAdapter {
@@ -13,8 +14,9 @@ public class MainClass extends ApplicationAdapter {
 
     @Override
     public void create(){
+        Assets.load();
+        GameSettings.load();
         currentScreen = new Menu(this);
-        GameProgress.load();
         showCurrentScreen();
     }
 

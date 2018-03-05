@@ -5,32 +5,25 @@ import com.badlogic.gdx.math.Rectangle;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-/**
- * Created by sadm on 11/7/2017.
- */
 public class Zomby extends AbstractEnemy {
 
-    public static final String ZOMBY = "Zomby";
+    public static final String ZOMBY = "zomby";
 
     private Movement[] movements = new Movement[]{Movement.UP, Movement.RIGHT, Movement.RIGHT_UP, Movement.DOWN, Movement.LEFT_DOWN, Movement.LEFT};
 
     public Zomby(){}
 
-    public Zomby(Sprite[] sprite, int move, Rectangle rectangle){
+    public Zomby(Sprite[] sprite, int move, Rectangle rectangle, int energyLoss){
         setRect(rect);
         setSprites(sprite);
         setMovement(movements);
+        setEnergyLoss(10);
     }
 
 
     @Override
     public int getNextMove() {
         return ThreadLocalRandom.current().nextInt(0, movements.length-1);
-    }
-
-    @Override
-    public String getName() {
-        return ZOMBY;
     }
 
 }

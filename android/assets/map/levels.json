@@ -5,159 +5,13 @@
     class: com.waasche.games.wwa.entities.Level,
     name: "desert",
     fileName: "desert.tmx",
-    enemies: [
-    {
-    class: com.waasche.games.wwa.entities.Enemy,
-    name: "sun",
-    fileNames: [sun.png],
-    rect: {
-    class: com.badlogic.gdx.math.Rectangle
-    x: 1140,
-    y:  450,
-    width: 20,
-    height: 200
-    }
-    },
-    {
-    class: com.waasche.games.wwa.entities.Enemy,
-    name: "sun",
-    fileNames: [sun.png],
-    rect: {
-    class: com.badlogic.gdx.math.Rectangle
-    x: 400,
-    y: 1010,
-    width: 170,
-    height: 20
-    }
-    },
-    {
-    class: com.waasche.games.wwa.entities.Enemy,
-    name: "sun",
-    fileNames: [sun.png],
-    rect: {
-    class: com.badlogic.gdx.math.Rectangle
-    x: 190,
-    y: 420,
-    width: 145,
-    height: 10
-    }
-    }
-    ]
+    enemies: []
     },
     {
     class: com.waasche.games.wwa.entities.Level,
     name: "stone",
     fileName: "stones.tmx",
-    enemies: [
-    {
-    class: com.waasche.games.wwa.entities.Enemy,
-    name: "sun",
-    fileNames: [sun.png],
-    rect: {
-    class: com.badlogic.gdx.math.Rectangle
-    x: 350,
-    y: 200,
-    width: 3,
-    height: 150
-    }
-    },
-    {
-    class: com.waasche.games.wwa.entities.Enemy,
-    name: "sun",
-    fileNames: [sun.png],
-    rect: {
-    class: com.badlogic.gdx.math.Rectangle
-    x: 280,
-    y: 380,
-    width: 90,
-    height: 3
-    }
-    },
-    {
-    class: com.waasche.games.wwa.entities.Enemy,
-    name: "sun",
-    fileNames: [sun.png],
-    rect: {
-    class: com.badlogic.gdx.math.Rectangle
-    x: 745,
-    y: 680,
-    width: 3,
-    height: 80
-    }
-    },
-    {
-    class: com.waasche.games.wwa.entities.Enemy,
-    name: "sun",
-    fileNames: [sun.png],
-    rect: {
-    class: com.badlogic.gdx.math.Rectangle
-    x: 526,
-    y: 1000,
-    width: 60,
-    height: 40
-    }
-    },
-    {
-    class: com.waasche.games.wwa.entities.Enemy,
-    name: "sun",
-    fileNames: [sun.png],
-    rect: {
-    class: com.badlogic.gdx.math.Rectangle
-    x: 505,
-    y: 1150,
-    width: 50,
-    height: 40
-    }
-    },
-    {
-    class: com.waasche.games.wwa.entities.Enemy,
-    name: "sun",
-    fileNames: [sun.png],
-    rect: {
-    class: com.badlogic.gdx.math.Rectangle
-    x: 510,
-    y: 400,
-    width: 3,
-    height: 50
-    }
-    },
-    {
-    class: com.waasche.games.wwa.entities.Enemy,
-    name: "sun",
-    fileNames: [sun.png],
-    rect: {
-    class: com.badlogic.gdx.math.Rectangle
-    x: 1000,
-    y: 480,
-    width: 100,
-    height: 3
-    }
-    },
-    {
-    class: com.waasche.games.wwa.entities.Enemy,
-    name: "sun",
-    fileNames: [sun.png],
-    rect: {
-    class: com.badlogic.gdx.math.Rectangle
-    x: 930,
-    y: 990,
-    width: 40,
-    height: 40
-    }
-    },
-    {
-    class: com.waasche.games.wwa.entities.Enemy,
-    name: "sun",
-    fileNames: [sun.png],
-    rect: {
-    class: com.badlogic.gdx.math.Rectangle
-    x: 1100,
-    y: 1110,
-    width: 40,
-    height: 40
-    }
-    }
-    ]
+    enemies: []
     },
     {
     class: com.waasche.games.wwa.entities.Level,
@@ -174,7 +28,8 @@
     y: 619,
     width: 400,
     height: 5
-    }
+    },
+      energyLoss:1
     },
     {
     class: com.waasche.games.wwa.entities.Enemy,
@@ -186,7 +41,8 @@
     y: 619,
     width: 400,
     height: 5
-    }
+    },
+      energyLoss:1
     },
     {
     class: com.waasche.games.wwa.entities.Enemy,
@@ -198,7 +54,8 @@
     y: 200,
     width: 300,
     height: 5
-    }
+    },
+      energyLoss:1
     },
     {
     class: com.waasche.games.wwa.entities.Enemy,
@@ -210,7 +67,8 @@
     y: 100,
     width: 5,
     height: 270
-    }
+    },
+      energyLoss:1
     },
     {
     class: com.waasche.games.wwa.entities.Enemy,
@@ -222,7 +80,8 @@
     y: 800,
     width: 5,
     height: 400
-    }
+    },
+      energyLoss:1
     }
     {
     class: com.waasche.games.wwa.entities.Enemy,
@@ -234,7 +93,8 @@
     y: 561,
     width: 160,
     height: 160
-    }
+    },
+      energyLoss:1
     }
     ]
     },
@@ -253,7 +113,8 @@
             y: 100,
             width: 300,
             height: 200
-          }
+          },
+          energyLoss:1
         },
         {
           class: com.waasche.games.wwa.entities.Zomby,
@@ -265,7 +126,8 @@
             y: 200,
             width: 300,
             height: 200
-          }
+          },
+          energyLoss:1
         },
         {
           class: com.waasche.games.wwa.entities.Zomby,
@@ -277,7 +139,8 @@
             y: 300,
             width: 300,
             height: 200
-          }
+          },
+          energyLoss:1
         },
         {
           class: com.waasche.games.wwa.entities.Zomby,
@@ -289,7 +152,8 @@
             y: 400,
             width: 300,
             height: 200
-          }
+          },
+          energyLoss:1
         },
         {
           class: com.waasche.games.wwa.entities.Zomby,
@@ -301,7 +165,8 @@
             y: 500,
             width: 300,
             height: 200
-          }
+          },
+          energyLoss:1
         },
         {
           class: com.waasche.games.wwa.entities.Zomby,
@@ -313,7 +178,8 @@
             y: 600,
             width: 300,
             height: 200
-          }
+          },
+          energyLoss:1
         },
         {
           class: com.waasche.games.wwa.entities.Zomby,
@@ -325,7 +191,8 @@
             y: 700,
             width: 300,
             height: 200
-          }
+          },
+          energyLoss:1
         },
         {
           class: com.waasche.games.wwa.entities.Zomby,
@@ -337,7 +204,8 @@
             y: 800,
             width: 300,
             height: 200
-          }
+          },
+          energyLoss:1
         },
         {
           class: com.waasche.games.wwa.entities.Zomby,
@@ -349,7 +217,8 @@
             y: 900,
             width: 300,
             height: 200
-          }
+          },
+          energyLoss:1
         },
         {
           class: com.waasche.games.wwa.entities.Zomby,
@@ -361,7 +230,8 @@
             y: 1000,
             width: 300,
             height: 200
-          }
+          },
+          energyLoss:1
         },
         {
           class: com.waasche.games.wwa.entities.Zomby,
@@ -373,7 +243,8 @@
             y: 1100,
             width: 200,
             height: 300
-          }
+          },
+          energyLoss:1
         },
         {
           class: com.waasche.games.wwa.entities.Zomby,
@@ -385,7 +256,8 @@
             y: 1200,
             width: 200,
             height: 300
-          }
+          },
+          energyLoss:1
         }
       ]
     },
@@ -394,7 +266,7 @@
         name: "zone-2",
         fileName: "zone_2.tmx",
         enemies: [{class: com.waasche.games.wwa.entities.Enemy,
-          name: "sun",
+          name: "spider",
           fileNames: [spider.png],
           rect: {
             class: com.badlogic.gdx.math.Rectangle
@@ -402,10 +274,11 @@
             y:  295,
             width: 500,
             height: 10
-          }
+          },
+          energyLoss:2
         },
           {class: com.waasche.games.wwa.entities.Enemy,
-            name: "sun",
+            name: "spider",
             fileNames: [spider.png],
             rect: {
               class: com.badlogic.gdx.math.Rectangle
@@ -413,10 +286,11 @@
               y:  295,
               width: 300,
               height: 10
-            }
+            },
+            energyLoss:2
           },
           {class: com.waasche.games.wwa.entities.Enemy,
-            name: "sun",
+            name: "spider",
             fileNames: [spider.png],
             rect: {
               class: com.badlogic.gdx.math.Rectangle
@@ -424,10 +298,11 @@
               y:  150,
               width: 500,
               height: 10
-            }
+            },
+            energyLoss:2
           },
           {class: com.waasche.games.wwa.entities.Enemy,
-            name: "sun",
+            name: "spider",
             fileNames: [spider.png],
             rect: {
               class: com.badlogic.gdx.math.Rectangle
@@ -435,10 +310,11 @@
               y:  150,
               width: 300,
               height: 10
-            }
+            },
+            energyLoss:2
           },
           {class: com.waasche.games.wwa.entities.Enemy,
-            name: "sun",
+            name: "spider",
             fileNames: [spider.png],
             rect: {
               class: com.badlogic.gdx.math.Rectangle
@@ -446,7 +322,8 @@
               y:  220,
               width: 900,
               height: 10
-            }
+            },
+            energyLoss:2
           },
           {class: com.waasche.games.wwa.entities.Enemy,
             name: "sun",
@@ -457,7 +334,8 @@
               y:  550,
               width: 120,
               height: 20
-            }
+            },
+            energyLoss:1
           },
           {class: com.waasche.games.wwa.entities.Enemy,
             name: "sun",
@@ -468,7 +346,8 @@
               y: 800,
               width: 120,
               height: 25
-            }
+            },
+            energyLoss:1
           },
           {class: com.waasche.games.wwa.entities.Enemy,
             name: "sun",
@@ -479,7 +358,8 @@
               y: 1060,
               width: 120,
               height: 25
-            }
+            },
+            energyLoss:1
           },
           {class: com.waasche.games.wwa.entities.Enemy,
             name: "spider",
@@ -490,7 +370,8 @@
               y: 540,
               width: 350,
               height: 5
-            }
+            },
+            energyLoss:2
           },
           {class: com.waasche.games.wwa.entities.Enemy,
             name: "spider",
@@ -501,7 +382,8 @@
               y: 800,
               width: 350,
               height: 5
-            }
+            },
+            energyLoss:25
           },
           {class: com.waasche.games.wwa.entities.Enemy,
             name: "spider",
@@ -512,7 +394,8 @@
               y: 1060,
               width: 350,
               height: 5
-            }
+            },
+            energyLoss:2
           },
           {class: com.waasche.games.wwa.entities.Enemy,
             name: "sun",
@@ -523,7 +406,8 @@
               y:  560,
               width: 120,
               height: 20
-            }
+            },
+            energyLoss:1
           },
           {class: com.waasche.games.wwa.entities.Enemy,
             name: "sun",
@@ -534,7 +418,8 @@
               y: 800,
               width: 120,
               height: 25
-            }
+            },
+            energyLoss:1
           },
           {class: com.waasche.games.wwa.entities.Enemy,
             name: "sun",
@@ -545,7 +430,8 @@
               y: 1060,
               width: 120,
               height: 25
-            }
+            },
+            energyLoss:1
           },
           {class: com.waasche.games.wwa.entities.Enemy,
             name: "sun",
@@ -556,8 +442,15 @@
               y: 100,
               width: 1,
               height: 300
-            }
+            },
+            energyLoss:1
           }
         ]
+      },
+      {
+        class: com.waasche.games.wwa.entities.Level,
+        name: "generated",
+        fileName: "generated_2.tmx",
+        enemies: []
       }
   ]}

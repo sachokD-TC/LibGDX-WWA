@@ -1,25 +1,49 @@
 package com.waasche.games.wwa.sound;
 
-import com.badlogic.gdx.Gdx;
-
-
 public class Vibration extends AbstractPlayer {
-
-    public static final int VIBRATE_MSEC = 500;
 
     public Vibration(final boolean isPlay){
       soundOn = isPlay;
     }
 
-    @Override
-    public void play(String soundFile) {
-        if(soundOn){
-            Gdx.input.vibrate(VIBRATE_MSEC);
-        }
-    }
 
     @Override
     public void playEnergyLoss() {
-        play("");
+        playSound(null, 0, 0);
+    }
+
+    @Override
+    public void playMenuMusic() {
+
+    }
+
+    @Override
+    public void playMonsterKick() {
+        playEnergyLoss();
+    }
+
+    @Override
+    public void playGameOver() {
+
+    }
+
+    @Override
+    public void playGameWinMusic() {
+
+    }
+
+    @Override
+    public void playWeaponPick() {
+
+    }
+
+    @Override
+    public void playEnergyFull() {
+
+    }
+
+    @Override
+    public void playFireSound() {
+
     }
 }

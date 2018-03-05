@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -27,12 +29,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.waasche.games.wwa.entities.Level;
 import com.waasche.games.wwa.sound.AbstractPlayer;
+import com.waasche.games.wwa.sound.MusicPlayer;
 import com.waasche.games.wwa.sound.Vibration;
-import com.waasche.games.wwa.util.GameProgress;
+import com.waasche.games.wwa.util.GameSettings;
 import com.waasche.games.wwa.util.LevelService;
 import com.waasche.games.wwa.util.Moves;
 import com.waasche.games.wwa.view.EnemiesRenderer;
 import com.waasche.games.wwa.view.OrthogonalTiledMapRendererWithSprites;
+import com.waasche.games.wwa.view.TileEnemyRenderer;
 import com.waasche.games.wwa.view.TouchPadListener;
 
 import java.util.ArrayList;
@@ -93,18 +97,24 @@ public class Wwa implements Screen {
     private static final String PIC_OBJS_LAYER = "pic_objs";
     private static final String WEAPON_LAYER = "weapons";
     private AbstractPlayer player;
-    private Image controleImage;
+    private boolean isDrawPainInjury = false;
+    private boolean isDrawPainObject = false;
     private Image bulletScore;
     private Image fireImage;
     private Image fireImageOff;
+    private Actor painRectangle;
     private LevelService levelService = new LevelService();
     private Touchpad touchpad;
 
-    public Wwa(int levelInd, boolean soundOn, MainClass mainClass) {
+    public Wwa(int levelInd, MainClass mainClass) {
         this.levelInd = levelInd;
         level = levelService.getLevel(levelInd);
         this.mainClass = mainClass;
-        player = new Vibration(soundOn);
+        if (GameSettings.isSoundOn()) {
+            player = new MusicPlayer();
+        } else {
+            player = new Vibration(GameSettings.isSoundOn());
+        }
     }
 
 
@@ -145,6 +155,12 @@ public class Wwa implements Screen {
         bulletScore.setRotation(-90f);
         bulletScore.setScale(2f);
         bulletScore.setVisible(false);
+        Pixmap pixmap = new Pixmap(mainClass.ANDROID_WIDTH, MainClass.ANDROID_HEIGHT, Pixmap.Format.RGBA8888);
+        pixmap.setColor(1, 0, 1, 0.5f);
+        pixmap.fillRectangle(0, 0, mainClass.ANDROID_WIDTH, MainClass.ANDROID_HEIGHT);
+        painRectangle = new Image(new Texture(pixmap));
+        painRectangle.setVisible(false);
+        stage.addActor(painRectangle);
         stage.addActor(actorScores);
         stage.addActor(energyText);
         stage.addActor(cactusesText);
@@ -171,9 +187,10 @@ public class Wwa implements Screen {
     }
 
     private void drawStage() {
+        scoreBarch.begin();
         tiledMapRenderer.render();
         stage.act();
-        scoreBarch.begin();
+        painRectangle.setVisible(isDrawPainObject || isDrawPainInjury);
         cactusesText.setText("" + cactuses);
         energyText.setText("" + energy);
         if (weapons != 0) {
@@ -185,6 +202,7 @@ public class Wwa implements Screen {
 
     private boolean isCollide(TiledMap map, Sprite sprite, float cowboyX, float cowboyY) {
         boolean isCollide = false;
+        isDrawPainInjury = false;
         camera.translate(cowboyX, cowboyY, 0);
         sprite.setPosition(camera.position.x, camera.position.y);
         for (MapLayer layer : map.getLayers()) {
@@ -198,14 +216,17 @@ public class Wwa implements Screen {
                             TiledMapTileLayer groundLayer = (TiledMapTileLayer) map.getLayers().get(GROUND_LAYER);
                             TiledMapTileLayer.Cell overCell = groundLayer.getCell(cellX, cellY);
                             if (layer.getName().equals(PIC_OBJS_LAYER) && !cactusesCells.contains(overCell) && !overCell.equals(emptyCell)) {
+                                player.playWeaponPick();
                                 cactusesCells.add(overCell);
                                 cactuses--;
                             }
                             if (layer.getName().equals(WEAPON_LAYER) && !weaponCells.contains(overCell) && !overCell.equals(emptyCell)) {
+                                player.playWeaponPick();
                                 weaponCells.add(overCell);
                                 weapons++;
                             }
                             if (layer.getName().equals(LIVES_LAYER_NAME) && !energyCells.contains(overCell) && !overCell.equals(emptyCell)) {
+                                player.playEnergyFull();
                                 energyCells.add(overCell);
                                 energy = 100;
                             }
@@ -222,7 +243,10 @@ public class Wwa implements Screen {
                             isCollide = true;
                             if (layer.getName().equals(INJURY_LAYER)) {
                                 energy -= 1;
-                                player.playEnergyLoss();
+                                isDrawPainInjury = true;
+                                if (gameOverPic == null) {
+                                    player.playEnergyLoss();
+                                }
                             }
                         }
                     }
@@ -233,6 +257,7 @@ public class Wwa implements Screen {
                     if (object instanceof RectangleMapObject) {
                         Rectangle rect = ((RectangleMapObject) object).getRectangle();
                         if (sprite != null && sprite.getBoundingRectangle().overlaps(rect) && cactuses == 0) {
+                            player.playEnergyFull();
                             isNewLevel = true;
                         }
                     }
@@ -247,6 +272,7 @@ public class Wwa implements Screen {
         MapLayer cactusesLayer = map.getLayers().get(Wwa.PIC_OBJS_LAYER);
         if (cactusesLayer != null) {
             cactuses = cactusesLayer.getObjects().getCount();
+            player.playWeaponPick();
         }
     }
 
@@ -265,7 +291,7 @@ public class Wwa implements Screen {
         pripareTextures(LEFT, leftPics);
         pripareTextures(RIGHT, rightPics);
         pripareTextures(DOWN, downPics);
-        enemiesRenderer = new EnemiesRenderer(level, batch);
+        enemiesRenderer = new TileEnemyRenderer(level, batch, tiledMap);
     }
 
     @Override
@@ -297,6 +323,7 @@ public class Wwa implements Screen {
             cowboyToDraw = cowboy.get(DOWN).get(indPic / 10);
         }
         if ((Gdx.input.isKeyPressed(Input.Keys.SPACE) || fireTouchListener.isTouchDown()) && weapons != 0) {
+            player.playFireSound();
             bulletStart = true;
             fireImageOff.setVisible(true);
             fireImage.setVisible(false);
@@ -371,21 +398,23 @@ public class Wwa implements Screen {
             bulletSprite.draw(batch);
         }
         cowboySprite.draw(batch);
+        isDrawPainObject = enemiesRenderer.isCollide();
+        if (isDrawPainObject) {
+            energy -= enemiesRenderer.getEnergyLoss();
+            player.playMonsterKick();
+        }
         batch.end();
         enemiesRenderer.setCowboySprite(cowboySprite);
         enemiesRenderer.render();
         stage.draw();
         stage.act();
         camera.update();
-        if (enemiesRenderer.isCollide()) {
-            energy -= 1;
-            player.playEnergyLoss();
-        }
         if (isNewLevel) {
             if (!levelService.isMaxLevelIndex(levelInd + 1)) {
-                GameProgress.setCompleted("" + (levelInd + 1));
-                mainClass.setCurrentScreen(new Wwa(levelInd + 1, player.isSoundOn(), mainClass));
+                GameSettings.setCompleted("" + (levelInd + 1));
+                mainClass.setCurrentScreen(new Wwa(levelInd + 1, mainClass));
             } else {
+                player.playGameWinMusic();
                 mainClass.setCurrentScreen(new FinalScreen(mainClass));
             }
             mainClass.showCurrentScreen();
@@ -418,6 +447,7 @@ public class Wwa implements Screen {
     }
 
     private void setGameOverPicture() {
+        player.playGameOver();
         Texture texture = new Texture(Gdx.files.internal("pic/game_over.png"));
         gameOverPic = new com.badlogic.gdx.scenes.scene2d.ui.Image(texture);
         gameOverPic.setScale((float) MainClass.ANDROID_WIDTH / texture.getWidth(), (float) MainClass.ANDROID_HEIGHT / texture.getHeight());
@@ -427,6 +457,7 @@ public class Wwa implements Screen {
                                     public void clicked(InputEvent event, float x, float y) {
                                         mainClass.setCurrentScreen(new Menu(mainClass));
                                         mainClass.showCurrentScreen();
+                                        player.stopMusic();
                                     }
                                 }
         );

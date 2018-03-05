@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" nextobjectid="258">
+<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" nextobjectid="268">
  <tileset firstgid="1" source="desert.tsx"/>
  <objectgroup name="weapons">
   <object id="147" x="1061" y="36" width="22" height="22"/>
@@ -98,4 +98,20 @@
    eJztmNtOwzAMQAN7gjyNywMUto7AKHSw8f8/hyvVWmbZadLlJsHDUbXOac/s1nV3p5S6qZR7QAMrYG2xSgh3/B8h9sryq5HUfufWIkf+LoBLYDHDO9TvAXgMoBnPcT0zD6F+G+AV+GR4A14IJqFfR+qxHv0M2Ye12mT246519OPq/FXIb0vqa4RccaTyOxCvWvw68n2nTntBaT/ba6uO1z/mspTfO9mPPjSfpfNHPSkfQD9uuR5I6SP74bPIxcIzDnmO6Ie/1YX2jOPWhbi1jN9STc+Mt55x3LoQN5q/qWsvJa2wj+svLk9pzg31oFvJMef87DObNVYszmaaWdsIx2sc55/Cp2caKxZ7p2bWSj3YOM4fy8+ek3L57SP6DfNxH8GP3mex/NCBe4b1ieu7U8dZV/IbYhp1Or8jc+6PfYAfN1toIVfS8z5l/iS/HP2vdj/fGtHZ7C///zKHtnK/mvLXks/2u+L3hN+5s1QM79L5q72+/37p/Z6U/7tsboZ351/fGK36
   </data>
  </layer>
+ <objectgroup name="Enemies_1">
+  <properties>
+   <property name="energyLoss" type="int" value="1"/>
+   <property name="fileNames" value="sun.png"/>
+  </properties>
+  <object id="261" x="192" y="842" width="151" height="19"/>
+  <object id="262" x="421" y="231" width="158" height="33"/>
+  <object id="263" x="1135" y="607" width="36" height="201"/>
+ </objectgroup>
+ <objectgroup name="Enemies_zomby">
+  <properties>
+   <property name="energyLoss" type="int" value="10"/>
+   <property name="fileNames" value="zomby1.png, zomby2.png"/>
+  </properties>
+  <object id="266" x="477" y="824" width="146" height="306"/>
+ </objectgroup>
 </map>

@@ -7,28 +7,21 @@ import java.util.List;
 
 public class Enemy extends AbstractEnemy {
 
-    private String name;
-
-    public Enemy(int move, Rectangle rect) {
+    public Enemy(int move, Rectangle rect){
         this.rect = rect;
     }
 
-    public Enemy() {
-    }
+    public Enemy(){}
 
-    public Enemy(String name, List<String> fileNames, Rectangle rect) {
-        this.name = name;
+    public Enemy(String name, List<String> fileNames, Rectangle rect, int energyLoss){
         setFileNames(fileNames);
         setRect(rect);
-    }
-
-    @Override
-    public String getName() {
-        return this.name;
+        setEnergyLoss(energyLoss);
     }
 
     @Override
     public int getNextMove() {
         return move + 1;
     }
+
 }

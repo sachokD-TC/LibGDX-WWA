@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" nextobjectid="576">
+<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" nextobjectid="600">
  <tileset firstgid="1" source="desert.tsx"/>
  <objectgroup name="boxes">
   <object id="292" x="177" y="35" width="258" height="78"/>
@@ -152,7 +152,7 @@
   <object id="482" x="301" y="874" width="8" height="11"/>
   <object id="483" x="332" y="874" width="11" height="8"/>
   <object id="484" x="362" y="876" width="9" height="8"/>
-  <object id="485" x="363" y="940" width="9" height="11"/>
+  <object id="485" x="366" y="953" width="9" height="11"/>
   <object id="486" x="362" y="972" width="7" height="9"/>
   <object id="487" x="363" y="1003" width="10" height="7"/>
   <object id="488" x="524" y="843" width="5" height="8"/>
@@ -228,6 +228,27 @@
    eJzNWMtuwkAMXPVW9Va1h5I2kPIKDZTS//+4biQsDcPYu0APHCxB4rVnvePH5iWl9Hyn8prlKcvnlbLI8kWyzLLNMsmyI318vqjQfwR8C/JRg23IMj1Ke5QNrPds2trfLJ3Yp+kivjn42Yi48HrTZ3wt+BwIt63n5wPZ6gS+McYN+fGkgzOZiHXmc/x9qLTZHrG9wTkjPothe9SZFPzjeW0dPbPVCLv8rKHYKf4Njv+58Nulc47Z+inpzcEu627gf4RvLuwyvoN4jzz0uID760l/RXHG2Hj860kvih/ykM+tEfj2zn5QT+WHwoGxRx6t6awUF8wf+lX8UzlXyo+ac1L7WKYYH3KGcwptKP4hl/bk33K+FAesK4aLn3HvsXc92FD8i+LXpfOzwziMGGfBfiwPvBrt+WN8Xs1V+FRdYRw1NZrzJKrP3MuZG1izeP8R92t1fpJf/5RE+eKdCe8N875Us9gO48OZh/2s0nnfwzigXcw1znueHRB/TX5M02muI0bG4OUMzl6Mj7mh6pbKD7S5Jj2FIcKHPc/qrsdJ9V7hU33UYl2Dz3T57Hakp/DhmlkBn+oNPGugqFmT+wrq/QT2o/h5OefJJXMn1g/vHfoszQe4J4UVZ8pLMXr1EPtN7fzi8ZfrtcKrYrWm/8wX7tO1+Er3E3UfKsXN5nmUcU/9hfiwXqpZ1OplDTbjrLpfqdm9hG+aTuu1mkVVf/f8qnPF+3ltfjCn1N1U4cN6V3veqgbV4OP7hepx6j7ANfoaYXw8yzIO7vclvpaw9YX/jM/82P2d73mMj/dja2YOHjX3RPyM8Hn9bBDvoxrZC3/RDFyLD/W8eHj2SvcDbwY2P6t0Gb5IvLlYcVO993Jc3T9K+JhfeD+zPub1KlVHPJ1vinUJn/F6R2dn+yt9k8N8s/8snD/4DZXxebyKhDlnMcZvedwXWfi77n/i87BGfmvF8Hn7u9X+rTLie8/ycKfykeUP2BXBhQ==
   </data>
  </layer>
+ <objectgroup name="Enemies_1">
+  <properties>
+   <property name="energyLoss" type="int" value="1"/>
+   <property name="fileNames" value="sun.png"/>
+  </properties>
+  <object id="577" x="277" y="884" width="84" height="4"/>
+  <object id="580" x="515" y="800" width="4" height="118"/>
+  <object id="581" x="734" y="469" width="6" height="145"/>
+  <object id="582" x="506" y="80" width="96" height="57"/>
+  <object id="583" x="537" y="237" width="94" height="35"/>
+  <object id="584" x="1009" y="790" width="105" height="7"/>
+  <object id="587" x="359" y="878" width="3" height="164"/>
+  <object id="589" x="1122" y="111" width="5" height="113"/>
+  <object id="590" x="1080" y="120" width="99" height="12"/>
+ </objectgroup>
+ <objectgroup name="Enemies_zomby">
+  <properties>
+   <property name="energyLoss" type="int" value="1"/>
+   <property name="fileNames" value="zomby1.png,zomby2.png"/>
+  </properties>
+ </objectgroup>
  <objectgroup name="Lives">
   <object id="575" x="1001" y="73" width="17" height="14"/>
  </objectgroup>

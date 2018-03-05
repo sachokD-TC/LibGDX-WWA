@@ -9,23 +9,30 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.waasche.games.wwa.util.GameProgress;
+import com.waasche.games.wwa.sound.AbstractPlayer;
+import com.waasche.games.wwa.sound.MusicPlayer;
+import com.waasche.games.wwa.util.GameSettings;
 import com.waasche.games.wwa.util.LevelService;
 import com.waasche.games.wwa.util.MenuElementsUtil;
 
 
 public class Menu implements Screen {
 
-    private int START_LEVEL = 0;
+    private int START_LEVEL = 5;
     private Stage menuStage;
     private SpriteBatch menuSpriteBatch;
     private Camera camera;
     private MainClass mainClass;
     private String[] menuElements = {"Start", "About", "Clear Rating", "Rating - "};
     private Label ratingLabel;
+    private AbstractPlayer player;
 
-    public Menu(MainClass mainClass){
+    public Menu(MainClass mainClass) {
         this.mainClass = mainClass;
+        if (GameSettings.isSoundOn()) {
+            player = new MusicPlayer();
+            player.playMenuMusic();
+        }
     }
 
 
@@ -39,13 +46,13 @@ public class Menu implements Screen {
         prepareStage();
     }
 
-    private void prepareStage(){
+    private void prepareStage() {
         Texture texture = new Texture(Gdx.files.internal("pic/menu.png"));
         com.badlogic.gdx.scenes.scene2d.ui.Image actorMenuPic = new com.badlogic.gdx.scenes.scene2d.ui.Image(texture);
-        actorMenuPic.setScale((float)MainClass.ANDROID_WIDTH/texture.getWidth(), (float)MainClass.ANDROID_HEIGHT/texture.getHeight());
-        actorMenuPic.setPosition(0,0);
+        actorMenuPic.setScale((float) MainClass.ANDROID_WIDTH / texture.getWidth(), (float) MainClass.ANDROID_HEIGHT / texture.getHeight());
+        actorMenuPic.setPosition(0, 0);
         menuStage.addActor(actorMenuPic);
-        START_LEVEL = Integer.valueOf(GameProgress.getLastCompleted());
+        //START_LEVEL = Integer.valueOf(GameSettings.getLastCompleted());
         final Label startItem = MenuElementsUtil.getTextActor(MainClass.ANDROID_WIDTH / 2.5f, MainClass.ANDROID_HEIGHT / 2.2f + MainClass.ANDROID_HEIGHT / 15.5f, menuElements[0]);
         Actor aboutItem = MenuElementsUtil.getTextActor(MainClass.ANDROID_WIDTH / 2.5f, MainClass.ANDROID_HEIGHT / 2.2f - MainClass.ANDROID_HEIGHT / 15.5f, menuElements[1]);
         ratingLabel = MenuElementsUtil.getTextActor(MainClass.ANDROID_WIDTH / 2.5f, MainClass.ANDROID_HEIGHT / 2.2f - MainClass.ANDROID_HEIGHT / 15.5f * 3, menuElements[3] + START_LEVEL);
@@ -60,8 +67,8 @@ public class Menu implements Screen {
         menuStage.addActor(clearRating);
     }
 
-    private void addListeners(final Actor startItemText, final Actor aboutItem, final Actor clearRating, final Actor rateItem){
-        startItemText.addListener(new InputListener(){
+    private void addListeners(final Actor startItemText, final Actor aboutItem, final Actor clearRating, final Actor rateItem) {
+        startItemText.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 startItemText.setColor(Color.RED);
                 mainClass.render();
@@ -69,8 +76,11 @@ public class Menu implements Screen {
             }
 
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if(!new LevelService().isMaxLevelIndex(START_LEVEL)) {
-                    mainClass.setCurrentScreen(new Wwa(START_LEVEL, true, mainClass));
+                if (!new LevelService().isMaxLevelIndex(START_LEVEL)) {
+                    if (GameSettings.isSoundOn()) {
+                        player.stopMusic();
+                    }
+                    mainClass.setCurrentScreen(new Wwa(START_LEVEL, mainClass));
                 } else {
                     mainClass.setCurrentScreen(new FinalScreen(mainClass));
                 }
@@ -79,8 +89,13 @@ public class Menu implements Screen {
         });
         clearRating.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (GameSettings.isSoundOn()) {
+                    player.pause();
+                    player.playEnergyFull();
+                    player.playMenuMusic();
+                }
                 clearRating.setColor(Color.RED);
-                GameProgress.clear();
+                GameSettings.clear();
                 START_LEVEL = 0;
                 ratingLabel.setText(menuElements[3] + START_LEVEL);
                 ratingLabel.invalidate();
