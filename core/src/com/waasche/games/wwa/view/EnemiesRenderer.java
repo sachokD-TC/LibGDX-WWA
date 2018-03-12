@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.waasche.games.wwa.entities.AbstractEnemy;
 import com.waasche.games.wwa.entities.Level;
 import com.waasche.games.wwa.sound.AbstractPlayer;
-import com.waasche.games.wwa.sound.MusicPlayer;
 import com.waasche.games.wwa.util.GameSettings;
 
 import java.util.ArrayList;
@@ -64,8 +63,8 @@ public class EnemiesRenderer {
             }
         }
         if (enemyToRemove != null) {
-            if (GameSettings.isSoundOn()) {
-                new MusicPlayer().playEnergyFull();
+            if(GameSettings.isSoundOn() && player != null){
+                player.playMonsterDeadSound();
             }
             enemies.remove(enemyToRemove);
         }
@@ -90,6 +89,10 @@ public class EnemiesRenderer {
 
     public void setBulletY(float bulletY) {
         this.bulletY = bulletY;
+    }
+
+    public void setPlayer(AbstractPlayer player){
+        this.player = player;
     }
 
 }

@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.waasche.games.wwa.sound.AbstractPlayer;
-import com.waasche.games.wwa.sound.MusicPlayer;
 import com.waasche.games.wwa.util.GameSettings;
 import com.waasche.games.wwa.util.LevelService;
 import com.waasche.games.wwa.util.MenuElementsUtil;
@@ -18,7 +17,7 @@ import com.waasche.games.wwa.util.MenuElementsUtil;
 
 public class Menu implements Screen {
 
-    private int START_LEVEL = 5;
+    private int START_LEVEL = 0;
     private Stage menuStage;
     private SpriteBatch menuSpriteBatch;
     private Camera camera;
@@ -29,10 +28,8 @@ public class Menu implements Screen {
 
     public Menu(MainClass mainClass) {
         this.mainClass = mainClass;
-        if (GameSettings.isSoundOn()) {
-            player = new MusicPlayer();
-            player.playMenuMusic();
-        }
+        player = mainClass.getPlayer();
+        player.playMenuMusic();
     }
 
 
@@ -52,7 +49,7 @@ public class Menu implements Screen {
         actorMenuPic.setScale((float) MainClass.ANDROID_WIDTH / texture.getWidth(), (float) MainClass.ANDROID_HEIGHT / texture.getHeight());
         actorMenuPic.setPosition(0, 0);
         menuStage.addActor(actorMenuPic);
-        //START_LEVEL = Integer.valueOf(GameSettings.getLastCompleted());
+        START_LEVEL = Integer.valueOf(GameSettings.getLastCompleted());
         final Label startItem = MenuElementsUtil.getTextActor(MainClass.ANDROID_WIDTH / 2.5f, MainClass.ANDROID_HEIGHT / 2.2f + MainClass.ANDROID_HEIGHT / 15.5f, menuElements[0]);
         Actor aboutItem = MenuElementsUtil.getTextActor(MainClass.ANDROID_WIDTH / 2.5f, MainClass.ANDROID_HEIGHT / 2.2f - MainClass.ANDROID_HEIGHT / 15.5f, menuElements[1]);
         ratingLabel = MenuElementsUtil.getTextActor(MainClass.ANDROID_WIDTH / 2.5f, MainClass.ANDROID_HEIGHT / 2.2f - MainClass.ANDROID_HEIGHT / 15.5f * 3, menuElements[3] + START_LEVEL);
@@ -92,7 +89,6 @@ public class Menu implements Screen {
                 if (GameSettings.isSoundOn()) {
                     player.pause();
                     player.playEnergyFull();
-                    player.playMenuMusic();
                 }
                 clearRating.setColor(Color.RED);
                 GameSettings.clear();

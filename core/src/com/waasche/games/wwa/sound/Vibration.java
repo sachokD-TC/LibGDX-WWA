@@ -46,4 +46,9 @@ public class Vibration extends AbstractPlayer {
     public void playFireSound() {
 
     }
+
+    @Override
+    public void playMonsterDeadSound() {
+
+    }
 }

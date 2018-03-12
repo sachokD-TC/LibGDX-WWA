@@ -24,8 +24,8 @@ android {
         applicationId "com.waasche.games.wwa"
         minSdkVersion 9
         targetSdkVersion 26
-        versionCode 6
-        versionName "1.5"
+        versionCode 8
+        versionName "1.7"
     }
 
     signingConfigs {

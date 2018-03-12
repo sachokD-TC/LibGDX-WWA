@@ -24,7 +24,7 @@ public class MusicPlayer extends AbstractPlayer {
 
     @Override
     public void playGameOver() {
-        playMusic(Assets.musicGameOver);
+        playMusic(Assets.musicGameOver, false);
     }
 
     @Override
@@ -44,5 +44,10 @@ public class MusicPlayer extends AbstractPlayer {
 
     @Override
     public void playFireSound() { playSound(Assets.soundFire, 1f, 0f);}
+
+    @Override
+    public void playMonsterDeadSound() {
+        playSound(Assets.soundKillMonster, 1f, 0f);
+    }
 
 }

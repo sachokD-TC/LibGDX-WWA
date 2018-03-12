@@ -4,7 +4,6 @@ package com.waasche.games.wwa.sound;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.utils.Timer;
 import com.waasche.games.wwa.util.GameSettings;
 
 public abstract class AbstractPlayer {
@@ -13,47 +12,59 @@ public abstract class AbstractPlayer {
     protected boolean soundOn = true;
     protected Music music;
     protected Sound sound;
-    protected Timer timer = new Timer();
 
     public void playSound(Sound sound, float pitch, float delay) {
         this.sound = sound;
-        if(GameSettings.isSoundOn()){
+        if (GameSettings.isSoundOn()) {
             sound.play(1.0f, pitch, 0.0f);
         } else {
             Gdx.input.vibrate(VIBRATE_MSEC);
         }
     }
 
-    public void playMusic(Music music){
+    public void playMusic(Music music, boolean isLooping) {
         this.music = music;
-        if(GameSettings.isSoundOn()){
+        if (GameSettings.isSoundOn()) {
             music.play();
-            music.setLooping(true);
+            music.setLooping(isLooping);
         }
     }
 
-    public void stopMusic(){
-        if(music != null){
+    public void playMusic(Music music){
+        playMusic(music, false);
+    }
+
+    public void stop() {
+        if (music != null && music.isPlaying()) {
+            this.stopMusic();
+        }
+        if (sound != null) {
+            this.stopSound();
+        }
+    }
+
+    public void stopMusic() {
+        if (music != null && music.isPlaying()) {
             music.dispose();
             music.stop();
         }
     }
 
-    public void stopSound(){
+    public void stopSound() {
         sound.stop();
     }
 
-    public void pause(){
-        if(music != null){
+    public void pause() {
+        if (music != null) {
             music.pause();
         }
     }
 
-    void soundOn(){
+    void soundOn() {
         soundOn = true;
     }
 
-    void soundOff(){
+    void soundOff() {
         soundOn = false;
     }
 
@@ -72,5 +83,7 @@ public abstract class AbstractPlayer {
     public abstract void playEnergyFull();
 
     public abstract void playFireSound();
+
+    public abstract void playMonsterDeadSound();
 
 }

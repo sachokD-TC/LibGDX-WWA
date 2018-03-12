@@ -446,11 +446,5 @@
             energyLoss:1
           }
         ]
-      },
-      {
-        class: com.waasche.games.wwa.entities.Level,
-        name: "generated",
-        fileName: "generated_2.tmx",
-        enemies: []
       }
   ]}

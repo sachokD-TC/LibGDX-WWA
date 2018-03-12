@@ -29,8 +29,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.waasche.games.wwa.entities.Level;
 import com.waasche.games.wwa.sound.AbstractPlayer;
-import com.waasche.games.wwa.sound.MusicPlayer;
-import com.waasche.games.wwa.sound.Vibration;
 import com.waasche.games.wwa.util.GameSettings;
 import com.waasche.games.wwa.util.LevelService;
 import com.waasche.games.wwa.util.Moves;
@@ -110,11 +108,7 @@ public class Wwa implements Screen {
         this.levelInd = levelInd;
         level = levelService.getLevel(levelInd);
         this.mainClass = mainClass;
-        if (GameSettings.isSoundOn()) {
-            player = new MusicPlayer();
-        } else {
-            player = new Vibration(GameSettings.isSoundOn());
-        }
+        this.player = mainClass.getPlayer();
     }
 
 
@@ -292,6 +286,7 @@ public class Wwa implements Screen {
         pripareTextures(RIGHT, rightPics);
         pripareTextures(DOWN, downPics);
         enemiesRenderer = new TileEnemyRenderer(level, batch, tiledMap);
+        enemiesRenderer.setPlayer(player);
     }
 
     @Override
@@ -399,7 +394,7 @@ public class Wwa implements Screen {
         }
         cowboySprite.draw(batch);
         isDrawPainObject = enemiesRenderer.isCollide();
-        if (isDrawPainObject) {
+        if (isDrawPainObject && gameOverPic == null) {
             energy -= enemiesRenderer.getEnergyLoss();
             player.playMonsterKick();
         }
@@ -447,17 +442,16 @@ public class Wwa implements Screen {
     }
 
     private void setGameOverPicture() {
-        player.playGameOver();
         Texture texture = new Texture(Gdx.files.internal("pic/game_over.png"));
         gameOverPic = new com.badlogic.gdx.scenes.scene2d.ui.Image(texture);
         gameOverPic.setScale((float) MainClass.ANDROID_WIDTH / texture.getWidth(), (float) MainClass.ANDROID_HEIGHT / texture.getHeight());
         gameOverPic.setPosition(0, 0);
+        player.playGameOver();
         gameOverPic.addListener(new ClickListener() {
                                     @Override
                                     public void clicked(InputEvent event, float x, float y) {
                                         mainClass.setCurrentScreen(new Menu(mainClass));
                                         mainClass.showCurrentScreen();
-                                        player.stopMusic();
                                     }
                                 }
         );

@@ -13,6 +13,7 @@ public class Assets {
     public static Sound soundFire;
     public static Sound soundFirePick;
     public static Sound soundEnergyFull;
+    public static Sound soundKillMonster;
     public static Music musicMenu;
     public static Music musicGameOver;
     public static Music musicWinGame;
@@ -24,6 +25,7 @@ public class Assets {
         soundFire = Gdx.audio.newSound(Gdx.files.internal("sounds/fire.mp3"));
         soundFirePick = Gdx.audio.newSound(Gdx.files.internal("sounds/pickfire.mp3"));
         soundEnergyFull = Gdx.audio.newSound(Gdx.files.internal("sounds/energyfull.mp3"));
+        soundKillMonster = Gdx.audio.newSound(Gdx.files.internal("sounds/dead_monster.mp3"));
         musicGameOver = Gdx.audio.newMusic(Gdx.files.internal("sounds/gameover.mp3"));
         musicWinGame = Gdx.audio.newMusic(Gdx.files.internal("sounds/finalmusic.mp3"));
         musicMenu = Gdx.audio.newMusic(Gdx.files.internal("sounds/menu.mp3"));
